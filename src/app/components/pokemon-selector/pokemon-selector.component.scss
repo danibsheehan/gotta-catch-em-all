@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 50px auto;
+    max-width: 1200px;
+    width: 85%;
+}
+
+.pokemon-type-item {
+    border: 2px solid black;
+    margin: 20px;
+    width: 25%;
+}

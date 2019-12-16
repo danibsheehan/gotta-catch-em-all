@@ -1,0 +1,3 @@
+<div class="pokemon-type-item" *ngFor="let pokemonType of pokemonTypes">
+    <app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
+</div>
