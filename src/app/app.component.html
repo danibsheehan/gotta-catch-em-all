@@ -1,4 +1,11 @@
-<h1>Choose Your Pokemon</h1>
+<h1>Pokemon Battle Royale!</h1>
+<div>
+    <app-pokemon-opponent [pokemon]="pokemonOpponent"></app-pokemon-opponent>
+    <app-pokemon-details [pokemonDetails]="pokemonDetails"></app-pokemon-details>
+</div>
 <app-pokemon-selector></app-pokemon-selector>
 
-<app-pokemon-list [pokemonList]="pokemonList"></app-pokemon-list>
+<!-- <div class="pokemon-results">
+    <app-pokemon-list [pokemonList]="pokemonList" *ngIf="pokemonList.length"></app-pokemon-list>
+    <app-pokemon-details [pokemonDetails]="pokemonDetails"></app-pokemon-details>
+</div> -->

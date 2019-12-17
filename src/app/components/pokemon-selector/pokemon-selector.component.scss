@@ -2,9 +2,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 50px auto;
+    margin: 20px auto;
     max-width: 1200px;
     width: 85%;
+}
+
+.pokemon-cta {
+    text-align: center;
+    width: 100%;
 }
 
 .pokemon-type-item {

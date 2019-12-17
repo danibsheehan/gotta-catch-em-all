@@ -7,6 +7,8 @@ import { PokemonSelectorComponent } from './components/pokemon-selector/pokemon-
 import { PokemonTypeComponent } from './components/pokemon-type/pokemon-type.component';
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { PokemonComponent } from './components/pokemon/pokemon.component';
+import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-details.component';
+import { PokemonOpponentComponent } from './components/pokemon-opponent/pokemon-opponent.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { PokemonComponent } from './components/pokemon/pokemon.component';
     PokemonSelectorComponent,
     PokemonTypeComponent,
     PokemonListComponent,
-    PokemonComponent
+    PokemonComponent,
+    PokemonDetailsComponent,
+    PokemonOpponentComponent
   ],
   imports: [
     BrowserModule,
