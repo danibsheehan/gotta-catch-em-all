@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   public pokemonDetails: Pokemon;
   public pokemonList: PokemonList;
   public pokemonOpponent: Pokemon;
+  public pokemonOpponentSelected: boolean;
 
   constructor(
     private pokemonListService: PokemonListService

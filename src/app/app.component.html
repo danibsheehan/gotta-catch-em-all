@@ -1,11 +1,14 @@
 <h1>Pokemon Battle Royale!</h1>
-<div>
-    <app-pokemon-opponent [pokemon]="pokemonOpponent"></app-pokemon-opponent>
-    <app-pokemon-details [pokemonDetails]="pokemonDetails"></app-pokemon-details>
+<div class="battle-container">
+    <!-- <div *ngIf="!pokemonOpponent && pokemonOpponentSelected" class="pokemon-opponent">
+      <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
+      <button (click)="getPokemonOpponent()">Choose Again</button>
+    </div> -->
+    <app-pokemon-opponent *ngIf="pokemonOpponent" [pokemon]="pokemonOpponent"></app-pokemon-opponent>
+    <app-pokemon-details *ngIf="pokemonDetails" [pokemonDetails]="pokemonDetails"></app-pokemon-details>
 </div>
 <app-pokemon-selector></app-pokemon-selector>
 
-<!-- <div class="pokemon-results">
+<div class="pokemon-results">
     <app-pokemon-list [pokemonList]="pokemonList" *ngIf="pokemonList.length"></app-pokemon-list>
-    <app-pokemon-details [pokemonDetails]="pokemonDetails"></app-pokemon-details>
-</div> -->
+</div>

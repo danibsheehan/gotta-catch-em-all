@@ -8,6 +8,13 @@ h1 {
     text-align: center;
 }
 
+.battle-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    width: 60%;
+}
+
 .pokemon-results {
     display: flex;
     justify-content: space-evenly;
