@@ -24,10 +24,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pokemonListService.getPokemonOpponent()
-      .subscribe(pokemonOpponent => {
-        this.pokemonOpponent = pokemonOpponent;
-      });
+    this.getPokemonOpponent();
 
     this.pokemonListService.pokemonSearchResults
       .subscribe(searchResults => {
@@ -38,5 +35,19 @@ export class AppComponent implements OnInit {
       .subscribe(pokemonDetails => {
         this.pokemonDetails = pokemonDetails;
       });
+  }
+
+  getPokemonOpponent() {
+    this.pokemonListService.getPokemonOpponent()
+      .subscribe(
+        data => {
+          this.pokemonOpponent = data;
+          this.pokemonOpponentSelected = true;
+        },
+        err => {
+          this.pokemonOpponent = {} as Pokemon;
+          this.pokemonOpponentSelected = true;
+        }
+      );
   }
 }

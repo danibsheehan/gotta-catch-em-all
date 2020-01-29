@@ -15,6 +15,20 @@ h1 {
     width: 60%;
 }
 
+.pokemon-opponent-error {
+    display: inline-block;
+    text-align: center;
+}
+
+.opponent-error {
+    display: block;
+}
+
+.opponent-retry {
+    border-radius: 10px;
+    width: 100px;
+}
+
 .pokemon-results {
     display: flex;
     justify-content: space-evenly;

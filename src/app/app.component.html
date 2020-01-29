@@ -1,11 +1,13 @@
 <h1>Pokemon Battle Royale!</h1>
-<div class="battle-container">
-    <!-- <div *ngIf="!pokemonOpponent && pokemonOpponentSelected" class="pokemon-opponent">
+<div class="battle-container" *ngIf="pokemonOpponentSelected">
+    <div *ngIf="!pokemonOpponent?.hasOwnProperty('name')" class="pokemon-opponent-error">
       <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
-      <button (click)="getPokemonOpponent()">Choose Again</button>
-    </div> -->
-    <app-pokemon-opponent *ngIf="pokemonOpponent" [pokemon]="pokemonOpponent"></app-pokemon-opponent>
-    <app-pokemon-details *ngIf="pokemonDetails" [pokemonDetails]="pokemonDetails"></app-pokemon-details>
+      <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
+    </div>
+    <app-pokemon-opponent *ngIf="pokemonOpponent.hasOwnProperty('name')" [pokemon]="pokemonOpponent">
+    </app-pokemon-opponent>
+    <app-pokemon-details *ngIf="pokemonOpponent.hasOwnProperty('name')" [pokemonDetails]="pokemonDetails">
+    </app-pokemon-details>
 </div>
 <app-pokemon-selector></app-pokemon-selector>
 
