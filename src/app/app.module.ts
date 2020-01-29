@@ -9,6 +9,7 @@ import { PokemonListComponent } from './components/pokemon-list/pokemon-list.com
 import { PokemonComponent } from './components/pokemon/pokemon.component';
 import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-details.component';
 import { PokemonOpponentComponent } from './components/pokemon-opponent/pokemon-opponent.component';
+import { PokemonBattleResultComponent } from './components/pokemon-battle-result/pokemon-battle-result.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PokemonOpponentComponent } from './components/pokemon-opponent/pokemon-
     PokemonListComponent,
     PokemonComponent,
     PokemonDetailsComponent,
-    PokemonOpponentComponent
+    PokemonOpponentComponent,
+    PokemonBattleResultComponent
   ],
   imports: [
     BrowserModule,
