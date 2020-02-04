@@ -1,6 +1,14 @@
 <h2 class="pokemon-cta">Choose Your Pokemon!</h2>
-<div class="pokemon-type-container" [ngClass]="{'pokemon-searched': pokemonSearched}">
-    <div class="pokemon-type-item" *ngFor="let pokemonType of pokemonTypes">
-        <app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
-    </div>
+
+<div class="pokemon-search-container">
+	<div class="pokemon-type-container" [ngClass]="{'pokemon-searched': pokemonSearched}">
+		<div class="pokemon-type-item" *ngFor="let pokemonType of pokemonTypes">
+			<app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
+		</div>
+	</div>
+
+	<div class="pokemon-results" *ngIf="pokemonList.length">
+		<h4>{{pokemonTypeSearched}} Pokemon</h4>
+		<app-pokemon-list [pokemonList]="pokemonList"></app-pokemon-list>
+	</div>
 </div>

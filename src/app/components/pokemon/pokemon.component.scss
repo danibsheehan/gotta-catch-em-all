@@ -1,11 +1,11 @@
 :host {
-    border: 2px solid black;
-    display: inline-block;
-    justify-content: center;
-    margin: 20px;
-    padding: 20px;
+	border: 2px solid black;
+	display: inline-block;
+	margin: 20px;
+	padding: 20px;
 }
 
 .pokemon-brief {
-    display: inline-block;
+	display: inline-block;
+	text-transform: capitalize;
 }

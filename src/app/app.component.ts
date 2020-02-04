@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { PokemonList } from './pokemon-list';
 import { PokemonListService } from './pokemon-list.service';
 import { Pokemon } from './pokemon';
 
@@ -13,7 +12,6 @@ export class AppComponent implements OnInit {
   title = 'gotta-catch-em-all';
 
   public pokemonDetails: Pokemon;
-  public pokemonList: PokemonList;
   public pokemonOpponent: Pokemon;
   public pokemonOpponentSelected: boolean;
 
@@ -25,11 +23,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getPokemonOpponent();
-
-    this.pokemonListService.pokemonSearchResults
-      .subscribe(searchResults => {
-        this.pokemonList = searchResults;
-      });
 
     this.pokemonListService.pokemonDetails
       .subscribe(pokemonDetails => {

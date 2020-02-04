@@ -23,6 +23,12 @@ export class PokemonBattleResultComponent implements OnInit {
     this.choiceAttack = this.pokemonChoice.stats.find(stat => stat.stat.name === 'special-attack');
     this.opponentAttack = this.pokemonOpponent.stats.find(stat => stat.stat.name === 'special-attack');
 
+    setTimeout(() => {
+      this.pokemonBattle(this.choiceAttack, this.opponentAttack);
+    }, 2000);
+  }
+
+  pokemonBattle(choiceAttack: Stat, opponentAttack: Stat): void {
     if (this.choiceAttack.base_stat > this.opponentAttack.base_stat) {
       this.battleResult = 'Congrats, you win!';
       this.pokemonVictor = this.pokemonChoice;
