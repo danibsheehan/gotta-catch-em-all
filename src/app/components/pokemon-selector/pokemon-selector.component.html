@@ -1,4 +1,6 @@
 <h2 class="pokemon-cta">Choose Your Pokemon!</h2>
-<div class="pokemon-type-item" *ngFor="let pokemonType of pokemonTypes">
-    <app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
+<div class="pokemon-type-container" [ngClass]="{'pokemon-searched': pokemonSearched}">
+    <div class="pokemon-type-item" *ngFor="let pokemonType of pokemonTypes">
+        <app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
+    </div>
 </div>

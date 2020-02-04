@@ -15,6 +15,7 @@ export class PokemonBattleResultComponent implements OnInit {
   private opponentAttack: Stat;
 
   public battleResult: string;
+  public pokemonVictor: Pokemon;
 
   constructor() { }
 
@@ -24,8 +25,10 @@ export class PokemonBattleResultComponent implements OnInit {
 
     if (this.choiceAttack.base_stat > this.opponentAttack.base_stat) {
       this.battleResult = 'Congrats, you win!';
+      this.pokemonVictor = this.pokemonChoice;
     } else {
       this.battleResult = 'Uh oh, you lose this battle. Maybe next time!';
+      this.pokemonVictor = this.pokemonOpponent;
     }
   }
 

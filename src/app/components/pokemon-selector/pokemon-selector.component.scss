@@ -1,15 +1,14 @@
-:host {
+.pokemon-cta {
+  text-align: center;
+}
+
+.pokemon-type-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: 20px auto;
     max-width: 1200px;
     width: 85%;
-}
-
-.pokemon-cta {
-    text-align: center;
-    width: 100%;
 }
 
 .pokemon-type-item {

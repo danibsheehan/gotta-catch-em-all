@@ -5,10 +5,13 @@
         <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
         <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
       </div>
-      <app-pokemon-opponent *ngIf="pokemonOpponent.hasOwnProperty('name')" [pokemon]="pokemonOpponent">
-      </app-pokemon-opponent>
+      <div *ngIf="pokemonOpponent.hasOwnProperty('name')">
+        <h4>Your Opponent:</h4>
+        <app-pokemon-details [pokemonDetails]="pokemonOpponent"></app-pokemon-details>
+      </div>
     </div>
     <div class="choice">
+      <h4>Your Choice:</h4>
       <app-pokemon-details *ngIf="pokemonDetails" [pokemonDetails]="pokemonDetails">
       </app-pokemon-details>
     </div>

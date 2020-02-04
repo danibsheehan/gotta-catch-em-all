@@ -1,5 +1,4 @@
-<h4>Your Pokemon:</h4>
-<div *ngIf="currentPokemon" class="current-pokemon">
-    <span class="pokemon-name">{{currentPokemon.name}}</span>
-    <img class="pokemon-image" src="{{currentPokemon.sprites.front_default}}" alt="">
+<div [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''">
+    <span class="pokemon-name">{{pokemonDetails?.name}}</span>
+    <img class="pokemon-image" src="{{pokemonDetails?.sprites?.front_default}}" alt="">
 </div>

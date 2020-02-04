@@ -9,6 +9,7 @@ import { PokemonType } from 'src/app/pokemon-type';
 })
 export class PokemonSelectorComponent implements OnInit {
   public pokemonTypes: PokemonType[];
+  public pokemonSearched: boolean;
 
   constructor(
     private pokemonListService: PokemonListService
@@ -23,5 +24,6 @@ export class PokemonSelectorComponent implements OnInit {
 
   searchPokemon(name: string) {
     this.pokemonListService.getPokemon(name);
+    this.pokemonSearched = true;
   }
 }

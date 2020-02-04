@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Pokemon } from 'src/app/pokemon';
 
 @Component({
@@ -6,18 +6,11 @@ import { Pokemon } from 'src/app/pokemon';
   templateUrl: './pokemon-details.component.html',
   styleUrls: ['./pokemon-details.component.scss']
 })
-export class PokemonDetailsComponent implements OnChanges {
+export class PokemonDetailsComponent implements OnInit {
 
   @Input() pokemonDetails: Pokemon;
 
-  public currentPokemon: Pokemon;
-
   constructor() { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.pokemonDetails && changes.pokemonDetails.previousValue) {
-      this.currentPokemon = changes.pokemonDetails.currentValue;
-    }
-  }
-
+  ngOnInit() {}
 }
