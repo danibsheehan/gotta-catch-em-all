@@ -23,7 +23,9 @@ export class PokemonSelectorComponent implements OnInit, OnDestroy {
 
   constructor(
     private pokemonListService: PokemonListService
-  ) { }
+  ) {
+    this.subscriptions = new Subscription();
+  }
 
   ngOnInit() {
     this.typeSub = this.pokemonListService.getPokemonTypes()
@@ -47,6 +49,8 @@ export class PokemonSelectorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 }
