@@ -29,4 +29,26 @@ describe('PokemonDetailsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render pokemon name and image when provided', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    expect(compiled.querySelector('.pokemon-name')?.textContent).toContain('pikachu');
+    const image = compiled.querySelector('.pokemon-image') as HTMLImageElement;
+    expect(image).toBeTruthy();
+    expect(image.src).toContain('https://example.com/pikachu.png');
+  });
+
+  it('should render placeholder when sprite is missing', () => {
+    component.pokemonDetails = {
+      name: 'ditto',
+      sprites: {} as any,
+      stats: []
+    };
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+
+    const placeholder = compiled.querySelector('.pokemon-image-placeholder');
+    expect(placeholder).toBeTruthy();
+  });
 });

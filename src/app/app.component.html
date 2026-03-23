@@ -21,11 +21,14 @@
         <app-pokemon-details [pokemonDetails]="pokemonDetails">
         </app-pokemon-details>
       }
+      @if (pokemonDetailsError) {
+        <span class="choice-error">{{ pokemonDetailsError }}</span>
+      }
     </div>
   </div>
 }
 
-@if (pokemonDetails.hasOwnProperty('name')) {
+@if (pokemonDetails?.hasOwnProperty('name')) {
   <div class="battle-result">
     <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
   </div>

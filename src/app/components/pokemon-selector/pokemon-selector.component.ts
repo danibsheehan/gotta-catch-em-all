@@ -17,6 +17,7 @@ export class PokemonSelectorComponent implements OnInit, OnDestroy {
   public pokemonSearched: boolean;
   public pokemonTypes: PokemonType[];
   public pokemonTypeSearched: string;
+  public pokemonTypesError: string;
 
   private pokemonSub: Subscription;
   private subscriptions: Subscription;
@@ -30,9 +31,16 @@ export class PokemonSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.typeSub = this.pokemonListService.getPokemonTypes()
-      .subscribe((data) => {
-        this.pokemonTypes = data.results;
-    });
+      .subscribe(
+        (data) => {
+          this.pokemonTypes = data.results;
+          this.pokemonTypesError = '';
+        },
+        () => {
+          this.pokemonTypes = [];
+          this.pokemonTypesError = 'Pokemon type data could not be found. Please refresh and try again.';
+        }
+      );
 
     this.pokemonSub = this.pokemonListService.pokemonSearchResults
       .subscribe(searchResults => {

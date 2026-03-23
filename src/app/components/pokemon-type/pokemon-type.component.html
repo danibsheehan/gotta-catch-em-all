@@ -7,6 +7,9 @@
     @if (isLoadingPokemon) {
       <span class="pokemon-type-loading">Loading pokemon...</span>
     }
+    @if (!isLoadingPokemon && pokemonLoadError) {
+      <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
+    }
     @if (!isLoadingPokemon && pokemonNames.length) {
       <select
         class="pokemon-type-dropdown"

@@ -14,6 +14,7 @@ export class PokemonTypeComponent implements OnDestroy {
 
   public isDropdownOpen = false;
   public isLoadingPokemon = false;
+  public pokemonLoadError = '';
   public pokemonNames: string[] = [];
   private typePokemonSub: Subscription;
 
@@ -30,11 +31,22 @@ export class PokemonTypeComponent implements OnDestroy {
 
   loadPokemonForType() {
     this.isLoadingPokemon = true;
+    this.pokemonLoadError = '';
     this.typePokemonSub = this.pokemonListService.getPokemonByType(this.pokemonType.name)
-      .subscribe((data: any) => {
-        this.pokemonNames = data.pokemon.map((entry: any) => entry.pokemon.name);
-        this.isLoadingPokemon = false;
-      });
+      .subscribe(
+        (data: any) => {
+          this.pokemonNames = data.pokemon.map((entry: any) => entry.pokemon.name);
+          if (!this.pokemonNames.length) {
+            this.pokemonLoadError = `No pokemon were found for ${this.pokemonType.name}.`;
+          }
+          this.isLoadingPokemon = false;
+        },
+        () => {
+          this.pokemonNames = [];
+          this.pokemonLoadError = `Pokemon data could not be found for ${this.pokemonType.name}.`;
+          this.isLoadingPokemon = false;
+        }
+      );
   }
 
   selectPokemon(name: string) {

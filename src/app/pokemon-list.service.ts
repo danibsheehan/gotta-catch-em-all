@@ -13,6 +13,7 @@ import { PokemonTypeList } from './pokemon-type-list';
 export class PokemonListService {
   public pokemonSearchResults = new BehaviorSubject<any>([]);
   public pokemonDetails = new BehaviorSubject<any>({});
+  public pokemonDetailsError = new BehaviorSubject<string>('');
 
   constructor(
     private http: HttpClient
@@ -33,9 +34,16 @@ export class PokemonListService {
   }
 
   getPokemonDetails(name: string): void {
-    this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`).subscribe(data => {
-      this.pokemonDetails.next(data);
-    });
+    this.pokemonDetailsError.next('');
+    this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`).subscribe(
+      data => {
+        this.pokemonDetails.next(data);
+      },
+      () => {
+        this.pokemonDetails.next({});
+        this.pokemonDetailsError.next('Pokemon data could not be found. Please choose another pokemon.');
+      }
+    );
   }
 
   getPokemonOpponent(): Observable<Pokemon> {

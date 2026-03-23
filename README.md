@@ -21,6 +21,9 @@ The higher `special-attack` value wins.
 npm install
 ```
 
+## Prerequisites
+- Node.js `v20.19+` (or `v22.12+`) is required by the Angular CLI used in this project.
+
 ## Quick Start
 ```bash
 npm start

@@ -16,8 +16,10 @@ export class AppComponent implements OnInit, OnDestroy {
   public pokemonDetails: Pokemon;
   public pokemonOpponent: Pokemon;
   public pokemonOpponentSelected: boolean;
+  public pokemonDetailsError: string;
 
   private choiceSub: Subscription;
+  private choiceErrorSub: Subscription;
   private opponentSub: Subscription;
   private subscriptions: Subscription;
 
@@ -35,7 +37,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.pokemonDetails = pokemonDetails;
       });
 
+    this.choiceErrorSub = this.pokemonListService.pokemonDetailsError
+      .subscribe(errorMessage => {
+        this.pokemonDetailsError = errorMessage;
+      });
+
     this.subscriptions.add(this.choiceSub);
+    this.subscriptions.add(this.choiceErrorSub);
   }
 
   getPokemonOpponent() {
