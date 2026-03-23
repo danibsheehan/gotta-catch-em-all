@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { PokemonSelectorComponent } from './components/pokemon-selector/pokemon-selector.component';
@@ -10,22 +10,14 @@ import { PokemonComponent } from './components/pokemon/pokemon.component';
 import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-details.component';
 import { PokemonBattleResultComponent } from './components/pokemon-battle-result/pokemon-battle-result.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    PokemonSelectorComponent,
-    PokemonTypeComponent,
-    PokemonListComponent,
-    PokemonComponent,
-    PokemonDetailsComponent,
-    PokemonBattleResultComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule
-
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        PokemonSelectorComponent,
+        PokemonTypeComponent,
+        PokemonListComponent,
+        PokemonComponent,
+        PokemonDetailsComponent,
+        PokemonBattleResultComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
