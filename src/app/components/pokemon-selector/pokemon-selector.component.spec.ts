@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PokemonSelectorComponent } from './pokemon-selector.component';
 
@@ -6,12 +8,13 @@ describe('PokemonSelectorComponent', () => {
   let component: PokemonSelectorComponent;
   let fixture: ComponentFixture<PokemonSelectorComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ PokemonSelectorComponent ]
+      declarations: [ PokemonSelectorComponent ],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PokemonSelectorComponent);
