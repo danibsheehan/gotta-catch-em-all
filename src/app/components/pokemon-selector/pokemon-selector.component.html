@@ -7,7 +7,7 @@
 		</div>
 	</div>
 
-	<div class="pokemon-results" *ngIf="pokemonList.length">
+	<div class="pokemon-results" *ngIf="pokemonList?.pokemon?.length">
 		<h4>{{pokemonTypeSearched}} Pokemon</h4>
 		<app-pokemon-list [pokemonList]="pokemonList"></app-pokemon-list>
 	</div>
