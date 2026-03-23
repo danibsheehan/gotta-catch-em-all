@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Pokemon, Stat } from 'src/app/pokemon';
 
 @Component({
@@ -7,35 +7,59 @@ import { Pokemon, Stat } from 'src/app/pokemon';
     styleUrls: ['./pokemon-battle-result.component.scss'],
     standalone: false
 })
-export class PokemonBattleResultComponent implements OnInit {
+export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
   @Input() pokemonChoice: Pokemon;
   @Input() pokemonOpponent: Pokemon;
 
   private choiceAttack: Stat;
   private opponentAttack: Stat;
+  private battleTimer: ReturnType<typeof setTimeout>;
 
   public battleResult: string;
   public pokemonVictor: Pokemon;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.pokemonChoice?.stats || !this.pokemonOpponent?.stats) {
+      return;
+    }
+
+    if (!changes.pokemonChoice && !changes.pokemonOpponent) {
+      return;
+    }
+
+    if (this.battleTimer) {
+      clearTimeout(this.battleTimer);
+    }
+
     this.choiceAttack = this.pokemonChoice.stats.find(stat => stat.stat.name === 'special-attack');
     this.opponentAttack = this.pokemonOpponent.stats.find(stat => stat.stat.name === 'special-attack');
+    this.battleResult = '';
 
-    setTimeout(() => {
+    this.battleTimer = setTimeout(() => {
       this.pokemonBattle(this.choiceAttack, this.opponentAttack);
     }, 2000);
   }
 
   pokemonBattle(choiceAttack: Stat, opponentAttack: Stat): void {
+    if (!choiceAttack || !opponentAttack) {
+      return;
+    }
+
     if (this.choiceAttack.base_stat > this.opponentAttack.base_stat) {
       this.battleResult = 'Congrats, you win!';
       this.pokemonVictor = this.pokemonChoice;
     } else {
       this.battleResult = 'Uh oh, you lose this battle. Maybe next time!';
       this.pokemonVictor = this.pokemonOpponent;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.battleTimer) {
+      clearTimeout(this.battleTimer);
     }
   }
 

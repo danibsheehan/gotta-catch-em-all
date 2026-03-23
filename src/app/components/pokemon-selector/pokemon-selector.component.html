@@ -4,7 +4,7 @@
   <div class="pokemon-type-container" [ngClass]="{'pokemon-searched': pokemonSearched}">
     @for (pokemonType of pokemonTypes; track pokemonType) {
       <div class="pokemon-type-item">
-        <app-pokemon-type [pokemonType]="pokemonType" (click)="searchPokemon(pokemonType.name)"></app-pokemon-type>
+        <app-pokemon-type [pokemonType]="pokemonType"></app-pokemon-type>
       </div>
     }
   </div>

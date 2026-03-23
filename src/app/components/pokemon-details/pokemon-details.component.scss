@@ -9,6 +9,8 @@
 
 .current-pokemon {
     border: 2px solid black;
+    min-height: 142px;
+    min-width: 246px;
 }
 
 .pokemon-name {
@@ -19,4 +21,11 @@
 .pokemon-image {
   height: 120px;
   width: 120px;
+}
+
+.pokemon-image-placeholder {
+  border: 2px solid black;
+  margin: 0 auto;
+  min-height: 142px;
+  min-width: 246px;
 }

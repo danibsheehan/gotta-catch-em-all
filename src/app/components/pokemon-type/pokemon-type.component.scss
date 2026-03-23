@@ -1,6 +1,28 @@
 :host {
     display: block;
+}
+
+.pokemon-type-button {
+    width: 100%;
     padding: 20px;
+    border: none;
+    background: transparent;
     text-align: center;
+    text-transform: capitalize;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pokemon-type-dropdown-container {
+    padding: 0 16px 16px 16px;
+}
+
+.pokemon-type-loading {
+    display: block;
+    text-align: center;
+}
+
+.pokemon-type-dropdown {
+    width: 100%;
     text-transform: capitalize;
 }

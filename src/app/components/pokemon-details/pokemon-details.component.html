@@ -1,4 +1,8 @@
 <div [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''">
     <span class="pokemon-name">{{pokemonDetails?.name}}</span>
-    <img class="pokemon-image" src="{{pokemonDetails?.sprites?.front_default}}" alt="">
+    @if (pokemonDetails?.sprites?.front_default) {
+      <img class="pokemon-image" [src]="pokemonDetails.sprites.front_default" [alt]="pokemonDetails?.name || 'pokemon image'">
+    } @else {
+      <div class="pokemon-image pokemon-image-placeholder"></div>
+    }
 </div>

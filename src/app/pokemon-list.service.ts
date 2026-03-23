@@ -23,9 +23,13 @@ export class PokemonListService {
   }
 
   getPokemon(name: string): void {
-    this.http.get<PokemonList>(`https://pokeapi.co/api/v2/type/${name}`).subscribe(data => {
-        this.pokemonSearchResults.next(data.pokemon);
+    this.getPokemonByType(name).subscribe(data => {
+        this.pokemonSearchResults.next(data);
       });
+  }
+
+  getPokemonByType(name: string): Observable<PokemonList> {
+    return this.http.get<PokemonList>(`https://pokeapi.co/api/v2/type/${name}`);
   }
 
   getPokemonDetails(name: string): void {
