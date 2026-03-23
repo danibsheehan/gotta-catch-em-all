@@ -1,1 +1,3 @@
-<app-pokemon *ngFor="let pokemon of pokemonList" [pokemonBrief]="pokemon.pokemon" (click)="getPokemonDetails(pokemon.pokemon.name)"></app-pokemon>
+@for (pokemon of pokemonList; track pokemon) {
+  <app-pokemon [pokemonBrief]="pokemon.pokemon" (click)="getPokemonDetails(pokemon.pokemon.name)"></app-pokemon>
+}

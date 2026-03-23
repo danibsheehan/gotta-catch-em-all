@@ -1,3 +1,7 @@
 <h4>The Victor:</h4>
-<app-pokemon-details [pokemonDetails]="pokemonVictor" *ngIf="battleResult"></app-pokemon-details>
-<span *ngIf="battleResult">{{ battleResult }}</span>
+@if (battleResult) {
+  <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
+}
+@if (battleResult) {
+  <span>{{ battleResult }}</span>
+}

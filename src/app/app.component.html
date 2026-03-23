@@ -1,24 +1,34 @@
 <h1>Pokemon Battle Royale!</h1>
-<div class="battle-container" *ngIf="pokemonOpponentSelected">
+@if (pokemonOpponentSelected) {
+  <div class="battle-container">
     <div class="opponent">
-      <div *ngIf="!pokemonOpponent?.hasOwnProperty('name')" class="pokemon-opponent-error">
-        <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
-        <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
-      </div>
-      <div *ngIf="pokemonOpponent.hasOwnProperty('name')">
-        <h4>Your Opponent:</h4>
-        <app-pokemon-details [pokemonDetails]="pokemonOpponent"></app-pokemon-details>
-      </div>
+      @if (!pokemonOpponent?.hasOwnProperty('name')) {
+        <div class="pokemon-opponent-error">
+          <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
+          <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
+        </div>
+      }
+      @if (pokemonOpponent.hasOwnProperty('name')) {
+        <div>
+          <h4>Your Opponent:</h4>
+          <app-pokemon-details [pokemonDetails]="pokemonOpponent"></app-pokemon-details>
+        </div>
+      }
     </div>
     <div class="choice">
       <h4>Your Choice:</h4>
-      <app-pokemon-details *ngIf="pokemonDetails" [pokemonDetails]="pokemonDetails">
-      </app-pokemon-details>
+      @if (pokemonDetails) {
+        <app-pokemon-details [pokemonDetails]="pokemonDetails">
+        </app-pokemon-details>
+      }
     </div>
-</div>
+  </div>
+}
 
-<div class="battle-result" *ngIf="pokemonDetails.hasOwnProperty('name')">
-  <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
-</div>
+@if (pokemonDetails.hasOwnProperty('name')) {
+  <div class="battle-result">
+    <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
+  </div>
+}
 
 <app-pokemon-selector></app-pokemon-selector>

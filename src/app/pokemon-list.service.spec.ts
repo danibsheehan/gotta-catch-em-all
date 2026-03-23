@@ -6,7 +6,7 @@ describe('PokemonListService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PokemonListService = TestBed.get(PokemonListService);
+    const service: PokemonListService = TestBed.inject(PokemonListService);
     expect(service).toBeTruthy();
   });
 });

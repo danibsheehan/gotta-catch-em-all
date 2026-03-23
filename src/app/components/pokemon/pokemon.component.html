@@ -1,3 +1,5 @@
 <div class="pokemon-brief">
-    <span *ngIf="pokemonBrief?.name">{{pokemonBrief.name}}</span>
+  @if (pokemonBrief?.name) {
+    <span>{{pokemonBrief.name}}</span>
+  }
 </div>
