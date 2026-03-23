@@ -1,27 +1,59 @@
-# GottaCatchEmAll
+# Gotta Catch Em All
+> Angular Pokemon battle game that lets you choose a fighter by type and battle a random opponent.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
+## Overview
+Gotta Catch Em All is a client-side Angular app powered by the [PokeAPI](https://pokeapi.co/).
+You pick a Pokemon by opening a type dropdown, then selecting a Pokemon from that type.
+The app fetches a random opponent and runs a simple battle based on each Pokemon's `special-attack` stat.
+The higher `special-attack` value wins.
 
-## Development server
+## Features
+- Loads Pokemon types from PokeAPI.
+- Expands type-specific dropdowns and lazily loads Pokemon names for that type.
+- Fetches full Pokemon details when you select a Pokemon.
+- Picks a random opponent from the Pokemon list.
+- Simulates battle outcome using `special-attack` comparison.
+- Displays the winning Pokemon and match result message.
+- Handles opponent-load failure with a retry action.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installation
+```bash
+npm install
+```
 
-## Code scaffolding
+## Quick Start
+```bash
+npm start
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Open `http://localhost:4200/` in your browser.
 
-## Build
+## API Reference
+Core app pieces:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- `PokemonListService`
+  - `getPokemonTypes()`: Fetches all Pokemon types.
+  - `getPokemonByType(name)`: Fetches Pokemon list for a specific type.
+  - `getPokemonDetails(name)`: Fetches and publishes full details for one Pokemon.
+  - `getPokemonOpponent()`: Fetches a random opponent by numeric ID.
+- `PokemonTypeComponent`: Loads Pokemon names for a selected type and triggers selection.
+- `PokemonBattleResultComponent`: Computes winner using each fighter's `special-attack` stat.
 
-## Running unit tests
+## Configuration
+This app currently uses hardcoded PokeAPI endpoints in `PokemonListService`:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- `https://pokeapi.co/api/v2/type/`
+- `https://pokeapi.co/api/v2/type/{name}`
+- `https://pokeapi.co/api/v2/pokemon/{nameOrId}`
 
-## Running end-to-end tests
+If you want environment-based API configuration, move these URLs into Angular environment files.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Contributing
+Use the standard Angular scripts while developing:
 
-## Further help
+- `npm start` to run the dev server
+- `npm test` to run unit tests
+- `npm run build` to build production assets
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## License
+MIT. See `LICENSE`.
