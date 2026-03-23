@@ -2,9 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Pokemon } from 'src/app/pokemon';
 
 @Component({
-  selector: 'app-pokemon-details',
-  templateUrl: './pokemon-details.component.html',
-  styleUrls: ['./pokemon-details.component.scss']
+    selector: 'app-pokemon-details',
+    templateUrl: './pokemon-details.component.html',
+    styleUrls: ['./pokemon-details.component.scss'],
+    standalone: false
 })
 export class PokemonDetailsComponent implements OnInit {
 

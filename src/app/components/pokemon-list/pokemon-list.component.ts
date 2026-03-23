@@ -3,9 +3,10 @@ import { PokemonList } from 'src/app/pokemon-list';
 import { PokemonListService } from 'src/app/pokemon-list.service';
 
 @Component({
-  selector: 'app-pokemon-list',
-  templateUrl: './pokemon-list.component.html',
-  styleUrls: ['./pokemon-list.component.scss']
+    selector: 'app-pokemon-list',
+    templateUrl: './pokemon-list.component.html',
+    styleUrls: ['./pokemon-list.component.scss'],
+    standalone: false
 })
 export class PokemonListComponent implements OnChanges {
 

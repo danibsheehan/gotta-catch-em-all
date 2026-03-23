@@ -2,9 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Pokemon, Stat } from 'src/app/pokemon';
 
 @Component({
-  selector: 'app-pokemon-battle-result',
-  templateUrl: './pokemon-battle-result.component.html',
-  styleUrls: ['./pokemon-battle-result.component.scss']
+    selector: 'app-pokemon-battle-result',
+    templateUrl: './pokemon-battle-result.component.html',
+    styleUrls: ['./pokemon-battle-result.component.scss'],
+    standalone: false
 })
 export class PokemonBattleResultComponent implements OnInit {
 

@@ -6,9 +6,10 @@ import { PokemonListService } from '../../pokemon-list.service';
 import { PokemonType } from 'src/app/pokemon-type';
 
 @Component({
-  selector: 'app-pokemon-selector',
-  templateUrl: './pokemon-selector.component.html',
-  styleUrls: ['./pokemon-selector.component.scss']
+    selector: 'app-pokemon-selector',
+    templateUrl: './pokemon-selector.component.html',
+    styleUrls: ['./pokemon-selector.component.scss'],
+    standalone: false
 })
 export class PokemonSelectorComponent implements OnInit, OnDestroy {
 
