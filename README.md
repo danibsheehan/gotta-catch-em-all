@@ -1,76 +1,102 @@
 # Gotta Catch Em All
-> Angular Pokemon battle game that lets you choose a fighter by type and battle a random opponent.
+
+> Angular 20 sample app: pick a Pokémon by type, fight a random opponent, and resolve the match from **Special Attack** stats via [PokeAPI](https://pokeapi.co/).
 
 ## Overview
-Gotta Catch Em All is a client-side Angular app powered by the [PokeAPI](https://pokeapi.co/).
-You pick a Pokemon by opening a type dropdown, then selecting a Pokemon from that type.
-The app fetches a random opponent and runs a simple battle based on each Pokemon's `special-attack` stat.
-The higher `special-attack` value wins.
+
+This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
+
+**Stack:** Angular ~20.3, RxJS 7, SCSS, Karma/Jasmine.
 
 ## Features
-- Loads Pokemon types from PokeAPI.
-- Preloads Pokemon names for each type from `getPokemonTypes()`.
-- Shows type-specific dropdowns immediately (no click-to-load behavior).
-- Fetches full Pokemon details when you select a Pokemon.
-- Picks a random opponent from the Pokemon list.
-- Simulates battle outcome using `special-attack` comparison.
-- Displays the winning Pokemon and match result message.
-- Handles opponent-load failure with a retry action.
+
+- Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu).
+- Fetches full `pokemon` records when you confirm a selection.
+- Draws a random opponent (numeric id in `1…964`), preloads its front sprite for faster paint, and exposes **Choose Again** when the opponent request fails.
+- Declares battle outcome in `PokemonBattleResultComponent` by comparing `stats` entries for `special-attack`.
+- Caches type list and per-type Pokémon list responses with `shareReplay(1)` to avoid duplicate HTTP calls.
+- URL-encodes path segments when calling PokeAPI (handles names with spaces or special characters).
+
+## Prerequisites
+
+- **Node.js** `>= 20.19.0` (matches `package.json` `engines` and current Angular CLI expectations).
+- Optional: [nvm](https://github.com/nvm-sh/nvm) — this repo includes `.nvmrc` (`22.12.0`) if you pin versions that way.
 
 ## Installation
+
 ```bash
+git clone https://github.com/danibsheehan/gotta-catch-em-all.git
+cd gotta-catch-em-all
 npm install
 ```
 
-## Prerequisites
-- Node.js `v20.19+` (or `v22.12+`) is required by the Angular CLI used in this project.
-- This repo includes `/.nvmrc` set to `22.12.0` for `nvm` users.
-
 ## Quick Start
+
 ```bash
 npm start
 ```
 
-Open `http://localhost:4200/` in your browser.
+Open [http://localhost:4200/](http://localhost:4200/).
 
-## API Reference
-Core app pieces:
-
-- `PokemonListService`
-  - `getPokemonTypes()`: Fetches all Pokemon types and enriches each type with its Pokemon list.
-  - `getPokemonDetails(name)`: Fetches and publishes full details for one Pokemon.
-  - `getPokemonOpponent()`: Fetches a random opponent by numeric ID.
-- `PokemonTypeComponent`: Uses preloaded type Pokemon names and triggers selection.
-- `PokemonBattleResultComponent`: Computes winner using each fighter's `special-attack` stat.
-
-## Configuration
-This app currently uses hardcoded PokeAPI endpoints in `PokemonListService`:
-
-- `https://pokeapi.co/api/v2/type/`
-- `https://pokeapi.co/api/v2/type/{name}`
-- `https://pokeapi.co/api/v2/pokemon/{nameOrId}`
-
-If you want environment-based API configuration, move these URLs into Angular environment files.
-
-## Contributing
-Use the standard Angular scripts while developing:
-
-- `npm start` to run the dev server
-- `npm test` to run unit tests
-- `npm run test:ci` to run headless tests with a no-sandbox Chrome launcher
-- `npm run build` to build production assets
-
-If `npm test` fails with `ChromeHeadless cannot start`, try:
+**Production build + static preview:**
 
 ```bash
-npm run test:ci
+npm run build
+npm run serve:dist
 ```
 
-On macOS, if needed, set `CHROME_BIN` explicitly:
+Then open the URL `serve:dist` prints (for example `http://localhost:8080/`).
+
+**GitHub Pages–style base href:**
+
+```bash
+npm run build:github-pages
+```
+
+## API Reference (app)
+
+| Symbol / area | Responsibility |
+| --- | --- |
+| `PokemonListService` | HTTP access, caching, opponent id helper, default sprite URL helper. |
+| `getPokemonTypes()` | `GET /api/v2/type/` — returns the paginated type list (names + URLs). |
+| `getPokemonByType(typeName)` | `GET /api/v2/type/{typeName}` — returns brief entries for Pokémon in that type. |
+| `getPokemonDetails(name)` | `GET /api/v2/pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
+| `getPokemonById(id)` | `GET /api/v2/pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
+| `pickRandomOpponentId()` | Returns a random integer from 1 through 964. |
+| `PokemonSelectorComponent` | Defers the initial type request until after first render. |
+| `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `getPokemonDetails` on selection. |
+| `PokemonBattleResultComponent` | Reads both fighters’ stats and determines the winner from **special-attack**. |
+| `AppComponent` | Loads the opponent on init, preloads sprite, handles opponent errors and retry. |
+
+## Configuration
+
+PokeAPI URLs live in code today, not in `environment` files:
+
+| Concern | Location | Value / notes |
+| --- | --- | --- |
+| Type index | `pokemon-list.service.ts` | `https://pokeapi.co/api/v2/type/` |
+| Type detail | same | `https://pokeapi.co/api/v2/type/{name}` |
+| Pokémon by name or id | same | `https://pokeapi.co/api/v2/pokemon/{nameOrId}` |
+| Sprite CDN | `PokemonListService.defaultFrontSpriteUrl` | `raw.githubusercontent.com/PokeAPI/sprites/...` |
+
+To support multiple deployments or a mock server, move these into `src/environments/environment*.ts` and inject or import them in the service.
+
+## Contributing
+
+| Script | Purpose |
+| --- | --- |
+| `npm start` | Dev server (`ng serve`). |
+| `npm run build` | Production build to `dist/gotta-catch-em-all/`. |
+| `npm run lint` | ESLint (Angular ESLint). |
+| `npm test` | Karma + Chrome (watch mode). |
+| `npm run test:ci` | Single run, headless Chrome with `--no-sandbox` (CI-friendly). |
+
+If `npm test` fails with **ChromeHeadless cannot start**, run `npm run test:ci`. On macOS you can point Karma at a known Chrome binary:
 
 ```bash
 CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm run test:ci
 ```
 
 ## License
-MIT. See `LICENSE`.
+
+MIT. See [`LICENSE`](LICENSE).
