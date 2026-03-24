@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of, throwError } from 'rxjs';
 
 import { PokemonTypeComponent } from './pokemon-type.component';
 import { PokemonType } from 'src/app/pokemon-type';
@@ -10,15 +11,15 @@ describe('PokemonTypeComponent', () => {
   let pokemonListServiceSpy: jasmine.SpyObj<PokemonListService>;
   const pokemonTypeStub: PokemonType = {
     name: 'electric',
-    url: 'https://pokeapi.co/api/v2/type/13/',
-    pokemon: [
-      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
-      { name: 'raichu', url: 'https://pokeapi.co/api/v2/pokemon/26/' }
-    ]
+    url: 'https://pokeapi.co/api/v2/type/13/'
   };
 
   beforeEach(async () => {
-    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['getPokemonDetails']);
+    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['getPokemonDetails', 'getPokemonByType']);
+    pokemonListServiceSpy.getPokemonByType.and.returnValue(of([
+      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
+      { name: 'raichu', url: 'https://pokeapi.co/api/v2/pokemon/26/' }
+    ] as any));
 
     TestBed.configureTestingModule({
       declarations: [ PokemonTypeComponent ],
@@ -33,6 +34,7 @@ describe('PokemonTypeComponent', () => {
     fixture = TestBed.createComponent(PokemonTypeComponent);
     component = fixture.componentInstance;
     component.pokemonType = pokemonTypeStub;
+    component.ngOnChanges();
     fixture.detectChanges();
   });
 
@@ -40,18 +42,36 @@ describe('PokemonTypeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should provide pokemon names immediately from input type data', () => {
+  it('should load pokemon names when opening dropdown', () => {
+    component.toggleTypeDropdown();
+
+    expect(pokemonListServiceSpy.getPokemonByType).toHaveBeenCalledWith('electric');
     expect(component.pokemonNames).toEqual(['pikachu', 'raichu']);
+    expect(component.isOpen).toBe(true);
+  });
+
+  it('should toggle closed without loading on second click', () => {
+    component.toggleTypeDropdown();
+    component.toggleTypeDropdown();
+
+    expect(component.isOpen).toBe(false);
+    expect(pokemonListServiceSpy.getPokemonByType).toHaveBeenCalledTimes(1);
   });
 
   it('should return empty-results error when no pokemon are provided', () => {
-    component.pokemonType = { ...pokemonTypeStub, pokemon: [] };
+    pokemonListServiceSpy.getPokemonByType.and.returnValue(of([] as any));
+
+    component.toggleTypeDropdown();
+
     expect(component.pokemonNames).toEqual([]);
     expect(component.pokemonLoadError).toBe('No pokemon were found for electric.');
   });
 
-  it('should return load error when pokemon data is missing', () => {
-    component.pokemonType = { name: 'electric', url: 'https://pokeapi.co/api/v2/type/13/' };
+  it('should return load error when pokemon data request fails', () => {
+    pokemonListServiceSpy.getPokemonByType.and.returnValue(throwError(() => new Error('failed')));
+
+    component.toggleTypeDropdown();
+
     expect(component.pokemonNames).toEqual([]);
     expect(component.pokemonLoadError).toBe('Pokemon data could not be found for electric.');
   });

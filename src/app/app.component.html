@@ -1,37 +1,46 @@
 <h1>Pokemon Battle Royale!</h1>
-@if (pokemonOpponentSelected) {
-  <div class="battle-container">
-    <div class="opponent">
-      @if (!pokemonOpponent?.hasOwnProperty('name')) {
-        <div class="pokemon-opponent-error">
-          <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
-          <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
-        </div>
-      }
-      @if (pokemonOpponent.hasOwnProperty('name')) {
-        <div>
-          <h4>Your Opponent:</h4>
-          <app-pokemon-details [pokemonDetails]="pokemonOpponent"></app-pokemon-details>
-        </div>
-      }
-    </div>
-    <div class="choice">
-      <h4>Your Choice:</h4>
-      @if (pokemonDetails) {
+<div class="battle-container">
+  <div class="opponent battle-opponent">
+    @if (pokemonOpponentLoading) {
+      <div class="pokemon-opponent-error">
+        <span class="opponent-error">Choosing your opponent...</span>
+      </div>
+    }
+    @if (!pokemonOpponentLoading && !pokemonOpponent?.name) {
+      <div class="pokemon-opponent-error">
+        <span class="opponent-error">Oh no! It seems like your opponent doesn't want to fight.</span>
+        <button class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
+      </div>
+    }
+    @if (!pokemonOpponentLoading && pokemonOpponent?.name) {
+      <div>
+        <h3>Your Opponent:</h3>
+        <app-pokemon-details [pokemonDetails]="pokemonOpponent" [prioritizeLcp]="true"></app-pokemon-details>
+      </div>
+    }
+  </div>
+  <div class="choice battle-choice">
+    <h3>Your Choice:</h3>
+    @if (pokemonDetails$ | async; as pokemonDetails) {
+      @if (pokemonDetails?.name) {
         <app-pokemon-details [pokemonDetails]="pokemonDetails">
         </app-pokemon-details>
       }
+    }
+    @if (pokemonDetailsError$ | async; as pokemonDetailsError) {
       @if (pokemonDetailsError) {
-        <span class="choice-error">{{ pokemonDetailsError }}</span>
+      <span class="choice-error">{{ pokemonDetailsError }}</span>
       }
-    </div>
+    }
   </div>
-}
+</div>
 
-@if (pokemonDetails?.hasOwnProperty('name')) {
-  <div class="battle-result">
-    <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
-  </div>
+@if (pokemonDetails$ | async; as pokemonDetails) {
+  @if (!pokemonOpponentLoading && pokemonDetails?.name) {
+    <div class="battle-result">
+      <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
+    </div>
+  }
 }
 
 <app-pokemon-selector></app-pokemon-selector>

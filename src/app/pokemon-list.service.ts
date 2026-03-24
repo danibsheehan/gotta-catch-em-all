@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
-import { forkJoin } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { Pokemon } from './pokemon';
 import { PokemonBrief } from './pokemon';
@@ -16,34 +14,41 @@ import { PokemonTypeList } from './pokemon-type-list';
 export class PokemonListService {
   public pokemonDetails = new BehaviorSubject<any>({});
   public pokemonDetailsError = new BehaviorSubject<string>('');
+  private pokemonDetailsRequestSub?: Subscription;
+  private pokemonTypesRequest$?: Observable<PokemonTypeList>;
+  private pokemonByTypeRequests: { [typeName: string]: Observable<PokemonBrief[]> } = {};
 
   constructor(
     private http: HttpClient
   ) { }
 
   getPokemonTypes(): Observable<PokemonTypeList> {
-    return this.http.get<PokemonTypeList>('https://pokeapi.co/api/v2/type/').pipe(
-      switchMap((data) => {
-        const typeRequests = data.results.map((type) =>
-          this.http.get<{ pokemon: { pokemon: PokemonBrief }[] }>(`https://pokeapi.co/api/v2/type/${type.name}`)
-        );
+    if (!this.pokemonTypesRequest$) {
+      this.pokemonTypesRequest$ = this.http.get<PokemonTypeList>('https://pokeapi.co/api/v2/type/').pipe(shareReplay(1));
+    }
 
-        return forkJoin(typeRequests).pipe(
-          map((typeDetails) => ({
-            ...data,
-            results: data.results.map((type: PokemonType, index: number) => ({
-              ...type,
-              pokemon: typeDetails[index].pokemon.map((entry: any) => entry.pokemon as PokemonBrief)
-            }))
-          }))
+    return this.pokemonTypesRequest$;
+  }
+
+  getPokemonByType(typeName: string): Observable<PokemonBrief[]> {
+    if (!this.pokemonByTypeRequests[typeName]) {
+      this.pokemonByTypeRequests[typeName] = this.http
+        .get<{ pokemon: { pokemon: PokemonBrief }[] }>(`https://pokeapi.co/api/v2/type/${typeName}`)
+        .pipe(
+          map((typeDetails) => typeDetails.pokemon.map((entry: any) => entry.pokemon as PokemonBrief)),
+          shareReplay(1)
         );
-      })
-    );
+    }
+
+    return this.pokemonByTypeRequests[typeName];
   }
 
   getPokemonDetails(name: string): void {
     this.pokemonDetailsError.next('');
-    this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`).subscribe(
+    if (this.pokemonDetailsRequestSub) {
+      this.pokemonDetailsRequestSub.unsubscribe();
+    }
+    this.pokemonDetailsRequestSub = this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`).subscribe(
       data => {
         this.pokemonDetails.next(data);
       },
@@ -54,9 +59,24 @@ export class PokemonListService {
     );
   }
 
+  /** National Dex–style id used by PokeAPI `/pokemon/{id}` (approx. count for random opponent). */
+  pickRandomOpponentId(): number {
+    return Math.ceil(Math.random() * 964);
+  }
+
+  getPokemonById(id: number): Observable<Pokemon> {
+    return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  }
+
+  /**
+   * Default front sprite URL for standard species (matches most `front_default` values from the API).
+   * Lets the browser load the image in parallel with the JSON request to improve LCP.
+   */
+  static defaultFrontSpriteUrl(id: number): string {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+  }
+
   getPokemonOpponent(): Observable<Pokemon> {
-    // there are 964 pokemon in list
-    const opponentId = Math.ceil(Math.random() * 964);
-    return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${opponentId}`);
+    return this.getPokemonById(this.pickRandomOpponentId());
   }
 }

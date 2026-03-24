@@ -39,6 +39,18 @@ describe('PokemonListService', () => {
       results: [{ name: 'electric', url: 'https://pokeapi.co/api/v2/type/13/' }]
     });
 
+    expect(response.results.length).toBe(1);
+    expect(response.results[0].name).toBe('electric');
+    expect(response.results[0].pokemon).toBeUndefined();
+  });
+
+  it('should request pokemon names for a single type', () => {
+    let response: any;
+
+    service.getPokemonByType('electric').subscribe(data => {
+      response = data;
+    });
+
     const typeDetailsReq = httpMock.expectOne('https://pokeapi.co/api/v2/type/electric');
     expect(typeDetailsReq.request.method).toBe('GET');
     typeDetailsReq.flush({
@@ -47,9 +59,7 @@ describe('PokemonListService', () => {
       ]
     });
 
-    expect(response.results.length).toBe(1);
-    expect(response.results[0].name).toBe('electric');
-    expect(response.results[0].pokemon).toEqual([
+    expect(response).toEqual([
       { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' }
     ]);
   });

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { Pokemon } from './pokemon';
 import { PokemonListService } from './pokemon-list.service';
@@ -13,58 +13,60 @@ import { PokemonListService } from './pokemon-list.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'gotta-catch-em-all';
 
-  public pokemonDetails: Pokemon;
+  public pokemonDetails$: Observable<Pokemon>;
+  public pokemonDetailsError$: Observable<string>;
   public pokemonOpponent: Pokemon;
-  public pokemonOpponentSelected: boolean;
-  public pokemonDetailsError: string;
+  public pokemonOpponentLoading = true;
+  public pokemonOpponentSelected = false;
 
-  private choiceSub: Subscription;
-  private choiceErrorSub: Subscription;
-  private opponentSub: Subscription;
-  private subscriptions: Subscription;
+  private opponentSub?: Subscription;
 
   constructor(
     private pokemonListService: PokemonListService
   ) {
-    this.subscriptions = new Subscription();
+    this.pokemonDetails$ = this.pokemonListService.pokemonDetails.asObservable();
+    this.pokemonDetailsError$ = this.pokemonListService.pokemonDetailsError.asObservable();
   }
 
   ngOnInit() {
     this.getPokemonOpponent();
-
-    this.choiceSub = this.pokemonListService.pokemonDetails
-      .subscribe(pokemonDetails => {
-        this.pokemonDetails = pokemonDetails;
-      });
-
-    this.choiceErrorSub = this.pokemonListService.pokemonDetailsError
-      .subscribe(errorMessage => {
-        this.pokemonDetailsError = errorMessage;
-      });
-
-    this.subscriptions.add(this.choiceSub);
-    this.subscriptions.add(this.choiceErrorSub);
   }
 
   getPokemonOpponent() {
-    this.opponentSub = this.pokemonListService.getPokemonOpponent()
+    this.pokemonOpponentLoading = true;
+    this.opponentSub?.unsubscribe();
+
+    const opponentId = this.pokemonListService.pickRandomOpponentId();
+    this.preloadOpponentSprite(PokemonListService.defaultFrontSpriteUrl(opponentId));
+
+    this.opponentSub = this.pokemonListService.getPokemonById(opponentId)
       .subscribe(
         data => {
           this.pokemonOpponent = data;
+          this.pokemonOpponentLoading = false;
           this.pokemonOpponentSelected = true;
         },
         err => {
           this.pokemonOpponent = {} as Pokemon;
+          this.pokemonOpponentLoading = false;
           this.pokemonOpponentSelected = true;
         }
       );
 
-    this.subscriptions.add(this.opponentSub);
+  }
+
+  private preloadOpponentSprite(href: string): void {
+    document.querySelectorAll('link[data-opponent-sprite-preload]').forEach((el) => el.remove());
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = href;
+    link.setAttribute('fetchpriority', 'high');
+    link.setAttribute('data-opponent-sprite-preload', '');
+    document.head.appendChild(link);
   }
 
   ngOnDestroy() {
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
-    }
+    this.opponentSub?.unsubscribe();
   }
 }

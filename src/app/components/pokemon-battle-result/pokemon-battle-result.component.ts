@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Pokemon, Stat } from 'src/app/pokemon';
 
 @Component({
     selector: 'app-pokemon-battle-result',
     templateUrl: './pokemon-battle-result.component.html',
     styleUrls: ['./pokemon-battle-result.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
@@ -12,14 +13,16 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   @Input() pokemonChoice: Pokemon;
   @Input() pokemonOpponent: Pokemon;
 
-  private choiceAttack: Stat;
-  private opponentAttack: Stat;
+  public choiceAttack: Stat;
+  public opponentAttack: Stat;
   private battleTimer: ReturnType<typeof setTimeout>;
 
   public battleResult: string;
   public pokemonVictor: Pokemon;
 
-  constructor() { }
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.pokemonChoice?.stats || !this.pokemonOpponent?.stats) {
@@ -40,6 +43,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
     this.battleTimer = setTimeout(() => {
       this.pokemonBattle(this.choiceAttack, this.opponentAttack);
+      this.cdr.markForCheck();
     }, 2000);
   }
 

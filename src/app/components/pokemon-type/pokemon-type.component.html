@@ -1,19 +1,27 @@
-<button type="button" class="pokemon-type-button">
+<button type="button" class="pokemon-type-button" (click)="toggleTypeDropdown()">
   {{ pokemonType.name }}
 </button>
 
-<div class="pokemon-type-dropdown-container">
-  @if (pokemonLoadError) {
-    <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
-  }
-  @if (pokemonNames.length) {
-    <select
-      class="pokemon-type-dropdown"
-      (change)="selectPokemon($any($event.target).value)">
-      <option value="">Choose a {{ pokemonType.name }} pokemon</option>
-      @for (pokemonName of pokemonNames; track pokemonName) {
-        <option [value]="pokemonName">{{ pokemonName }}</option>
-      }
-    </select>
-  }
-</div>
+@if (isOpen) {
+  <div class="pokemon-type-dropdown-container">
+    @if (isLoadingPokemonNames) {
+      <span class="pokemon-type-loading">Loading pokemon...</span>
+    }
+    @if (pokemonLoadError) {
+      <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
+    }
+    @if (pokemonNames.length) {
+      <select
+        class="pokemon-type-dropdown"
+        (change)="selectPokemon($any($event.target).value)">
+        <option value="">Choose a {{ pokemonType.name }} pokemon</option>
+        @for (pokemonName of pokemonNames; track pokemonName) {
+          <option [value]="pokemonName">{{ pokemonName }}</option>
+        }
+      </select>
+    }
+    @if (!isLoadingPokemonNames && !pokemonLoadError && !pokemonNames.length) {
+      <span class="pokemon-type-loading">No pokemon were found for {{ pokemonType.name }}.</span>
+    }
+  </div>
+}

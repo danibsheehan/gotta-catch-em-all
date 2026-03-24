@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of, throwError } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
 import { PokemonListService } from './pokemon-list.service';
 
@@ -11,10 +12,11 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
-    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['getPokemonOpponent']);
+    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['pickRandomOpponentId', 'getPokemonById']);
     (pokemonListServiceSpy as any).pokemonDetails = detailsSubject;
     (pokemonListServiceSpy as any).pokemonDetailsError = detailsErrorSubject;
-    pokemonListServiceSpy.getPokemonOpponent.and.returnValue(of({
+    pokemonListServiceSpy.pickRandomOpponentId.and.returnValue(25);
+    pokemonListServiceSpy.getPokemonById.and.returnValue(of({
       name: 'pikachu',
       sprites: { front_default: 'image' },
       stats: []
@@ -49,16 +51,20 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('Pokemon Battle Royale!');
   });
 
-  it('should subscribe to details and detail errors on init', () => {
+  it('should expose details and detail errors as observables from the service', (done) => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
 
-    app.ngOnInit();
-    detailsSubject.next({ name: 'charizard' });
+    detailsSubject.next({ name: 'charizard' } as any);
     detailsErrorSubject.next('details error');
 
-    expect(app.pokemonDetails.name).toBe('charizard');
-    expect(app.pokemonDetailsError).toBe('details error');
+    app.pokemonDetails$.pipe(take(1)).subscribe((details) => {
+      expect((details as any).name).toBe('charizard');
+      app.pokemonDetailsError$.pipe(take(1)).subscribe((error) => {
+        expect(error).toBe('details error');
+        done();
+      });
+    });
   });
 
   it('should set opponent and selected flag on opponent success', () => {
@@ -72,7 +78,7 @@ describe('AppComponent', () => {
   });
 
   it('should set fallback opponent and selected flag on opponent failure', () => {
-    pokemonListServiceSpy.getPokemonOpponent.and.returnValue(throwError(() => new Error('failed')));
+    pokemonListServiceSpy.getPokemonById.and.returnValue(throwError(() => new Error('failed')));
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
 
@@ -82,10 +88,11 @@ describe('AppComponent', () => {
     expect(app.pokemonOpponentSelected).toBe(true);
   });
 
-  it('should unsubscribe aggregated subscriptions on destroy', () => {
+  it('should unsubscribe opponent request on destroy', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    const unsubscribeSpy = spyOn((app as any).subscriptions, 'unsubscribe');
+    app.getPokemonOpponent();
+    const unsubscribeSpy = spyOn((app as any).opponentSub, 'unsubscribe');
 
     app.ngOnDestroy();
 

@@ -1,7 +1,17 @@
-<h4>The Victor:</h4>
+<h3>The Victor:</h3>
 @if (battleResult) {
   <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
 }
 @if (battleResult) {
-  <span>{{ battleResult }}</span>
+  <span class="battle-result-message">{{ battleResult }}</span>
+  <div class="battle-stats">
+    <div>
+      <span class="battle-stats-label">Opponent Special Attack:</span>
+      <span>{{ opponentAttack.base_stat }}</span>
+    </div>
+    <div>
+      <span class="battle-stats-label">Choice Special Attack:</span>
+      <span>{{ choiceAttack.base_stat }}</span>
+    </div>
+  </div>
 }
