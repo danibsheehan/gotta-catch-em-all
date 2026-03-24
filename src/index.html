@@ -11,8 +11,34 @@
   <link rel="preconnect" href="https://raw.githubusercontent.com">
   <link rel="dns-prefetch" href="https://pokeapi.co">
   <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <!-- Critical above-the-fold: no dependency on external CSS or Angular (FCP/LCP on mobile) -->
+  <style>
+    html, body {
+      margin: 0;
+    }
+    body {
+      background: #fff;
+      color: #000;
+    }
+    app-root {
+      display: block;
+    }
+    .app-hero-title {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0 auto 0.25em;
+      max-width: 100%;
+      padding-top: 0.25rem;
+      text-align: center;
+      width: 95%;
+    }
+  </style>
 </head>
 <body>
+  <h1 class="app-hero-title">Pokemon Battle Royale!</h1>
   <app-root></app-root>
 </body>
 </html>

@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Mirrors index.html inline .app-hero-title when global styles load */
+.app-hero-title {
+    box-sizing: border-box;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin: 0 auto 0.25em;
+    max-width: 100%;
+    text-align: center;
+    width: 95%;
+}

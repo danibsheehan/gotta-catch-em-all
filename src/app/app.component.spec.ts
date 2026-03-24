@@ -44,11 +44,11 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('gotta-catch-em-all');
   });
 
-  it('should render title', () => {
+  it('should render battle shell', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Pokemon Battle Royale!');
+    expect(compiled.querySelector('.battle-container')).toBeTruthy();
   });
 
   it('should expose details and detail errors as observables from the service', (done) => {

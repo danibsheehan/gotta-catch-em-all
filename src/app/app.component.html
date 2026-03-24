@@ -1,4 +1,3 @@
-<h1>Pokemon Battle Royale!</h1>
 <div class="battle-container">
   <div class="opponent battle-opponent">
     @if (pokemonOpponentLoading) {
@@ -43,4 +42,8 @@
   }
 }
 
-<app-pokemon-selector></app-pokemon-selector>
+@defer (on idle) {
+  <app-pokemon-selector></app-pokemon-selector>
+} @placeholder {
+  <div class="selector-defer-placeholder" aria-hidden="true"></div>
+}
