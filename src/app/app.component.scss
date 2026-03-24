@@ -9,11 +9,17 @@ h1 {
 }
 
 .battle-container {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: 1fr;
     margin: auto;
     text-align: center;
     width: 60%;
+}
+
+@media (min-width: 992px) {
+    .battle-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .pokemon-opponent-error {

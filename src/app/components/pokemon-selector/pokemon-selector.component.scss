@@ -19,11 +19,30 @@ h4 {
 
 .pokemon-type-container {
 	align-content: flex-start;
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	gap: 20px;
+	grid-template-columns: 1fr;
 	margin: 20px auto;
 	max-width: 1200px;
 	width: 70%;
+}
+
+@media (min-width: 768px) {
+	.pokemon-type-container {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 992px) {
+	.pokemon-type-container {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 1200px) {
+	.pokemon-type-container {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
 }
 
 .pokemon-searched {
@@ -32,5 +51,5 @@ h4 {
 
 .pokemon-type-item {
 	border: 2px solid black;
-	margin: 20px;
+	margin: 0;
 }
