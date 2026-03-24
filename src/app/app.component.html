@@ -1,54 +1,50 @@
+@if (battle.vm$ | async; as vm) {
 <div class="battle-container">
   <div class="visually-hidden" aria-live="polite" aria-atomic="true">
-    @if (pokemonOpponentLoading) {
+    @if (vm.opponentLoading) {
       <span>Choosing your opponent.</span>
-    } @else if (!pokemonOpponent?.name) {
+    } @else if (!vm.opponent?.name) {
       <span>Opponent could not join the battle.</span>
     } @else {
-      <span>Opponent ready: {{ pokemonOpponent.name }}.</span>
+      <span>Opponent ready: {{ vm.opponent.name }}.</span>
     }
   </div>
   <section class="opponent battle-opponent" aria-label="Your opponent">
-    @if (pokemonOpponentLoading) {
+    @if (vm.opponentLoading) {
       <div class="pokemon-opponent-error">
         <span class="opponent-error" aria-hidden="true">Choosing your opponent...</span>
       </div>
     }
-    @if (!pokemonOpponentLoading && !pokemonOpponent?.name) {
+    @if (!vm.opponentLoading && !vm.opponent?.name) {
       <div class="pokemon-opponent-error">
         <span class="opponent-error" aria-hidden="true">Oh no! It seems like your opponent doesn't want to fight.</span>
-        <button type="button" class="opponent-retry" (click)="getPokemonOpponent()">Choose Again</button>
+        <button type="button" class="opponent-retry" (click)="battle.loadOpponent()">Choose Again</button>
       </div>
     }
-    @if (!pokemonOpponentLoading && pokemonOpponent?.name) {
+    @if (!vm.opponentLoading && vm.opponent?.name) {
       <div>
         <h2 id="opponent-heading" class="battle-section-heading">Your Opponent:</h2>
-        <app-pokemon-details [pokemonDetails]="pokemonOpponent" [prioritizeLcp]="true"></app-pokemon-details>
+        <app-pokemon-details [pokemonDetails]="vm.opponent" [prioritizeLcp]="true"></app-pokemon-details>
       </div>
     }
   </section>
   <section class="choice battle-choice" aria-labelledby="choice-heading">
     <h2 id="choice-heading" class="battle-section-heading">Your Choice:</h2>
-    @if (pokemonDetails$ | async; as pokemonDetails) {
-      @if (pokemonDetails?.name) {
-        <app-pokemon-details [pokemonDetails]="pokemonDetails">
-        </app-pokemon-details>
-      }
+    @if (vm.player?.name) {
+      <app-pokemon-details [pokemonDetails]="vm.player">
+      </app-pokemon-details>
     }
-    @if (pokemonDetailsError$ | async; as pokemonDetailsError) {
-      @if (pokemonDetailsError) {
-      <span class="choice-error" role="alert">{{ pokemonDetailsError }}</span>
-      }
+    @if (vm.playerError) {
+      <span class="choice-error" role="alert">{{ vm.playerError }}</span>
     }
   </section>
 </div>
 
-@if (pokemonDetails$ | async; as pokemonDetails) {
-  @if (!pokemonOpponentLoading && pokemonDetails?.name) {
-    <div class="battle-result">
-      <app-pokemon-battle-result [pokemonOpponent]="pokemonOpponent" [pokemonChoice]="pokemonDetails"></app-pokemon-battle-result>
-    </div>
-  }
+@if (!vm.opponentLoading && vm.player?.name) {
+  <div class="battle-result">
+    <app-pokemon-battle-result [pokemonOpponent]="vm.opponent" [pokemonChoice]="vm.player"></app-pokemon-battle-result>
+  </div>
+}
 }
 
 @defer (on idle) {

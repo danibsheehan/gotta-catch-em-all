@@ -61,15 +61,16 @@ npm run build:github-pages
 | `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`). |
 | `PokemonPlayerService` | Player selection: `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
 | `PokemonOpponentService` | Random opponent id, `getPokemonById`, default sprite URL, `getPokemonOpponent()`. |
+| `PokemonBattleService` | Unified battle state: opponent loading + Pokémon via `switchMap`, player via `PokemonPlayerService`, `vm$` for the shell, `loadOpponent()` / `selectPlayerPokemon()`. |
 | `getPokemonTypes()` | `GET /type/` — returns the paginated type list (names + URLs). |
 | `getPokemonByType(typeName)` | `GET /type/{typeName}` — returns brief entries for Pokémon in that type. |
 | `getPokemonDetails(name)` | `GET /pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
 | `getPokemonById(id)` | `GET /pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
 | `pickRandomOpponentId()` | Returns a random integer from 1 through `environment.maxPokemonSpeciesId`. |
 | `PokemonSelectorComponent` | Defers the initial type request until after first render. |
-| `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `getPokemonDetails` on selection. |
+| `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `selectPlayerPokemon` on the battle service when you pick a species. |
 | `PokemonBattleResultComponent` | Reads both fighters’ stats and determines the winner from **special-attack**. |
-| `AppComponent` | Loads the opponent on init, preloads sprite, handles opponent errors and retry. |
+| `AppComponent` | Renders the battle UI from `PokemonBattleService.vm$` (retry calls `battle.loadOpponent()`). |
 
 ## Configuration
 

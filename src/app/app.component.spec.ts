@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
+import { PokemonBattleService } from './pokemon/pokemon-battle.service';
 import { PokemonOpponentService } from './pokemon/pokemon-opponent.service';
 import { PokemonPlayerService } from './pokemon/pokemon-player.service';
 
@@ -32,6 +33,7 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
+        PokemonBattleService,
         { provide: PokemonPlayerService, useValue: pokemonPlayerSpy },
         { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
       ]
@@ -57,51 +59,61 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.battle-container')).toBeTruthy();
   });
 
-  it('should expose details and detail errors as observables from the service', (done) => {
+  it('should expose player details and errors on the battle view model', (done) => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const battle = fixture.componentInstance.battle;
 
     detailsSubject.next({ name: 'charizard' } as any);
     detailsErrorSubject.next('details error');
 
-    app.pokemonDetails$.pipe(take(1)).subscribe((details) => {
-      expect((details as any).name).toBe('charizard');
-      app.pokemonDetailsError$.pipe(take(1)).subscribe((error) => {
-        expect(error).toBe('details error');
-        done();
-      });
+    battle.vm$.pipe(take(1)).subscribe((vm) => {
+      expect((vm.player as any).name).toBe('charizard');
+      expect(vm.playerError).toBe('details error');
+      done();
     });
   });
 
-  it('should set opponent and selected flag on opponent success', () => {
+  it('should set opponent on battle vm when opponent fetch succeeds', (done) => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const battle = fixture.componentInstance.battle;
 
-    app.getPokemonOpponent();
-
-    expect(app.pokemonOpponent.name).toBe('pikachu');
-    expect(app.pokemonOpponentSelected).toBe(true);
+    battle.vm$.pipe(
+      filter((vm) => !vm.opponentLoading && !!vm.opponent.name),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.opponent.name).toBe('pikachu');
+      done();
+    });
   });
 
-  it('should set fallback opponent and selected flag on opponent failure', () => {
+  it('should set fallback opponent on battle vm when opponent fetch fails', (done) => {
     pokemonOpponentSpy.getPokemonById.and.returnValue(throwError(() => new Error('failed')));
+
+    detailsSubject = new BehaviorSubject<any>({});
+    detailsErrorSubject = new BehaviorSubject<string>('');
+    const playerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
+    (playerSpy as any).pokemonDetails = detailsSubject;
+    (playerSpy as any).pokemonDetailsError = detailsErrorSubject;
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      providers: [
+        PokemonBattleService,
+        { provide: PokemonPlayerService, useValue: playerSpy },
+        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
+      ]
+    });
+
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+    const battle = fixture.componentInstance.battle;
 
-    app.getPokemonOpponent();
-
-    expect(app.pokemonOpponent).toEqual({} as any);
-    expect(app.pokemonOpponentSelected).toBe(true);
-  });
-
-  it('should unsubscribe opponent request on destroy', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    app.getPokemonOpponent();
-    const unsubscribeSpy = spyOn((app as any).opponentSub, 'unsubscribe');
-
-    app.ngOnDestroy();
-
-    expect(unsubscribeSpy).toHaveBeenCalled();
+    battle.vm$.pipe(
+      filter((vm) => !vm.opponentLoading),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.opponent).toEqual({} as any);
+      done();
+    });
   });
 });

@@ -3,14 +3,14 @@ import { of, throwError } from 'rxjs';
 
 import { PokemonTypeComponent } from './pokemon-type.component';
 import { PokemonType } from 'src/app/pokemon-type';
+import { PokemonBattleService } from 'src/app/pokemon/pokemon-battle.service';
 import { PokemonCatalogService } from 'src/app/pokemon/pokemon-catalog.service';
-import { PokemonPlayerService } from 'src/app/pokemon/pokemon-player.service';
 
 describe('PokemonTypeComponent', () => {
   let component: PokemonTypeComponent;
   let fixture: ComponentFixture<PokemonTypeComponent>;
   let pokemonCatalogSpy: jasmine.SpyObj<PokemonCatalogService>;
-  let pokemonPlayerSpy: jasmine.SpyObj<PokemonPlayerService>;
+  let battleSpy: jasmine.SpyObj<PokemonBattleService>;
   const pokemonTypeStub: PokemonType = {
     name: 'electric',
     url: 'https://pokeapi.co/api/v2/type/13/'
@@ -18,7 +18,7 @@ describe('PokemonTypeComponent', () => {
 
   beforeEach(async () => {
     pokemonCatalogSpy = jasmine.createSpyObj('PokemonCatalogService', ['getPokemonByType']);
-    pokemonPlayerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
+    battleSpy = jasmine.createSpyObj('PokemonBattleService', ['selectPlayerPokemon']);
     pokemonCatalogSpy.getPokemonByType.and.returnValue(of([
       { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
       { name: 'raichu', url: 'https://pokeapi.co/api/v2/pokemon/26/' }
@@ -28,7 +28,7 @@ describe('PokemonTypeComponent', () => {
       declarations: [ PokemonTypeComponent ],
       providers: [
         { provide: PokemonCatalogService, useValue: pokemonCatalogSpy },
-        { provide: PokemonPlayerService, useValue: pokemonPlayerSpy }
+        { provide: PokemonBattleService, useValue: battleSpy }
       ]
     })
     .compileComponents();
@@ -83,13 +83,13 @@ describe('PokemonTypeComponent', () => {
   it('should call getPokemonDetails when selecting valid pokemon name', () => {
     component.selectPokemon('pikachu');
 
-    expect(pokemonPlayerSpy.getPokemonDetails).toHaveBeenCalledWith('pikachu');
+    expect(battleSpy.selectPlayerPokemon).toHaveBeenCalledWith('pikachu');
   });
 
   it('should not call getPokemonDetails when selecting empty pokemon name', () => {
     component.selectPokemon('');
 
-    expect(pokemonPlayerSpy.getPokemonDetails).not.toHaveBeenCalled();
+    expect(battleSpy.selectPlayerPokemon).not.toHaveBeenCalled();
   });
 
 });

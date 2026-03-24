@@ -11,8 +11,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonType } from 'src/app/pokemon-type';
+import { PokemonBattleService } from 'src/app/pokemon/pokemon-battle.service';
 import { PokemonCatalogService } from 'src/app/pokemon/pokemon-catalog.service';
-import { PokemonPlayerService } from 'src/app/pokemon/pokemon-player.service';
 
 @Component({
     selector: 'app-pokemon-type',
@@ -34,7 +34,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
 
   constructor(
     private pokemonCatalog: PokemonCatalogService,
-    private pokemonPlayer: PokemonPlayerService,
+    private battle: PokemonBattleService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -49,7 +49,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
 
   selectPokemon(name: string) {
     if (name) {
-      this.pokemonPlayer.getPokemonDetails(name);
+      this.battle.selectPlayerPokemon(name);
     }
   }
 
