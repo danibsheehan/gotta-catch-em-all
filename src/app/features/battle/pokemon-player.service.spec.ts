@@ -39,4 +39,17 @@ describe('PokemonPlayerService', () => {
     expect(service.pokemonDetails.value).toEqual({});
     expect(service.pokemonDetailsError.value).toBe('Pokemon data could not be found. Please choose another pokemon.');
   });
+
+  it('should clear details and error on clearPlayerSelection', () => {
+    service.getPokemonDetails('pikachu');
+    const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+    req.flush({
+      name: 'pikachu',
+      sprites: { front_default: 'image' },
+      stats: []
+    });
+    service.clearPlayerSelection();
+    expect(service.pokemonDetails.value).toEqual({});
+    expect(service.pokemonDetailsError.value).toBe('');
+  });
 });

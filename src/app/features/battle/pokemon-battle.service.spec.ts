@@ -63,4 +63,46 @@ describe('PokemonBattleService', () => {
       stats: [],
     });
   });
+
+  it('should clear player and request a new opponent on playAgain', (done) => {
+    service.selectPlayerPokemon('pikachu');
+
+    const initialOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'));
+    initialOpponentReq.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+    playerReq.flush({ name: 'pikachu', sprites: {}, stats: [] });
+
+    service.playAgain();
+
+    const nextOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'));
+    nextOpponentReq.flush({ name: 'newfoe', sprites: {}, stats: [] });
+
+    service.vm$.pipe(
+      filter((vm) => !vm.opponentLoading && vm.opponent.name === 'newfoe'),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.opponent.name).toBe('newfoe');
+      expect(vm.player.name).toBeUndefined();
+      done();
+    });
+  });
+
+  it('should emit closeSelectorDropdowns before reloading on playAgain', (done) => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    let sawClose = false;
+    service.closeSelectorDropdowns$.pipe(take(1)).subscribe(() => {
+      sawClose = true;
+    });
+
+    service.playAgain();
+
+    expect(sawClose).toBe(true);
+
+    const next = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    next.flush({ name: 'foe2', sprites: {}, stats: [] });
+    done();
+  });
 });

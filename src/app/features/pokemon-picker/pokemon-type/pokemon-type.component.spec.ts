@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { PokemonTypeComponent } from './pokemon-type.component';
 import { PokemonType } from 'src/app/shared/models/pokemon-type';
@@ -10,15 +10,20 @@ describe('PokemonTypeComponent', () => {
   let component: PokemonTypeComponent;
   let fixture: ComponentFixture<PokemonTypeComponent>;
   let pokemonCatalogSpy: jasmine.SpyObj<PokemonCatalogService>;
-  let battleSpy: jasmine.SpyObj<PokemonBattleService>;
+  let battleSpy: Pick<PokemonBattleService, 'selectPlayerPokemon' | 'closeSelectorDropdowns$'>;
+  let closeSelectorDropdowns$: Subject<void>;
   const pokemonTypeStub: PokemonType = {
     name: 'electric',
     url: 'https://pokeapi.co/api/v2/type/13/'
   };
 
   beforeEach(async () => {
+    closeSelectorDropdowns$ = new Subject<void>();
     pokemonCatalogSpy = jasmine.createSpyObj('PokemonCatalogService', ['getPokemonByType']);
-    battleSpy = jasmine.createSpyObj('PokemonBattleService', ['selectPlayerPokemon']);
+    battleSpy = {
+      selectPlayerPokemon: jasmine.createSpy('selectPlayerPokemon'),
+      closeSelectorDropdowns$: closeSelectorDropdowns$.asObservable(),
+    };
     pokemonCatalogSpy.getPokemonByType.and.returnValue(of([
       { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
       { name: 'raichu', url: 'https://pokeapi.co/api/v2/pokemon/26/' }
@@ -90,6 +95,20 @@ describe('PokemonTypeComponent', () => {
     component.selectPokemon('');
 
     expect(battleSpy.selectPlayerPokemon).not.toHaveBeenCalled();
+  });
+
+  it('should close and clear dropdown state when closeSelectorDropdowns emits', () => {
+    component.toggleTypeDropdown();
+    expect(component.isOpen).toBe(true);
+    expect(component.pokemonNames.length).toBeGreaterThan(0);
+
+    closeSelectorDropdowns$.next();
+    fixture.detectChanges();
+
+    expect(component.isOpen).toBe(false);
+    expect(component.pokemonNames).toEqual([]);
+    expect(component.pokemonLoadError).toBe('');
+    expect(component.isLoadingPokemonNames).toBe(false);
   });
 
 });

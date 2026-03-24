@@ -7,6 +7,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   ViewChild
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -21,7 +22,7 @@ import { PokemonCatalogService } from '../pokemon-catalog.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
 })
-export class PokemonTypeComponent implements OnChanges, OnDestroy {
+export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() pokemonType: PokemonType;
   @ViewChild('typeButton') typeButton?: ElementRef<HTMLButtonElement>;
   @ViewChild('pokemonSelect') pokemonSelect?: ElementRef<HTMLSelectElement>;
@@ -31,6 +32,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
   public pokemonNames: string[] = [];
   public pokemonLoadError = '';
   private loadPokemonNamesSub?: Subscription;
+  private closeDropdownsSub?: Subscription;
 
   constructor(
     private pokemonCatalog: PokemonCatalogService,
@@ -64,15 +66,27 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    this.resetTypePickerState();
+  }
+
+  ngOnInit() {
+    this.closeDropdownsSub = this.battle.closeSelectorDropdowns$.subscribe(() => {
+      this.resetTypePickerState();
+    });
+  }
+
+  ngOnDestroy() {
+    this.loadPokemonNamesSub?.unsubscribe();
+    this.closeDropdownsSub?.unsubscribe();
+  }
+
+  private resetTypePickerState(): void {
     this.pokemonNames = [];
     this.pokemonLoadError = '';
     this.isLoadingPokemonNames = false;
     this.isOpen = false;
     this.loadPokemonNamesSub?.unsubscribe();
-  }
-
-  ngOnDestroy() {
-    this.loadPokemonNamesSub?.unsubscribe();
+    this.cdr.markForCheck();
   }
 
   private closeDropdown(): void {

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { PokemonDetailsComponent } from 'src/app/features/pokemon-display/pokemon-details/pokemon-details.component';
 import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 
+import { PokemonBattleService } from '../pokemon-battle.service';
 import { resolveSpecialAttackBattle } from '../special-attack-battle';
 
 @Component({
@@ -25,8 +26,13 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   public pokemonVictor: Partial<Pokemon> | undefined;
 
   constructor(
+    private battle: PokemonBattleService,
     private cdr: ChangeDetectorRef
   ) { }
+
+  playAgain(): void {
+    this.battle.playAgain();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.pokemonChoice?.stats || !this.pokemonOpponent?.stats) {

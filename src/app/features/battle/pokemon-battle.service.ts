@@ -25,9 +25,13 @@ export class PokemonBattleService {
 
   readonly vm$: Observable<PokemonBattleVm>;
 
+  /** Fires when the player starts a new round (e.g. Play again); type pickers should close and clear. */
+  readonly closeSelectorDropdowns$: Observable<void>;
+
   private readonly opponentPokemon$$ = new BehaviorSubject<Partial<Pokemon>>({});
   private readonly opponentLoading$$ = new BehaviorSubject<boolean>(true);
   private readonly loadOpponentTrigger$ = new Subject<void>();
+  private readonly closeSelectorDropdowns$$ = new Subject<void>();
 
   constructor(
     private player: PokemonPlayerService,
@@ -37,6 +41,7 @@ export class PokemonBattleService {
     this.playerDetailsError$ = this.player.pokemonDetailsError.asObservable();
     this.opponent$ = this.opponentPokemon$$.asObservable();
     this.opponentLoading$ = this.opponentLoading$$.asObservable();
+    this.closeSelectorDropdowns$ = this.closeSelectorDropdowns$$.asObservable();
 
     this.vm$ = combineLatest([
       this.opponentLoading$$,
@@ -62,6 +67,13 @@ export class PokemonBattleService {
 
   selectPlayerPokemon(name: string): void {
     this.player.getPokemonDetails(name);
+  }
+
+  /** Reset the player's Pokémon and draw a new opponent for another round. */
+  playAgain(): void {
+    this.closeSelectorDropdowns$$.next();
+    this.player.clearPlayerSelection();
+    this.loadOpponent();
   }
 
   private bindOpponentLoads(): void {

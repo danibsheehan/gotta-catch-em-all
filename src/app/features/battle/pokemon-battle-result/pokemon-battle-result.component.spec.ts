@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { SimpleChange } from '@angular/core';
 
 import { PokemonBattleResultComponent } from './pokemon-battle-result.component';
+import { PokemonBattleService } from '../pokemon-battle.service';
 import { Pokemon } from 'src/app/shared/models/pokemon';
 
 describe('PokemonBattleResultComponent', () => {
   let component: PokemonBattleResultComponent;
   let fixture: ComponentFixture<PokemonBattleResultComponent>;
+  let battle: jasmine.SpyObj<PokemonBattleService>;
   const pokemonChoiceStub: Pokemon = {
     name: 'pikachu',
     sprites: { front_default: 'https://example.com/pikachu.png' },
@@ -19,8 +21,10 @@ describe('PokemonBattleResultComponent', () => {
   };
 
   beforeEach(async () => {
+    battle = jasmine.createSpyObj('PokemonBattleService', ['playAgain']);
     TestBed.configureTestingModule({
       imports: [PokemonBattleResultComponent],
+      providers: [{ provide: PokemonBattleService, useValue: battle }],
     })
     .compileComponents();
   });
@@ -104,4 +108,18 @@ describe('PokemonBattleResultComponent', () => {
 
     expect(clearSpy).toHaveBeenCalled();
   });
+
+  it('should call battle.playAgain when Play again is clicked', fakeAsync(() => {
+    component.ngOnChanges({
+      pokemonChoice: new SimpleChange(null, pokemonChoiceStub, true),
+      pokemonOpponent: new SimpleChange(null, pokemonOpponentStub, true)
+    });
+    tick(2000);
+    fixture.detectChanges();
+
+    const btn = fixture.nativeElement.querySelector('.play-again') as HTMLButtonElement;
+    btn.click();
+
+    expect(battle.playAgain).toHaveBeenCalled();
+  }));
 });

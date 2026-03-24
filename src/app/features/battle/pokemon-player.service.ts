@@ -35,6 +35,11 @@ export class PokemonPlayerService {
     this.selectedPokemonName$.next(name);
   }
 
+  /** Clear the current pick so the player can choose again. */
+  clearPlayerSelection(): void {
+    this.selectedPokemonName$.next(null);
+  }
+
   private bindSelectionToState(): void {
     this.selectedPokemonName$
       .pipe(
