@@ -2,16 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { Pokemon } from './pokemon';
-import { PokemonList } from './pokemon-list';
+import { PokemonBrief } from './pokemon';
+import { PokemonType } from './pokemon-type';
 import { PokemonTypeList } from './pokemon-type-list';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonListService {
-  public pokemonSearchResults = new BehaviorSubject<any>([]);
   public pokemonDetails = new BehaviorSubject<any>({});
   public pokemonDetailsError = new BehaviorSubject<string>('');
 
@@ -20,17 +22,23 @@ export class PokemonListService {
   ) { }
 
   getPokemonTypes(): Observable<PokemonTypeList> {
-   return this.http.get<PokemonTypeList>('https://pokeapi.co/api/v2/type/');
-  }
+    return this.http.get<PokemonTypeList>('https://pokeapi.co/api/v2/type/').pipe(
+      switchMap((data) => {
+        const typeRequests = data.results.map((type) =>
+          this.http.get<{ pokemon: { pokemon: PokemonBrief }[] }>(`https://pokeapi.co/api/v2/type/${type.name}`)
+        );
 
-  getPokemon(name: string): void {
-    this.getPokemonByType(name).subscribe(data => {
-        this.pokemonSearchResults.next(data);
-      });
-  }
-
-  getPokemonByType(name: string): Observable<PokemonList> {
-    return this.http.get<PokemonList>(`https://pokeapi.co/api/v2/type/${name}`);
+        return forkJoin(typeRequests).pipe(
+          map((typeDetails) => ({
+            ...data,
+            results: data.results.map((type: PokemonType, index: number) => ({
+              ...type,
+              pokemon: typeDetails[index].pokemon.map((entry: any) => entry.pokemon as PokemonBrief)
+            }))
+          }))
+        );
+      })
+    );
   }
 
   getPokemonDetails(name: string): void {

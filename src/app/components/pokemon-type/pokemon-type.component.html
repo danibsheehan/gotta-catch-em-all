@@ -1,24 +1,19 @@
-<button type="button" class="pokemon-type-button" (click)="toggleDropdown()">
+<button type="button" class="pokemon-type-button">
   {{ pokemonType.name }}
 </button>
 
-@if (isDropdownOpen) {
-  <div class="pokemon-type-dropdown-container">
-    @if (isLoadingPokemon) {
-      <span class="pokemon-type-loading">Loading pokemon...</span>
-    }
-    @if (!isLoadingPokemon && pokemonLoadError) {
-      <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
-    }
-    @if (!isLoadingPokemon && pokemonNames.length) {
-      <select
-        class="pokemon-type-dropdown"
-        (change)="selectPokemon($any($event.target).value)">
-        <option value="">Choose a {{ pokemonType.name }} pokemon</option>
-        @for (pokemonName of pokemonNames; track pokemonName) {
-          <option [value]="pokemonName">{{ pokemonName }}</option>
-        }
-      </select>
-    }
-  </div>
-}
+<div class="pokemon-type-dropdown-container">
+  @if (pokemonLoadError) {
+    <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
+  }
+  @if (pokemonNames.length) {
+    <select
+      class="pokemon-type-dropdown"
+      (change)="selectPokemon($any($event.target).value)">
+      <option value="">Choose a {{ pokemonType.name }} pokemon</option>
+      @for (pokemonName of pokemonNames; track pokemonName) {
+        <option [value]="pokemonName">{{ pokemonName }}</option>
+      }
+    </select>
+  }
+</div>

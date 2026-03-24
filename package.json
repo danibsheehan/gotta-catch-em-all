@@ -1,11 +1,15 @@
 {
   "name": "gotta-catch-em-all",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadlessNoSandbox",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

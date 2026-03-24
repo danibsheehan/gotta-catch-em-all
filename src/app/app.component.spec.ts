@@ -11,10 +11,9 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
-    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['getPokemonOpponent'], {
-      pokemonDetails: detailsSubject,
-      pokemonDetailsError: detailsErrorSubject
-    });
+    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['getPokemonOpponent']);
+    (pokemonListServiceSpy as any).pokemonDetails = detailsSubject;
+    (pokemonListServiceSpy as any).pokemonDetailsError = detailsErrorSubject;
     pokemonListServiceSpy.getPokemonOpponent.and.returnValue(of({
       name: 'pikachu',
       sprites: { front_default: 'image' },
@@ -79,7 +78,7 @@ describe('AppComponent', () => {
 
     app.getPokemonOpponent();
 
-    expect(app.pokemonOpponent).toEqual({});
+    expect(app.pokemonOpponent).toEqual({} as any);
     expect(app.pokemonOpponentSelected).toBe(true);
   });
 

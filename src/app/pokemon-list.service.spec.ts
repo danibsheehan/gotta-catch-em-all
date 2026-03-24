@@ -32,35 +32,26 @@ describe('PokemonListService', () => {
       response = data;
     });
 
-    const req = httpMock.expectOne('https://pokeapi.co/api/v2/type/');
-    expect(req.request.method).toBe('GET');
-    req.flush({ results: [{ name: 'electric' }] });
+    const typeListReq = httpMock.expectOne('https://pokeapi.co/api/v2/type/');
+    expect(typeListReq.request.method).toBe('GET');
+    typeListReq.flush({
+      count: 1,
+      results: [{ name: 'electric', url: 'https://pokeapi.co/api/v2/type/13/' }]
+    });
+
+    const typeDetailsReq = httpMock.expectOne('https://pokeapi.co/api/v2/type/electric');
+    expect(typeDetailsReq.request.method).toBe('GET');
+    typeDetailsReq.flush({
+      pokemon: [
+        { pokemon: { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' } }
+      ]
+    });
 
     expect(response.results.length).toBe(1);
     expect(response.results[0].name).toBe('electric');
-  });
-
-  it('should request pokemon by type from API', () => {
-    let response: any;
-
-    service.getPokemonByType('fire').subscribe(data => {
-      response = data;
-    });
-
-    const req = httpMock.expectOne('https://pokeapi.co/api/v2/type/fire');
-    expect(req.request.method).toBe('GET');
-    req.flush({ pokemon: [] });
-
-    expect(response.pokemon).toEqual([]);
-  });
-
-  it('should update pokemonSearchResults when searching pokemon', () => {
-    service.getPokemon('water');
-
-    const req = httpMock.expectOne('https://pokeapi.co/api/v2/type/water');
-    req.flush({ pokemon: [{ pokemon: { name: 'squirtle' } }] });
-
-    expect(service.pokemonSearchResults.value.pokemon[0].pokemon.name).toBe('squirtle');
+    expect(response.results[0].pokemon).toEqual([
+      { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' }
+    ]);
   });
 
   it('should update pokemonDetails and clear error on getPokemonDetails success', () => {

@@ -5,18 +5,11 @@
 }
 
 <div class="pokemon-search-container">
-  <div class="pokemon-type-container" [ngClass]="{'pokemon-searched': pokemonSearched}">
+  <div class="pokemon-type-container">
     @for (pokemonType of pokemonTypes; track pokemonType) {
       <div class="pokemon-type-item">
         <app-pokemon-type [pokemonType]="pokemonType"></app-pokemon-type>
       </div>
     }
   </div>
-
-  @if (pokemonList?.pokemon?.length) {
-    <div class="pokemon-results">
-      <h4>{{pokemonTypeSearched}} Pokemon</h4>
-      <app-pokemon-list [pokemonList]="pokemonList"></app-pokemon-list>
-    </div>
-  }
 </div>
