@@ -57,12 +57,15 @@ npm run build:github-pages
 
 | Symbol / area | Responsibility |
 | --- | --- |
-| `PokemonListService` | HTTP access, caching, opponent id helper, default sprite URL helper. |
-| `getPokemonTypes()` | `GET /api/v2/type/` — returns the paginated type list (names + URLs). |
-| `getPokemonByType(typeName)` | `GET /api/v2/type/{typeName}` — returns brief entries for Pokémon in that type. |
-| `getPokemonDetails(name)` | `GET /api/v2/pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
-| `getPokemonById(id)` | `GET /api/v2/pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
-| `pickRandomOpponentId()` | Returns a random integer from 1 through 964. |
+| `PokeApiClient` | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`). |
+| `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`). |
+| `PokemonPlayerService` | Player selection: `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
+| `PokemonOpponentService` | Random opponent id, `getPokemonById`, default sprite URL, `getPokemonOpponent()`. |
+| `getPokemonTypes()` | `GET /type/` — returns the paginated type list (names + URLs). |
+| `getPokemonByType(typeName)` | `GET /type/{typeName}` — returns brief entries for Pokémon in that type. |
+| `getPokemonDetails(name)` | `GET /pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
+| `getPokemonById(id)` | `GET /pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
+| `pickRandomOpponentId()` | Returns a random integer from 1 through `environment.maxPokemonSpeciesId`. |
 | `PokemonSelectorComponent` | Defers the initial type request until after first render. |
 | `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `getPokemonDetails` on selection. |
 | `PokemonBattleResultComponent` | Reads both fighters’ stats and determines the winner from **special-attack**. |
@@ -70,16 +73,9 @@ npm run build:github-pages
 
 ## Configuration
 
-PokeAPI URLs live in code today, not in `environment` files:
+API root URLs and dex upper bound live in `src/environments/environment*.ts` (`pokeApi.baseUrl`, `pokeApi.frontSpriteBaseUrl`, `maxPokemonSpeciesId`). `PokeApiClient` builds request URLs from those values.
 
-| Concern | Location | Value / notes |
-| --- | --- | --- |
-| Type index | `pokemon-list.service.ts` | `https://pokeapi.co/api/v2/type/` |
-| Type detail | same | `https://pokeapi.co/api/v2/type/{name}` |
-| Pokémon by name or id | same | `https://pokeapi.co/api/v2/pokemon/{nameOrId}` |
-| Sprite CDN | `PokemonListService.defaultFrontSpriteUrl` | `raw.githubusercontent.com/PokeAPI/sprites/...` |
-
-To support multiple deployments or a mock server, move these into `src/environments/environment*.ts` and inject or import them in the service.
+To point at a mock server or another deployment, change those environment fields (and rebuild).
 
 ## Contributing
 

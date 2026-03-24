@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { Pokemon } from './pokemon';
-import { PokemonListService } from './pokemon-list.service';
+import { PokemonOpponentService } from './pokemon/pokemon-opponent.service';
+import { PokemonPlayerService } from './pokemon/pokemon-player.service';
 
 @Component({
     selector: 'app-root',
@@ -22,10 +23,11 @@ export class AppComponent implements OnInit, OnDestroy {
   private opponentSub?: Subscription;
 
   constructor(
-    private pokemonListService: PokemonListService
+    private pokemonPlayer: PokemonPlayerService,
+    private opponentService: PokemonOpponentService
   ) {
-    this.pokemonDetails$ = this.pokemonListService.pokemonDetails.asObservable();
-    this.pokemonDetailsError$ = this.pokemonListService.pokemonDetailsError.asObservable();
+    this.pokemonDetails$ = this.pokemonPlayer.pokemonDetails.asObservable();
+    this.pokemonDetailsError$ = this.pokemonPlayer.pokemonDetailsError.asObservable();
   }
 
   ngOnInit() {
@@ -36,10 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.pokemonOpponentLoading = true;
     this.opponentSub?.unsubscribe();
 
-    const opponentId = this.pokemonListService.pickRandomOpponentId();
-    this.preloadOpponentSprite(PokemonListService.defaultFrontSpriteUrl(opponentId));
+    const opponentId = this.opponentService.pickRandomOpponentId();
+    this.preloadOpponentSprite(this.opponentService.defaultFrontSpriteUrl(opponentId));
 
-    this.opponentSub = this.pokemonListService.getPokemonById(opponentId)
+    this.opponentSub = this.opponentService.getPokemonById(opponentId)
       .subscribe(
         data => {
           this.pokemonOpponent = data;

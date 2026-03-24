@@ -11,7 +11,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonType } from 'src/app/pokemon-type';
-import { PokemonListService } from 'src/app/pokemon-list.service';
+import { PokemonCatalogService } from 'src/app/pokemon/pokemon-catalog.service';
+import { PokemonPlayerService } from 'src/app/pokemon/pokemon-player.service';
 
 @Component({
     selector: 'app-pokemon-type',
@@ -32,7 +33,8 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
   private loadPokemonNamesSub?: Subscription;
 
   constructor(
-    private pokemonListService: PokemonListService,
+    private pokemonCatalog: PokemonCatalogService,
+    private pokemonPlayer: PokemonPlayerService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -47,7 +49,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
 
   selectPokemon(name: string) {
     if (name) {
-      this.pokemonListService.getPokemonDetails(name);
+      this.pokemonPlayer.getPokemonDetails(name);
     }
   }
 
@@ -85,7 +87,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
   private loadPokemonNames() {
     this.isLoadingPokemonNames = true;
     this.loadPokemonNamesSub?.unsubscribe();
-    this.loadPokemonNamesSub = this.pokemonListService.getPokemonByType(this.pokemonType.name).subscribe(
+    this.loadPokemonNamesSub = this.pokemonCatalog.getPokemonByType(this.pokemonType.name).subscribe(
       (pokemon) => {
         this.pokemonNames = pokemon.map((pokemonEntry) => pokemonEntry.name);
         this.pokemonLoadError = this.pokemonNames.length ? '' : `No pokemon were found for ${this.pokemonType.name}.`;

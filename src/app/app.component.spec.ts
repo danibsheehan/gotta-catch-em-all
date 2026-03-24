@@ -2,21 +2,26 @@ import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
-import { PokemonListService } from './pokemon-list.service';
+import { PokemonOpponentService } from './pokemon/pokemon-opponent.service';
+import { PokemonPlayerService } from './pokemon/pokemon-player.service';
 
 describe('AppComponent', () => {
-  let pokemonListServiceSpy: jasmine.SpyObj<PokemonListService>;
+  let pokemonPlayerSpy: jasmine.SpyObj<PokemonPlayerService>;
+  let pokemonOpponentSpy: jasmine.SpyObj<PokemonOpponentService>;
   let detailsSubject: BehaviorSubject<any>;
   let detailsErrorSubject: BehaviorSubject<string>;
 
   beforeEach(async () => {
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
-    pokemonListServiceSpy = jasmine.createSpyObj('PokemonListService', ['pickRandomOpponentId', 'getPokemonById']);
-    (pokemonListServiceSpy as any).pokemonDetails = detailsSubject;
-    (pokemonListServiceSpy as any).pokemonDetailsError = detailsErrorSubject;
-    pokemonListServiceSpy.pickRandomOpponentId.and.returnValue(25);
-    pokemonListServiceSpy.getPokemonById.and.returnValue(of({
+    pokemonPlayerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
+    (pokemonPlayerSpy as any).pokemonDetails = detailsSubject;
+    (pokemonPlayerSpy as any).pokemonDetailsError = detailsErrorSubject;
+
+    pokemonOpponentSpy = jasmine.createSpyObj('PokemonOpponentService', ['pickRandomOpponentId', 'getPokemonById', 'defaultFrontSpriteUrl']);
+    pokemonOpponentSpy.pickRandomOpponentId.and.returnValue(25);
+    pokemonOpponentSpy.defaultFrontSpriteUrl.and.returnValue('https://sprites.example/25.png');
+    pokemonOpponentSpy.getPokemonById.and.returnValue(of({
       name: 'pikachu',
       sprites: { front_default: 'image' },
       stats: []
@@ -27,7 +32,8 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        { provide: PokemonListService, useValue: pokemonListServiceSpy }
+        { provide: PokemonPlayerService, useValue: pokemonPlayerSpy },
+        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
       ]
     }).compileComponents();
   });
@@ -78,7 +84,7 @@ describe('AppComponent', () => {
   });
 
   it('should set fallback opponent and selected flag on opponent failure', () => {
-    pokemonListServiceSpy.getPokemonById.and.returnValue(throwError(() => new Error('failed')));
+    pokemonOpponentSpy.getPokemonById.and.returnValue(throwError(() => new Error('failed')));
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
 

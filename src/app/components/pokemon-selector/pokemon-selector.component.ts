@@ -2,7 +2,7 @@ import { afterNextRender, ChangeDetectionStrategy, ChangeDetectorRef, Component 
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
 
-import { PokemonListService } from '../../pokemon-list.service';
+import { PokemonCatalogService } from '../../pokemon/pokemon-catalog.service';
 import { PokemonType } from 'src/app/pokemon-type';
 
 @Component({
@@ -19,12 +19,12 @@ export class PokemonSelectorComponent {
   public pokemonTypes$: Observable<PokemonType[]> = EMPTY;
 
   constructor(
-    private pokemonListService: PokemonListService,
+    private pokemonCatalog: PokemonCatalogService,
     private cdr: ChangeDetectorRef
   ) {
     afterNextRender(() => {
       this.isLoadingTypes = true;
-      this.pokemonTypes$ = this.pokemonListService.getPokemonTypes().pipe(
+      this.pokemonTypes$ = this.pokemonCatalog.getPokemonTypes().pipe(
         tap(() => {
           this.isLoadingTypes = false;
           this.pokemonTypesError = '';
