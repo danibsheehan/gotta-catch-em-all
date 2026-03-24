@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Pokemon } from 'src/app/pokemon';
 
@@ -6,7 +7,8 @@ import { Pokemon } from 'src/app/pokemon';
     templateUrl: './pokemon-details.component.html',
     styleUrls: ['./pokemon-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: true,
+    imports: [NgClass],
 })
 export class PokemonDetailsComponent {
 

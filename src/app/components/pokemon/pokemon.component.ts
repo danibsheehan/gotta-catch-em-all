@@ -5,7 +5,7 @@ import { PokemonBrief } from 'src/app/pokemon';
     selector: 'app-pokemon',
     templateUrl: './pokemon.component.html',
     styleUrls: ['./pokemon.component.scss'],
-    standalone: false
+    standalone: true,
 })
 export class PokemonComponent {
 

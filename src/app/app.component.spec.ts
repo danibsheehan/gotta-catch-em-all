@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
@@ -29,10 +31,10 @@ describe('AppComponent', () => {
     } as any));
 
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      imports: [AppComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: pokemonPlayerSpy },
         { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
@@ -97,8 +99,10 @@ describe('AppComponent', () => {
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [AppComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: playerSpy },
         { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }

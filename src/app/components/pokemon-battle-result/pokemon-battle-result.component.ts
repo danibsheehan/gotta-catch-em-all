@@ -2,12 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { resolveSpecialAttackBattle } from 'src/app/domain/special-attack-battle';
 import { Pokemon, Stat } from 'src/app/pokemon';
 
+import { PokemonDetailsComponent } from '../pokemon-details/pokemon-details.component';
+
 @Component({
     selector: 'app-pokemon-battle-result',
     templateUrl: './pokemon-battle-result.component.html',
     styleUrls: ['./pokemon-battle-result.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: true,
+    imports: [PokemonDetailsComponent],
 })
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 

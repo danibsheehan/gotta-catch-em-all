@@ -10,7 +10,7 @@ describe('PokemonSelectorComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ PokemonSelectorComponent ],
+      imports: [PokemonSelectorComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();

@@ -20,7 +20,7 @@ describe('PokemonBattleResultComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ PokemonBattleResultComponent ]
+      imports: [PokemonBattleResultComponent],
     })
     .compileComponents();
   });

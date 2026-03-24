@@ -13,7 +13,7 @@ describe('PokemonComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ PokemonComponent ]
+      imports: [PokemonComponent],
     })
     .compileComponents();
   });

@@ -6,14 +6,14 @@
 
 This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
 
-**Stack:** Angular ~20.3, RxJS 7, SCSS, Karma/Jasmine.
+**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), RxJS 7, SCSS, Karma/Jasmine.
 
 ## Features
 
 - Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu).
 - Fetches full `pokemon` records when you confirm a selection.
 - Draws a random opponent (numeric id in `1…964`), preloads its front sprite for faster paint, and exposes **Choose Again** when the opponent request fails.
-- Declares battle outcome in `PokemonBattleResultComponent` by comparing `stats` entries for `special-attack`.
+- Declares battle outcome via `resolveSpecialAttackBattle()`; `PokemonBattleResultComponent` handles only timing and display.
 - Caches type list and per-type Pokémon list responses with `shareReplay(1)` to avoid duplicate HTTP calls.
 - URL-encodes path segments when calling PokeAPI (handles names with spaces or special characters).
 

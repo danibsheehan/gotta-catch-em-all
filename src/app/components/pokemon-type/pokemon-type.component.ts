@@ -19,7 +19,7 @@ import { PokemonCatalogService } from 'src/app/pokemon/pokemon-catalog.service';
     templateUrl: './pokemon-type.component.html',
     styleUrls: ['./pokemon-type.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: true,
 })
 export class PokemonTypeComponent implements OnChanges, OnDestroy {
   @Input() pokemonType: PokemonType;

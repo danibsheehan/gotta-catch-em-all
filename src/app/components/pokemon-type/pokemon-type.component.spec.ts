@@ -25,7 +25,7 @@ describe('PokemonTypeComponent', () => {
     ] as any));
 
     TestBed.configureTestingModule({
-      declarations: [ PokemonTypeComponent ],
+      imports: [PokemonTypeComponent],
       providers: [
         { provide: PokemonCatalogService, useValue: pokemonCatalogSpy },
         { provide: PokemonBattleService, useValue: battleSpy }
