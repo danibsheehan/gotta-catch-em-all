@@ -42,6 +42,31 @@ describe('PokemonBattleService', () => {
     });
   });
 
+  it('should set playerLoading true until player request completes', (done) => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    service.selectPlayerPokemon('pikachu');
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+
+    service.vm$.pipe(
+      filter((vm) => vm.playerLoading && !vm.player?.name),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.playerLoading).toBe(true);
+      playerReq.flush({
+        name: 'pikachu',
+        sprites: { front_default: 'x' },
+        stats: [],
+      });
+    });
+
+    service.vm$.pipe(
+      filter((vm) => !vm.playerLoading && vm.player.name === 'pikachu'),
+      take(1),
+    ).subscribe(() => done());
+  });
+
   it('should merge player selection into vm', (done) => {
     service.selectPlayerPokemon('pikachu');
 
@@ -50,6 +75,7 @@ describe('PokemonBattleService', () => {
       take(1),
     ).subscribe((vm) => {
       expect(vm.player.name).toBe('pikachu');
+      expect(vm.playerLoading).toBe(false);
       done();
     });
 

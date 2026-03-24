@@ -11,6 +11,14 @@ h4 {
 	text-transform: uppercase;
 }
 
+.pokemon-selector-loading {
+	color: #444;
+	font-style: italic;
+	margin: 12px auto 0;
+	max-width: 1200px;
+	text-align: center;
+}
+
 .pokemon-selector-error {
 	color: #8f1414;
 	margin: 12px auto 0;

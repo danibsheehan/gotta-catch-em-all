@@ -12,6 +12,7 @@ export interface PokemonBattleVm {
   opponent: Partial<Pokemon>;
   player: Partial<Pokemon>;
   playerError: string;
+  playerLoading: boolean;
 }
 
 @Injectable({
@@ -48,12 +49,14 @@ export class PokemonBattleService {
       this.opponentPokemon$$,
       this.player.pokemonDetails,
       this.player.pokemonDetailsError,
+      this.player.playerDetailsLoading,
     ]).pipe(
-      map(([opponentLoading, opponent, player, playerError]) => ({
+      map(([opponentLoading, opponent, player, playerError, playerLoading]) => ({
         opponentLoading,
         opponent,
         player,
         playerError,
+        playerLoading,
       })),
     );
 

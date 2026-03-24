@@ -24,6 +24,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
   public battleResult: string;
   public pokemonVictor: Partial<Pokemon> | undefined;
+  public isResolvingBattle = false;
 
   constructor(
     private battle: PokemonBattleService,
@@ -36,6 +37,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.pokemonChoice?.stats || !this.pokemonOpponent?.stats) {
+      this.isResolvingBattle = false;
       return;
     }
 
@@ -51,6 +53,8 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
     this.pokemonVictor = undefined;
     this.choiceAttack = undefined;
     this.opponentAttack = undefined;
+    this.isResolvingBattle = true;
+    this.cdr.markForCheck();
 
     this.battleTimer = setTimeout(() => {
       const outcome = resolveSpecialAttackBattle(this.pokemonChoice, this.pokemonOpponent);
@@ -60,6 +64,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
         this.battleResult = outcome.message;
         this.pokemonVictor = outcome.victor;
       }
+      this.isResolvingBattle = false;
       this.cdr.markForCheck();
     }, 2000);
   }

@@ -16,7 +16,7 @@
     role="region"
     [attr.aria-labelledby]="'type-btn-' + pokemonType.name">
     @if (isLoadingPokemonNames) {
-      <span class="pokemon-type-loading">Loading pokemon...</span>
+      <span class="pokemon-type-loading" role="status" aria-busy="true">Loading Pokémon names…</span>
     }
     @if (pokemonLoadError) {
       <span class="pokemon-type-error">{{ pokemonLoadError }}</span>

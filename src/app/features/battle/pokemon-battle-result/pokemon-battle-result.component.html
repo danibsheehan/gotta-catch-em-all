@@ -1,5 +1,8 @@
 <section class="battle-result-section" aria-labelledby="victor-heading">
   <h2 id="victor-heading" class="battle-result-heading">The Victor:</h2>
+  @if (isResolvingBattle) {
+    <p class="battle-resolving" role="status" aria-busy="true">Resolving the battle…</p>
+  }
   @if (battleResult) {
     <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
   }

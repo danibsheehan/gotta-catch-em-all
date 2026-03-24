@@ -69,6 +69,16 @@ describe('PokemonBattleResultComponent', () => {
     expect(clearSpy).toHaveBeenCalled();
   });
 
+  it('should show resolving state until outcome is ready', fakeAsync(() => {
+    component.ngOnChanges({
+      pokemonChoice: new SimpleChange(null, pokemonChoiceStub, true),
+      pokemonOpponent: new SimpleChange(null, pokemonOpponentStub, true)
+    });
+    expect(component.isResolvingBattle).toBe(true);
+    tick(2000);
+    expect(component.isResolvingBattle).toBe(false);
+  }));
+
   it('should set win result when choice attack is greater', fakeAsync(() => {
     component.pokemonChoice = pokemonChoiceStub;
     component.pokemonOpponent = pokemonOpponentStub;

@@ -3,7 +3,9 @@
 
 <div class="pokemon-selector-status" aria-live="polite">
   @if (isLoadingTypes) {
-    <div class="pokemon-selector-error">Loading pokemon types...</div>
+    <div class="pokemon-selector-loading" role="status" aria-busy="true">
+      <span class="loading-label">Loading Pokémon types…</span>
+    </div>
   }
 
   @if (pokemonTypesError) {

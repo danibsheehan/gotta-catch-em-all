@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, concat, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
+import { catchError, finalize, map, switchMap } from 'rxjs/operators';
 
 import { PokeApiClient } from 'src/app/core/api/poke-api.client';
 import { Pokemon } from 'src/app/shared/models/pokemon';
@@ -20,6 +20,7 @@ export class PokemonPlayerService {
   /** Latest successful or failed fetch; mirrors the streams below for imperative reads/tests. */
   public pokemonDetails = new BehaviorSubject<Partial<Pokemon>>({});
   public pokemonDetailsError = new BehaviorSubject<string>('');
+  public playerDetailsLoading = new BehaviorSubject<boolean>(false);
 
   private readonly selectedPokemonName$ = new BehaviorSubject<string | null>(null);
 
@@ -46,6 +47,7 @@ export class PokemonPlayerService {
         switchMap((name) => this.snapshotForSelection(name)),
       )
       .subscribe(({ details, error }) => {
+        this.playerDetailsLoading.next(false);
         this.pokemonDetails.next(details);
         this.pokemonDetailsError.next(error);
       });
@@ -53,16 +55,20 @@ export class PokemonPlayerService {
 
   private snapshotForSelection(name: string | null): Observable<PlayerFetchSnapshot> {
     if (name == null || name === '') {
-      return of({ details: {}, error: '' });
+      this.playerDetailsLoading.next(false);
+      this.pokemonDetails.next({});
+      this.pokemonDetailsError.next('');
+      return EMPTY;
     }
-    return concat(
-      of<PlayerFetchSnapshot>({ details: this.pokemonDetails.value, error: '' }),
-      this.pokeApi.getPokemon(name).pipe(
-        map((data): PlayerFetchSnapshot => ({ details: data, error: '' })),
-        catchError((): Observable<PlayerFetchSnapshot> =>
-          of({ details: {}, error: PLAYER_DETAILS_ERROR }),
-        ),
+    this.playerDetailsLoading.next(true);
+    this.pokemonDetails.next({});
+    this.pokemonDetailsError.next('');
+    return this.pokeApi.getPokemon(name).pipe(
+      map((data): PlayerFetchSnapshot => ({ details: data, error: '' })),
+      catchError((): Observable<PlayerFetchSnapshot> =>
+        of({ details: {}, error: PLAYER_DETAILS_ERROR }),
       ),
+      finalize(() => this.playerDetailsLoading.next(false)),
     );
   }
 }

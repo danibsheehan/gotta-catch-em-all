@@ -8,11 +8,14 @@
     } @else {
       <span>Opponent ready: {{ vm.opponent.name }}.</span>
     }
+    @if (vm.playerLoading) {
+      <span>Loading your Pokémon.</span>
+    }
   </div>
-  <section class="opponent battle-opponent" aria-label="Your opponent">
+  <section class="opponent battle-opponent" aria-label="Your opponent" [attr.aria-busy]="vm.opponentLoading">
     @if (vm.opponentLoading) {
-      <div class="pokemon-opponent-error">
-        <span class="opponent-error" aria-hidden="true">Choosing your opponent...</span>
+      <div class="pokemon-opponent-loading" role="status">
+        <span class="loading-label" aria-hidden="true">Choosing your opponent…</span>
       </div>
     }
     @if (!vm.opponentLoading && !vm.opponent?.name) {
@@ -28,19 +31,24 @@
       </div>
     }
   </section>
-  <section class="choice battle-choice" aria-labelledby="choice-heading">
+  <section class="choice battle-choice" aria-labelledby="choice-heading" [attr.aria-busy]="vm.playerLoading">
     <h2 id="choice-heading" class="battle-section-heading">Your Choice:</h2>
-    @if (vm.player?.name) {
+    @if (vm.playerLoading) {
+      <div class="choice-loading" role="status">
+        <span class="loading-label" aria-hidden="true">Loading your Pokémon…</span>
+      </div>
+    }
+    @if (vm.player?.name && !vm.playerLoading) {
       <app-pokemon-details [pokemonDetails]="vm.player">
       </app-pokemon-details>
     }
-    @if (vm.playerError) {
+    @if (vm.playerError && !vm.playerLoading) {
       <span class="choice-error" role="alert">{{ vm.playerError }}</span>
     }
   </section>
 </div>
 
-@if (!vm.opponentLoading && vm.player?.name) {
+@if (!vm.opponentLoading && vm.player?.name && !vm.playerLoading) {
   <div class="battle-result">
     <app-pokemon-battle-result [pokemonOpponent]="vm.opponent" [pokemonChoice]="vm.player"></app-pokemon-battle-result>
   </div>

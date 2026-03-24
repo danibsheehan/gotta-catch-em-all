@@ -43,8 +43,25 @@
     text-align: center;
 }
 
+.pokemon-opponent-loading {
+    display: inline-block;
+    min-height: 3rem;
+    padding: 12px 0;
+    text-align: center;
+}
+
 .opponent-error {
     display: block;
+}
+
+.loading-label {
+    color: #444;
+    font-style: italic;
+}
+
+.choice-loading {
+    margin-top: 8px;
+    min-height: 3rem;
 }
 
 .choice-error {

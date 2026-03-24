@@ -22,6 +22,8 @@ describe('PokemonPlayerService', () => {
   it('should update pokemonDetails and clear error on getPokemonDetails success', () => {
     service.pokemonDetailsError.next('previous error');
     service.getPokemonDetails('pikachu');
+    expect(service.playerDetailsLoading.value).toBe(true);
+    expect(service.pokemonDetails.value).toEqual({});
     const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
     req.flush({
       name: 'pikachu',
@@ -30,14 +32,17 @@ describe('PokemonPlayerService', () => {
     });
     expect(service.pokemonDetails.value.name).toBe('pikachu');
     expect(service.pokemonDetailsError.value).toBe('');
+    expect(service.playerDetailsLoading.value).toBe(false);
   });
 
   it('should set fallback details and error on getPokemonDetails failure', () => {
     service.getPokemonDetails('missingno');
+    expect(service.playerDetailsLoading.value).toBe(true);
     const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/missingno');
     req.flush('not found', { status: 404, statusText: 'Not Found' });
     expect(service.pokemonDetails.value).toEqual({});
     expect(service.pokemonDetailsError.value).toBe('Pokemon data could not be found. Please choose another pokemon.');
+    expect(service.playerDetailsLoading.value).toBe(false);
   });
 
   it('should clear details and error on clearPlayerSelection', () => {
@@ -51,5 +56,6 @@ describe('PokemonPlayerService', () => {
     service.clearPlayerSelection();
     expect(service.pokemonDetails.value).toEqual({});
     expect(service.pokemonDetailsError.value).toBe('');
+    expect(service.playerDetailsLoading.value).toBe(false);
   });
 });

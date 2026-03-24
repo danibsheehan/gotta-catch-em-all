@@ -13,13 +13,16 @@ describe('AppComponent', () => {
   let pokemonOpponentSpy: jasmine.SpyObj<PokemonOpponentService>;
   let detailsSubject: BehaviorSubject<any>;
   let detailsErrorSubject: BehaviorSubject<string>;
+  let playerLoadingSubject: BehaviorSubject<boolean>;
 
   beforeEach(async () => {
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
+    playerLoadingSubject = new BehaviorSubject<boolean>(false);
     pokemonPlayerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
     (pokemonPlayerSpy as any).pokemonDetails = detailsSubject;
     (pokemonPlayerSpy as any).pokemonDetailsError = detailsErrorSubject;
+    (pokemonPlayerSpy as any).playerDetailsLoading = playerLoadingSubject;
 
     pokemonOpponentSpy = jasmine.createSpyObj('PokemonOpponentService', ['pickRandomOpponentId', 'getPokemonById', 'defaultFrontSpriteUrl']);
     pokemonOpponentSpy.pickRandomOpponentId.and.returnValue(25);
@@ -71,6 +74,7 @@ describe('AppComponent', () => {
     battle.vm$.pipe(take(1)).subscribe((vm) => {
       expect((vm.player as any).name).toBe('charizard');
       expect(vm.playerError).toBe('details error');
+      expect(vm.playerLoading).toBe(false);
       done();
     });
   });
@@ -93,9 +97,11 @@ describe('AppComponent', () => {
 
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
+    const playerLoadingSubjectFallback = new BehaviorSubject<boolean>(false);
     const playerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
     (playerSpy as any).pokemonDetails = detailsSubject;
     (playerSpy as any).pokemonDetailsError = detailsErrorSubject;
+    (playerSpy as any).playerDetailsLoading = playerLoadingSubjectFallback;
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
