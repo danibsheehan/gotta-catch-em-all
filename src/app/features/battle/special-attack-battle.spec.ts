@@ -56,4 +56,13 @@ describe('resolveSpecialAttackBattle', () => {
     expect(out?.message).toBe(SPECIAL_ATTACK_LOSE_MESSAGE);
     expect(out?.victor).toBe(opponent);
   });
+
+  it('returns null when choice stats array is undefined', () => {
+    expect(
+      resolveSpecialAttackBattle(
+        { ...choice, stats: undefined },
+        opponent,
+      ),
+    ).toBeNull();
+  });
 });

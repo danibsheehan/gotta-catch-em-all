@@ -131,4 +131,56 @@ describe('PokemonBattleService', () => {
     next.flush({ name: 'foe2', sprites: {}, stats: [] });
     done();
   });
+
+  it('should expose empty opponent and stop loading when opponent request fails', (done) => {
+    service.vm$.pipe(
+      filter((vm) => !vm.opponentLoading),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.opponent).toEqual({});
+      done();
+    });
+
+    const req = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    req.flush('error', { status: 500, statusText: 'Server Error' });
+  });
+
+  it('should surface playerError on vm when player request fails', (done) => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    service.selectPlayerPokemon('missingno');
+
+    service.vm$.pipe(
+      filter((vm) => vm.playerError.length > 0),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.playerError).toBe(
+        'Pokemon data could not be found. Please choose another pokemon.',
+      );
+      expect(vm.player).toEqual({});
+      done();
+    });
+
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/missingno');
+    playerReq.flush('not found', { status: 404, statusText: 'Not Found' });
+  });
+
+  it('should fetch another opponent when loadOpponent is called', (done) => {
+    const first = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    first.flush({ name: 'first', sprites: {}, stats: [] });
+
+    service.loadOpponent();
+
+    const second = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    second.flush({ name: 'second', sprites: {}, stats: [] });
+
+    service.vm$.pipe(
+      filter((vm) => !vm.opponentLoading && vm.opponent.name === 'second'),
+      take(1),
+    ).subscribe((vm) => {
+      expect(vm.opponent.name).toBe('second');
+      done();
+    });
+  });
 });

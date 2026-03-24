@@ -36,4 +36,21 @@ describe('PokemonOpponentService', () => {
   it('should build default front sprite url from environment base', () => {
     expect(service.defaultFrontSpriteUrl(25)).toContain('/25.png');
   });
+
+  it('should GET pokemon by numeric id via getPokemonById', () => {
+    let body: { name?: string } | undefined;
+    service.getPokemonById(25).subscribe((p) => {
+      body = p;
+    });
+    const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/25');
+    expect(req.request.method).toBe('GET');
+    req.flush({ name: 'pikachu', sprites: { front_default: 'x' }, stats: [] });
+    expect(body?.name).toBe('pikachu');
+  });
+
+  it('should map random 0.5 to mid-range id via pickRandomOpponentId', () => {
+    spyOn(Math, 'random').and.returnValue(0.5);
+    const id = service.pickRandomOpponentId();
+    expect(id).toBe(Math.ceil(0.5 * 964));
+  });
 });

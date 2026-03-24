@@ -132,4 +132,26 @@ describe('PokemonBattleResultComponent', () => {
 
     expect(battle.playAgain).toHaveBeenCalled();
   }));
+
+  it('should leave result empty when special-attack stat is missing from both', fakeAsync(() => {
+    const noSpAtk: Pokemon = {
+      name: 'a',
+      sprites: { front_default: '' },
+      stats: [{ base_stat: 10, stat: { name: 'hp' } }],
+    };
+    component.pokemonChoice = noSpAtk;
+    component.pokemonOpponent = { ...noSpAtk, name: 'b' };
+
+    component.ngOnChanges({
+      pokemonChoice: new SimpleChange(pokemonChoiceStub, noSpAtk, false),
+      pokemonOpponent: new SimpleChange(pokemonOpponentStub, component.pokemonOpponent, false),
+    });
+    tick(2000);
+
+    expect(component.battleResult).toBe('');
+    expect(component.pokemonVictor).toBeUndefined();
+    expect(component.choiceAttack).toBeUndefined();
+    expect(component.opponentAttack).toBeUndefined();
+    expect(component.isResolvingBattle).toBe(false);
+  }));
 });

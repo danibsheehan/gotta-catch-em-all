@@ -17,7 +17,7 @@ describe('PokemonPlayerService', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => httpMock.verify());
+  afterEach(() => httpMock.verify({ ignoreCancelled: true }));
 
   it('should update pokemonDetails and clear error on getPokemonDetails success', () => {
     service.pokemonDetailsError.next('previous error');
@@ -57,5 +57,21 @@ describe('PokemonPlayerService', () => {
     expect(service.pokemonDetails.value).toEqual({});
     expect(service.pokemonDetailsError.value).toBe('');
     expect(service.playerDetailsLoading.value).toBe(false);
+  });
+
+  it('should not issue HTTP when getPokemonDetails receives an empty name', () => {
+    service.getPokemonDetails('');
+    expect(httpMock.match(() => true).length).toBe(0);
+  });
+
+  it('should only apply the latest getPokemonDetails when selection changes quickly', () => {
+    service.getPokemonDetails('eevee');
+    service.getPokemonDetails('pikachu');
+    httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu').flush({
+      name: 'pikachu',
+      sprites: { front_default: 'image' },
+      stats: [],
+    });
+    expect(service.pokemonDetails.value.name).toBe('pikachu');
   });
 });
