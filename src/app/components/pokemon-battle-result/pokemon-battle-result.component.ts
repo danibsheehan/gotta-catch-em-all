@@ -10,15 +10,15 @@ import { Pokemon, Stat } from 'src/app/pokemon';
 })
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
-  @Input() pokemonChoice: Pokemon;
-  @Input() pokemonOpponent: Pokemon;
+  @Input() pokemonChoice: Partial<Pokemon>;
+  @Input() pokemonOpponent: Partial<Pokemon>;
 
-  public choiceAttack: Stat;
-  public opponentAttack: Stat;
+  public choiceAttack: Stat | undefined;
+  public opponentAttack: Stat | undefined;
   private battleTimer: ReturnType<typeof setTimeout>;
 
   public battleResult: string;
-  public pokemonVictor: Pokemon;
+  public pokemonVictor: Partial<Pokemon>;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -37,8 +37,8 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
       clearTimeout(this.battleTimer);
     }
 
-    this.choiceAttack = this.pokemonChoice.stats.find(stat => stat.stat.name === 'special-attack');
-    this.opponentAttack = this.pokemonOpponent.stats.find(stat => stat.stat.name === 'special-attack');
+    this.choiceAttack = this.pokemonChoice.stats!.find(stat => stat.stat.name === 'special-attack');
+    this.opponentAttack = this.pokemonOpponent.stats!.find(stat => stat.stat.name === 'special-attack');
     this.battleResult = '';
 
     this.battleTimer = setTimeout(() => {

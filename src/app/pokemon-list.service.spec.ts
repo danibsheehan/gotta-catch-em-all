@@ -44,6 +44,14 @@ describe('PokemonListService', () => {
     expect(response.results[0].pokemon).toBeUndefined();
   });
 
+  it('should encode path segments in type and pokemon URLs', () => {
+    service.getPokemonByType('a/b').subscribe();
+    httpMock.expectOne('https://pokeapi.co/api/v2/type/a%2Fb').flush({ pokemon: [] });
+
+    service.getPokemonDetails('x y');
+    httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/x%20y').flush({ name: 'x y', sprites: {}, stats: [] });
+  });
+
   it('should request pokemon names for a single type', () => {
     let response: any;
 

@@ -10,9 +10,7 @@ import { Pokemon } from 'src/app/pokemon';
 })
 export class PokemonDetailsComponent {
 
-  @Input() pokemonDetails: Pokemon;
+  @Input() pokemonDetails: Partial<Pokemon>;
   /** When true, image loads eagerly with high fetch priority (use for above-the-fold LCP candidates). */
   @Input() prioritizeLcp = false;
-
-  constructor() { }
 }

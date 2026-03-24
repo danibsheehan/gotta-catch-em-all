@@ -13,7 +13,7 @@ import { PokemonListService } from './pokemon-list.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'gotta-catch-em-all';
 
-  public pokemonDetails$: Observable<Pokemon>;
+  public pokemonDetails$: Observable<Partial<Pokemon>>;
   public pokemonDetailsError$: Observable<string>;
   public pokemonOpponent: Pokemon;
   public pokemonOpponentLoading = true;
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.pokemonOpponentLoading = false;
           this.pokemonOpponentSelected = true;
         },
-        err => {
+        () => {
           this.pokemonOpponent = {} as Pokemon;
           this.pokemonOpponentLoading = false;
           this.pokemonOpponentSelected = true;

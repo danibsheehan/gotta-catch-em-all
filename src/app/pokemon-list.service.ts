@@ -5,22 +5,26 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { Pokemon } from './pokemon';
 import { PokemonBrief } from './pokemon';
-import { PokemonType } from './pokemon-type';
 import { PokemonTypeList } from './pokemon-type-list';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonListService {
-  public pokemonDetails = new BehaviorSubject<any>({});
+  public pokemonDetails = new BehaviorSubject<Partial<Pokemon>>({});
   public pokemonDetailsError = new BehaviorSubject<string>('');
   private pokemonDetailsRequestSub?: Subscription;
   private pokemonTypesRequest$?: Observable<PokemonTypeList>;
-  private pokemonByTypeRequests: { [typeName: string]: Observable<PokemonBrief[]> } = {};
+  private pokemonByTypeRequests: Record<string, Observable<PokemonBrief[]>> = {};
 
   constructor(
     private http: HttpClient
   ) { }
+
+  /** Encode a single path segment for PokeAPI URLs (names/types can contain reserved characters). */
+  private static encodePathSegment(value: string | number): string {
+    return encodeURIComponent(String(value));
+  }
 
   getPokemonTypes(): Observable<PokemonTypeList> {
     if (!this.pokemonTypesRequest$) {
@@ -33,9 +37,11 @@ export class PokemonListService {
   getPokemonByType(typeName: string): Observable<PokemonBrief[]> {
     if (!this.pokemonByTypeRequests[typeName]) {
       this.pokemonByTypeRequests[typeName] = this.http
-        .get<{ pokemon: { pokemon: PokemonBrief }[] }>(`https://pokeapi.co/api/v2/type/${typeName}`)
+        .get<{ pokemon: { pokemon: PokemonBrief }[] }>(`https://pokeapi.co/api/v2/type/${PokemonListService.encodePathSegment(typeName)}`)
         .pipe(
-          map((typeDetails) => typeDetails.pokemon.map((entry: any) => entry.pokemon as PokemonBrief)),
+          map((typeDetails) =>
+            typeDetails.pokemon.map((entry: { pokemon: PokemonBrief }) => entry.pokemon)
+          ),
           shareReplay(1)
         );
     }
@@ -48,7 +54,7 @@ export class PokemonListService {
     if (this.pokemonDetailsRequestSub) {
       this.pokemonDetailsRequestSub.unsubscribe();
     }
-    this.pokemonDetailsRequestSub = this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${name}`).subscribe(
+    this.pokemonDetailsRequestSub = this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${PokemonListService.encodePathSegment(name)}`).subscribe(
       data => {
         this.pokemonDetails.next(data);
       },
@@ -65,7 +71,7 @@ export class PokemonListService {
   }
 
   getPokemonById(id: number): Observable<Pokemon> {
-    return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    return this.http.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${PokemonListService.encodePathSegment(id)}`);
   }
 
   /**
