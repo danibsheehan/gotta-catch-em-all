@@ -69,7 +69,8 @@ npm run build:github-pages
 | `pickRandomOpponentId()` | Returns a random integer from 1 through `environment.maxPokemonSpeciesId`. |
 | `PokemonSelectorComponent` | Defers the initial type request until after first render. |
 | `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `selectPlayerPokemon` on the battle service when you pick a species. |
-| `PokemonBattleResultComponent` | Reads both fighters’ stats and determines the winner from **special-attack**. |
+| `resolveSpecialAttackBattle()` | Pure domain helper in `src/app/domain/special-attack-battle.ts`: compares **special-attack** base stats, user win / loss copy, victor. |
+| `PokemonBattleResultComponent` | Presentation + 2s delay; delegates outcome to `resolveSpecialAttackBattle`. |
 | `AppComponent` | Renders the battle UI from `PokemonBattleService.vm$` (retry calls `battle.loadOpponent()`). |
 
 ## Configuration

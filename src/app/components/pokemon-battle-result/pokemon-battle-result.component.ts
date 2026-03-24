@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { resolveSpecialAttackBattle } from 'src/app/domain/special-attack-battle';
 import { Pokemon, Stat } from 'src/app/pokemon';
 
 @Component({
@@ -18,7 +19,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   private battleTimer: ReturnType<typeof setTimeout>;
 
   public battleResult: string;
-  public pokemonVictor: Partial<Pokemon>;
+  public pokemonVictor: Partial<Pokemon> | undefined;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -37,28 +38,21 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
       clearTimeout(this.battleTimer);
     }
 
-    this.choiceAttack = this.pokemonChoice.stats!.find(stat => stat.stat.name === 'special-attack');
-    this.opponentAttack = this.pokemonOpponent.stats!.find(stat => stat.stat.name === 'special-attack');
     this.battleResult = '';
+    this.pokemonVictor = undefined;
+    this.choiceAttack = undefined;
+    this.opponentAttack = undefined;
 
     this.battleTimer = setTimeout(() => {
-      this.pokemonBattle(this.choiceAttack, this.opponentAttack);
+      const outcome = resolveSpecialAttackBattle(this.pokemonChoice, this.pokemonOpponent);
+      if (outcome) {
+        this.choiceAttack = outcome.choiceStat;
+        this.opponentAttack = outcome.opponentStat;
+        this.battleResult = outcome.message;
+        this.pokemonVictor = outcome.victor;
+      }
       this.cdr.markForCheck();
     }, 2000);
-  }
-
-  pokemonBattle(choiceAttack: Stat, opponentAttack: Stat): void {
-    if (!choiceAttack || !opponentAttack) {
-      return;
-    }
-
-    if (this.choiceAttack.base_stat > this.opponentAttack.base_stat) {
-      this.battleResult = 'Congrats, you win!';
-      this.pokemonVictor = this.pokemonChoice;
-    } else {
-      this.battleResult = 'Uh oh, you lose this battle. Maybe next time!';
-      this.pokemonVictor = this.pokemonOpponent;
-    }
   }
 
   ngOnDestroy() {

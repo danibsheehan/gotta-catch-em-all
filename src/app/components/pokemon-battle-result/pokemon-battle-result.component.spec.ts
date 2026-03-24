@@ -37,18 +37,18 @@ describe('PokemonBattleResultComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not start battle when stats are missing', () => {
+  it('should not start battle when stats are missing', fakeAsync(() => {
     component.pokemonChoice = {} as any;
     component.pokemonOpponent = pokemonOpponentStub;
-    const battleSpy = spyOn(component, 'pokemonBattle');
 
     component.ngOnChanges({
       pokemonChoice: new SimpleChange(pokemonChoiceStub, component.pokemonChoice, false)
     });
 
-    expect(battleSpy).not.toHaveBeenCalled();
-    expect(component.battleResult).toBeUndefined();
-  });
+    tick(5000);
+    expect(component.battleResult).toBeFalsy();
+    expect(component.choiceAttack).toBeUndefined();
+  }));
 
   it('should clear existing timer before creating a new one', () => {
     const clearSpy = spyOn(window, 'clearTimeout').and.callThrough();
@@ -95,14 +95,6 @@ describe('PokemonBattleResultComponent', () => {
     expect(component.battleResult).toBe('Uh oh, you lose this battle. Maybe next time!');
     expect(component.pokemonVictor).toEqual(pokemonOpponentStub);
   }));
-
-  it('pokemonBattle should return early when attack stats are missing', () => {
-    component.battleResult = 'existing';
-
-    component.pokemonBattle(null as any, pokemonOpponentStub.stats[0]);
-
-    expect(component.battleResult).toBe('existing');
-  });
 
   it('should clear timer on destroy', () => {
     const clearSpy = spyOn(window, 'clearTimeout').and.callThrough();
