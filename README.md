@@ -8,6 +8,17 @@ This project is a small browser game for experimenting with Angular, `HttpClient
 
 **Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), RxJS 7, SCSS, Karma/Jasmine.
 
+## Source layout
+
+| Area | Path |
+| --- | --- |
+| App shell | `src/app/app.component.*`, `app.config.ts` |
+| Core (HTTP API client) | `src/app/core/api/` |
+| Shared models | `src/app/shared/models/` (`Pokemon`, types, type list) |
+| Battle feature | `src/app/features/battle/` — services (battle / player / opponent), `special-attack-battle.ts`, `pokemon-battle-result/` |
+| Picker feature | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/` |
+| Display feature | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`) |
+
 ## Features
 
 - Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu).
@@ -58,19 +69,19 @@ npm run build:github-pages
 | Symbol / area | Responsibility |
 | --- | --- |
 | `PokeApiClient` | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`). |
-| `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`). |
-| `PokemonPlayerService` | Player selection: `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
-| `PokemonOpponentService` | Random opponent id, `getPokemonById`, default sprite URL, `getPokemonOpponent()`. |
-| `PokemonBattleService` | Unified battle state: opponent loading + Pokémon via `switchMap`, player via `PokemonPlayerService`, `vm$` for the shell, `loadOpponent()` / `selectPlayerPokemon()`. |
+| `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`) in `features/pokemon-picker/`. |
+| `PokemonPlayerService` | Player selection (`features/battle/`): `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
+| `PokemonOpponentService` | Random opponent id, `getPokemonById`, sprite URL (`features/battle/`). |
+| `PokemonBattleService` | Unified battle state (`features/battle/`): `vm$`, `loadOpponent()` / `selectPlayerPokemon()`. |
 | `getPokemonTypes()` | `GET /type/` — returns the paginated type list (names + URLs). |
 | `getPokemonByType(typeName)` | `GET /type/{typeName}` — returns brief entries for Pokémon in that type. |
 | `getPokemonDetails(name)` | `GET /pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
 | `getPokemonById(id)` | `GET /pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
 | `pickRandomOpponentId()` | Returns a random integer from 1 through `environment.maxPokemonSpeciesId`. |
-| `PokemonSelectorComponent` | Defers the initial type request until after first render. |
-| `PokemonTypeComponent` | Opens a type dropdown, loads names on first open, calls `selectPlayerPokemon` on the battle service when you pick a species. |
-| `resolveSpecialAttackBattle()` | Pure domain helper in `src/app/domain/special-attack-battle.ts`: compares **special-attack** base stats, user win / loss copy, victor. |
-| `PokemonBattleResultComponent` | Presentation + 2s delay; delegates outcome to `resolveSpecialAttackBattle`. |
+| `PokemonSelectorComponent` | `features/pokemon-picker/` — defers the initial type request until after first render. |
+| `PokemonTypeComponent` | `features/pokemon-picker/` — dropdown, loads names on first open, `selectPlayerPokemon` on battle service. |
+| `resolveSpecialAttackBattle()` | Pure helper in `features/battle/special-attack-battle.ts` — **special-attack** comparison, messages, victor. |
+| `PokemonBattleResultComponent` | `features/battle/pokemon-battle-result/` — presentation + 2s delay. |
 | `AppComponent` | Renders the battle UI from `PokemonBattleService.vm$` (retry calls `battle.loadOpponent()`). |
 
 ## Configuration

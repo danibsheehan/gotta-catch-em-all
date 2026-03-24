@@ -4,9 +4,9 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
-import { PokemonBattleService } from './pokemon/pokemon-battle.service';
-import { PokemonOpponentService } from './pokemon/pokemon-opponent.service';
-import { PokemonPlayerService } from './pokemon/pokemon-player.service';
+import { PokemonBattleService } from './features/battle/pokemon-battle.service';
+import { PokemonOpponentService } from './features/battle/pokemon-opponent.service';
+import { PokemonPlayerService } from './features/battle/pokemon-player.service';
 
 describe('AppComponent', () => {
   let pokemonPlayerSpy: jasmine.SpyObj<PokemonPlayerService>;

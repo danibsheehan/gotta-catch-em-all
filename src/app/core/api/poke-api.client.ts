@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Pokemon, PokemonBrief } from 'src/app/pokemon';
-import { PokemonTypeList } from 'src/app/pokemon-type-list';
+import { Pokemon, PokemonBrief } from 'src/app/shared/models/pokemon';
+import { PokemonTypeList } from 'src/app/shared/models/pokemon-type-list';
 
 /** Raw `GET /type/{name}` body shape (only the field we read). */
 export interface PokeApiTypeDetailResponse {

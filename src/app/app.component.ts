@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { PokemonBattleService } from './pokemon/pokemon-battle.service';
-import { PokemonBattleResultComponent } from './components/pokemon-battle-result/pokemon-battle-result.component';
-import { PokemonDetailsComponent } from './components/pokemon-details/pokemon-details.component';
-import { PokemonSelectorComponent } from './components/pokemon-selector/pokemon-selector.component';
+import { PokemonBattleResultComponent } from './features/battle/pokemon-battle-result/pokemon-battle-result.component';
+import { PokemonBattleService } from './features/battle/pokemon-battle.service';
+import { PokemonDetailsComponent } from './features/pokemon-display/pokemon-details/pokemon-details.component';
+import { PokemonSelectorComponent } from './features/pokemon-picker/pokemon-selector/pokemon-selector.component';
 
 @Component({
     selector: 'app-root',
