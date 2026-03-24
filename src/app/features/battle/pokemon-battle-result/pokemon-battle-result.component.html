@@ -1,0 +1,21 @@
+<section class="battle-result-section" aria-labelledby="victor-heading">
+  <h2 id="victor-heading" class="battle-result-heading">The Victor:</h2>
+  @if (battleResult) {
+    <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
+  }
+  @if (battleResult) {
+    <div class="battle-result-announce" aria-live="polite" aria-atomic="true">
+      <p class="battle-result-message">{{ battleResult }}</p>
+    </div>
+    <dl class="battle-stats">
+      <div class="battle-stats-row">
+        <dt class="battle-stats-label">Opponent Special Attack</dt>
+        <dd>{{ opponentAttack.base_stat }}</dd>
+      </div>
+      <div class="battle-stats-row">
+        <dt class="battle-stats-label">Choice Special Attack</dt>
+        <dd>{{ choiceAttack.base_stat }}</dd>
+      </div>
+    </dl>
+  }
+</section>

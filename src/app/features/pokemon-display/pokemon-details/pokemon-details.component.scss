@@ -1,0 +1,51 @@
+:host {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 20px auto;
+    max-width: 500px;
+    min-width: 0;
+    text-align: center;
+    vertical-align: top;
+    width: min(100%, 500px);
+}
+
+@media (min-width: 768px) {
+    :host {
+        min-width: 250px;
+        width: 30%;
+    }
+}
+
+.current-pokemon {
+    border: 2px solid black;
+    box-sizing: border-box;
+    /* Name (~1.5rem) + 120px image + spacing */
+    min-height: 148px;
+    min-width: min(100%, 132px);
+    padding-bottom: 4px;
+}
+
+.pokemon-name {
+  display: block;
+  min-height: 1.5em;
+  text-transform: capitalize;
+}
+
+.pokemon-image {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 120px;
+  object-fit: contain;
+  width: 120px;
+}
+
+.pokemon-image-placeholder {
+  border: 2px solid black;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 120px;
+  margin: 0 auto;
+  width: 120px;
+}

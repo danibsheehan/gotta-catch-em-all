@@ -1,0 +1,25 @@
+<section class="pokemon-selector-section" aria-labelledby="selector-heading">
+<h2 id="selector-heading" class="pokemon-cta">Choose Your Pokemon!</h2>
+
+<div class="pokemon-selector-status" aria-live="polite">
+  @if (isLoadingTypes) {
+    <div class="pokemon-selector-error">Loading pokemon types...</div>
+  }
+
+  @if (pokemonTypesError) {
+    <div class="pokemon-selector-error">{{ pokemonTypesError }}</div>
+  }
+</div>
+
+<div class="pokemon-search-container">
+  <div class="pokemon-type-container">
+    @if (pokemonTypes$ | async; as pokemonTypes) {
+      @for (pokemonType of pokemonTypes; track pokemonType) {
+        <div class="pokemon-type-item">
+          <app-pokemon-type [pokemonType]="pokemonType"></app-pokemon-type>
+        </div>
+      }
+    }
+  </div>
+</div>
+</section>
