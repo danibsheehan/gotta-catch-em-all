@@ -8,6 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --configuration production",
+    "build:github-pages": "ng build --configuration production --base-href /gotta-catch-em-all/",
     "build:dev": "ng build --configuration development",
     "serve:dist": "npx --yes http-server dist/gotta-catch-em-all/browser -p 8080 -c-1",
     "test": "ng test",
