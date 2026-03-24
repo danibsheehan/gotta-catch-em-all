@@ -10,3 +10,36 @@
     text-align: center;
     width: 95%;
 }
+
+.skip-link {
+    background: #000;
+    color: #fff;
+    left: -9999px;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    text-decoration: none;
+    top: 0;
+    z-index: 10000;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+}
+
+.visually-hidden {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+:where(button, [href], select, input, textarea, summary):focus-visible {
+    outline: 3px solid #1565c0;
+    outline-offset: 2px;
+}

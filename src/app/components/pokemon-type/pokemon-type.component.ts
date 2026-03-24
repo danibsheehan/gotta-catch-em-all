@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonType } from 'src/app/pokemon-type';
 import { PokemonListService } from 'src/app/pokemon-list.service';
@@ -12,6 +22,9 @@ import { PokemonListService } from 'src/app/pokemon-list.service';
 })
 export class PokemonTypeComponent implements OnChanges, OnDestroy {
   @Input() pokemonType: PokemonType;
+  @ViewChild('typeButton') typeButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('pokemonSelect') pokemonSelect?: ElementRef<HTMLSelectElement>;
+
   public isOpen = false;
   public isLoadingPokemonNames = false;
   public pokemonNames: string[] = [];
@@ -23,6 +36,15 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
     private cdr: ChangeDetectorRef
   ) { }
 
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Escape' || !this.isOpen) {
+      return;
+    }
+    event.preventDefault();
+    this.closeDropdown();
+  }
+
   selectPokemon(name: string) {
     if (name) {
       this.pokemonListService.getPokemonDetails(name);
@@ -33,6 +55,9 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
     this.isOpen = !this.isOpen;
     if (this.isOpen && !this.pokemonNames.length && !this.isLoadingPokemonNames && !this.pokemonLoadError) {
       this.loadPokemonNames();
+    } else if (this.isOpen && this.pokemonNames.length) {
+      this.cdr.markForCheck();
+      this.queueFocusPokemonSelect();
     }
   }
 
@@ -48,6 +73,15 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
     this.loadPokemonNamesSub?.unsubscribe();
   }
 
+  private closeDropdown(): void {
+    if (!this.isOpen) {
+      return;
+    }
+    this.isOpen = false;
+    this.cdr.markForCheck();
+    setTimeout(() => this.typeButton?.nativeElement?.focus());
+  }
+
   private loadPokemonNames() {
     this.isLoadingPokemonNames = true;
     this.loadPokemonNamesSub?.unsubscribe();
@@ -57,6 +91,7 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
         this.pokemonLoadError = this.pokemonNames.length ? '' : `No pokemon were found for ${this.pokemonType.name}.`;
         this.isLoadingPokemonNames = false;
         this.cdr.markForCheck();
+        this.queueFocusPokemonSelect();
       },
       () => {
         this.pokemonNames = [];
@@ -65,6 +100,13 @@ export class PokemonTypeComponent implements OnChanges, OnDestroy {
         this.cdr.markForCheck();
       }
     );
+  }
+
+  private queueFocusPokemonSelect(): void {
+    if (!this.isOpen) {
+      return;
+    }
+    setTimeout(() => this.pokemonSelect?.nativeElement?.focus());
   }
 
 }

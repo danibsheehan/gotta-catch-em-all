@@ -11,6 +11,9 @@
         [attr.fetchpriority]="prioritizeLcp ? 'high' : null"
         decoding="async">
     } @else {
-      <div class="pokemon-image pokemon-image-placeholder"></div>
+      <div
+        class="pokemon-image pokemon-image-placeholder"
+        role="img"
+        [attr.aria-label]="pokemonDetails?.name ? 'No sprite image for ' + pokemonDetails.name : 'Pokémon sprite unavailable'"></div>
     }
 </div>

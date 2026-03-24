@@ -48,9 +48,15 @@
 }
 
 .choice-error {
-    color: #b22222;
+    color: #8f1414;
     display: block;
     margin-top: 8px;
+}
+
+.battle-section-heading {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
 }
 
 .opponent-retry {
