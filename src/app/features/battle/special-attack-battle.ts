@@ -2,8 +2,8 @@ import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 
 export const SPECIAL_ATTACK_STAT_NAME = 'special-attack';
 
-export const SPECIAL_ATTACK_WIN_MESSAGE = 'Congrats, you win!';
-export const SPECIAL_ATTACK_LOSE_MESSAGE = 'Uh oh, you lose this battle. Maybe next time!';
+export const SPECIAL_ATTACK_WIN_MESSAGE = 'yay!! you win 🎉 sheer star power ✨';
+export const SPECIAL_ATTACK_LOSE_MESSAGE = 'oof not this time 💔 run it back?';
 
 export interface SpecialAttackBattleOutcome {
   choiceStat: Stat;

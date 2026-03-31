@@ -1,35 +1,98 @@
 :host {
+    border-radius: var(--radius-md);
+    color-scheme: light;
     display: block;
+    overflow: visible;
 }
 
 .pokemon-type-button {
-    width: 100%;
-    padding: 20px;
+    background: var(--chip-bg);
     border: none;
-    background: transparent;
+    border-bottom: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    padding: var(--space-4) var(--space-4);
     text-align: center;
     text-transform: capitalize;
-    font: inherit;
-    cursor: pointer;
+    transition: background 0.15s ease;
+    width: 100%;
+}
+
+/* Full rounding when panel is closed (button is the only child). */
+.pokemon-type-button:only-child {
+    border-bottom: none;
+}
+
+.pokemon-type-button:not(:only-child) {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.pokemon-type-button:hover {
+    background: color-mix(in srgb, var(--accent-primary) 32%, white);
+}
+
+.pokemon-type-button:active {
+    background: color-mix(in srgb, var(--accent-lilac) 38%, white);
 }
 
 .pokemon-type-dropdown-container {
+    background: var(--surface-muted);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-sizing: border-box;
     min-height: 2.75rem;
-    padding: 0 16px 16px 16px;
+    overflow: visible;
+    padding: var(--space-4);
 }
 
 .pokemon-type-loading {
+    color: var(--accent-lilac-deep);
     display: block;
+    font-style: normal;
+    font-weight: 600;
     text-align: center;
 }
 
 .pokemon-type-error {
-    color: #8f1414;
+    color: var(--semantic-danger);
     display: block;
     text-align: center;
 }
 
+/* Explicit colors + color-scheme: native widgets sometimes ignore CSS variables / dark OS palette
+   for the closed field, so placeholder text can match the background until the menu opens. */
 .pokemon-type-dropdown {
+    accent-color: var(--semantic-info);
+    background-color: #ffffff;
+    border: 2px solid var(--chip-border);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    color: var(--text-primary);
+    color-scheme: light;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.35;
+    margin: 0;
+    max-width: 100%;
+    min-height: 48px;
+    /* Avoid min-width: 0 here: native <select> uses it to ellipsize the closed label too aggressively. */
+    min-width: min(100%, 12rem);
+    opacity: 1;
+    overflow-x: visible;
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4) 2.75rem;
+    text-overflow: clip;
+    text-transform: none;
+    -webkit-text-fill-color: var(--text-primary);
     width: 100%;
+}
+
+.pokemon-type-dropdown option {
+    background-color: #ffffff;
+    color: var(--text-primary);
     text-transform: capitalize;
 }

@@ -6,7 +6,7 @@ import { PokeApiClient } from 'src/app/core/api/poke-api.client';
 import { Pokemon } from 'src/app/shared/models/pokemon';
 
 const PLAYER_DETAILS_ERROR =
-  'Pokemon data could not be found. Please choose another pokemon.';
+  "couldn't load that pokémon — try another? 🔄";
 
 interface PlayerFetchSnapshot {
   details: Partial<Pokemon>;

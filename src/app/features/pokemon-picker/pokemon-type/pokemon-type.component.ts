@@ -104,14 +104,16 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
     this.loadPokemonNamesSub = this.pokemonCatalog.getPokemonByType(this.pokemonType.name).subscribe(
       (pokemon) => {
         this.pokemonNames = pokemon.map((pokemonEntry) => pokemonEntry.name);
-        this.pokemonLoadError = this.pokemonNames.length ? '' : `No pokemon were found for ${this.pokemonType.name}.`;
+        this.pokemonLoadError = this.pokemonNames.length
+          ? ''
+          : `👀 no ${this.pokemonType.name} crew in the dex rn`;
         this.isLoadingPokemonNames = false;
         this.cdr.markForCheck();
         this.queueFocusPokemonSelect();
       },
       () => {
         this.pokemonNames = [];
-        this.pokemonLoadError = `Pokemon data could not be found for ${this.pokemonType.name}.`;
+        this.pokemonLoadError = `😵 couldn't fetch ${this.pokemonType.name} — tap refresh?`;
         this.isLoadingPokemonNames = false;
         this.cdr.markForCheck();
       }

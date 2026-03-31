@@ -35,7 +35,7 @@ export class PokemonSelectorComponent {
         }),
         map((data) => data.results),
         catchError(() => {
-          this.pokemonTypesError = 'Pokemon type data could not be found. Please refresh and try again.';
+          this.pokemonTypesError = '😵 types went missing — refresh and try again?';
           return of([]);
         }),
         finalize(() => {

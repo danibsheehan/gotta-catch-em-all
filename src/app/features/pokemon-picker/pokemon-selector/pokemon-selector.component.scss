@@ -1,75 +1,103 @@
-h2, h4 {
-	text-align: center;
+.pokemon-selector-section {
+    margin-top: var(--space-6);
+}
+
+h2,
+h4 {
+    text-align: center;
 }
 
 /* Reserve space for loading / error line so the type grid does not jump when it appears */
 .pokemon-selector-status {
-	min-height: 2.75rem;
+    min-height: 2.75rem;
+}
+
+.pokemon-cta {
+    color: var(--text-primary);
+    font-size: var(--text-title);
+    font-weight: 600;
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--space-4);
+    text-shadow: 2px 2px 0 rgba(255, 77, 173, 0.5);
 }
 
 h4 {
-	text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 .pokemon-selector-loading {
-	color: #444;
-	font-style: italic;
-	margin: 12px auto 0;
-	max-width: 1200px;
-	text-align: center;
+    color: var(--accent-lilac-deep);
+    font-style: normal;
+    font-weight: 600;
+    margin: var(--space-3) auto 0;
+    max-width: 1200px;
+    text-align: center;
 }
 
 .pokemon-selector-error {
-	color: #8f1414;
-	margin: 12px auto 0;
-	max-width: 1200px;
-	text-align: center;
+    background: var(--semantic-danger-bg);
+    border-radius: var(--radius-sm);
+    color: var(--semantic-danger);
+    margin: var(--space-3) auto 0;
+    max-width: 1200px;
+    padding: var(--space-3);
+    text-align: center;
 }
 
 .pokemon-search-container {
-	display: flex;
+    display: flex;
 }
 
 .pokemon-type-container {
-	align-content: flex-start;
-	display: grid;
-	gap: 20px;
-	grid-template-columns: 1fr;
-	margin: 20px auto;
-	max-width: 1200px;
-	width: 70%;
+    align-content: flex-start;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: 1fr;
+    margin: var(--space-5) auto;
+    max-width: 1200px;
+    width: 100%;
 }
 
 @media (max-width: 767px) {
-	.pokemon-type-container {
-		min-height: 120px;
-		width: 100%;
-	}
+    .pokemon-type-container {
+        min-height: 120px;
+    }
 }
 
 @media (min-width: 768px) {
-	.pokemon-type-container {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+    /* Wider minimum tracks so <select> closed labels are not mid-word ellipsized in WebKit. */
+    .pokemon-type-container {
+        grid-template-columns: repeat(2, minmax(13.5rem, 1fr));
+    }
 }
 
 @media (min-width: 992px) {
-	.pokemon-type-container {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
+    .pokemon-type-container {
+        grid-template-columns: repeat(3, minmax(13.5rem, 1fr));
+    }
 }
 
 @media (min-width: 1200px) {
-	.pokemon-type-container {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
+    .pokemon-type-container {
+        grid-template-columns: repeat(4, minmax(13.5rem, 1fr));
+    }
 }
 
-.pokemon-searched {
-	border-right: 2px solid red;
-}
-
+/* overflow: visible so native <select> menus are not clipped (overflow: hidden truncates popups). */
 .pokemon-type-item {
-	border: 2px solid black;
-	margin: 0;
+    background: var(--surface-elevated);
+    border: 2px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    box-sizing: border-box;
+    margin: 0;
+    min-width: 0;
+    overflow: visible;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.pokemon-type-item:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
 }

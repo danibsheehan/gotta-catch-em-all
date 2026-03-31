@@ -1,19 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+@use "./styles/tokens";
 
-/* Mirrors index.html inline .app-hero-title when global styles load */
+/* You can add global styles to this file, and also import other style files */
+html {
+    /* App is light-themed; prevents native controls (e.g. <select>) using dark palettes on dark OS. */
+    color-scheme: light;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--surface-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Hero: matches index.html critical path; full styles when CSS loads */
 .app-hero-title {
     box-sizing: border-box;
-    font-size: 2.5rem;
-    line-height: 1.2;
-    margin: 0 auto 0.25em;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 auto;
     max-width: 100%;
+    padding-top: var(--space-5);
+    text-align: center;
+    /* Sticker-style drop shadow — Big Yellow punch (Starface-adjacent) */
+    text-shadow: 3px 3px 0 var(--accent-primary);
+    width: min(95%, 48rem);
+}
+
+.app-hero-subtitle {
+    box-sizing: border-box;
+    color: var(--accent-lilac-deep);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0 auto var(--space-6);
+    max-width: 28rem;
+    padding: 0 var(--space-4);
     text-align: center;
     width: 95%;
 }
 
+.app-shell {
+    margin: 0 auto;
+    max-width: 72rem;
+    padding: 0 var(--space-4) var(--space-6);
+}
+
 .skip-link {
-    background: #000;
-    color: #fff;
+    background: var(--text-primary);
+    color: var(--surface-elevated);
     left: -9999px;
     padding: 0.5rem 1rem;
     position: absolute;
@@ -40,6 +82,34 @@
 }
 
 :where(button, [href], select, input, textarea, summary):focus-visible {
-    outline: 3px solid #1565c0;
+    outline: 3px solid var(--focus-ring);
     outline-offset: 2px;
+}
+
+/* Primary actions: play again, try again */
+:where(.play-again, .opponent-retry) {
+    appearance: none;
+    background: var(--accent-primary);
+    border: 3px solid var(--border-outline);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 0 rgba(26, 26, 26, 0.12);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    max-width: 280px;
+    min-height: 44px;
+    padding: var(--space-3) var(--space-5);
+    transition: background 0.15s ease, transform 0.15s ease;
+    width: 100%;
+}
+
+:where(.play-again, .opponent-retry):hover {
+    background: var(--accent-primary-pressed);
+}
+
+:where(.play-again, .opponent-retry):active {
+    box-shadow: 0 2px 0 rgba(26, 26, 26, 0.12);
+    transform: scale(0.98);
 }

@@ -1,7 +1,7 @@
 <section class="battle-result-section" aria-labelledby="victor-heading">
-  <h2 id="victor-heading" class="battle-result-heading">The Victor:</h2>
+  <h2 id="victor-heading" class="battle-result-heading">the victor 🏆</h2>
   @if (isResolvingBattle) {
-    <p class="battle-resolving" role="status" aria-busy="true">Resolving the battle…</p>
+    <p class="battle-resolving" role="status" aria-busy="true">⚔️ crunching the numbers…</p>
   }
   @if (battleResult) {
     <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
@@ -12,14 +12,14 @@
     </div>
     <dl class="battle-stats">
       <div class="battle-stats-row">
-        <dt class="battle-stats-label">Opponent Special Attack</dt>
+        <dt class="battle-stats-label">their sp. atk</dt>
         <dd>{{ opponentAttack.base_stat }}</dd>
       </div>
       <div class="battle-stats-row">
-        <dt class="battle-stats-label">Choice Special Attack</dt>
+        <dt class="battle-stats-label">your sp. atk</dt>
         <dd>{{ choiceAttack.base_stat }}</dd>
       </div>
     </dl>
-    <button type="button" class="play-again" (click)="playAgain()">Play again</button>
+    <button type="button" class="play-again" (click)="playAgain()">play again</button>
   }
 </section>

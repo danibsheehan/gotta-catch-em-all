@@ -1,0 +1,63 @@
+:root {
+    /* Surfaces — punchier cream + saturated pastels (Starface-style pop) */
+    --surface-canvas: #fff3d4;
+    --surface-elevated: #ffffff;
+    --surface-muted: #ead9ff;
+    --surface-wash-mint: #bfffec;
+    --border-subtle: #c9a8ff;
+    --border-outline: #141414;
+
+    /* Text */
+    --text-primary: #141414;
+    --text-secondary: #4a3566;
+
+    /*
+     * Accents — neon yellow, electric purple/hot pink, mint
+     * https://starface.world/
+     */
+    --accent-primary: #ffee33;
+    --accent-primary-pressed: #ffe018;
+    --accent-lilac: #b388ff;
+    --accent-lilac-deep: #6f3cff;
+    --accent-secondary: #b388ff;
+    --accent-pink: #ff4dad;
+    --accent-mint: #2ad4a8;
+    --accent-tertiary: #2ad4a8;
+
+    /* Semantic */
+    --semantic-danger: #ff2d6b;
+    --semantic-danger-bg: #ffe0ed;
+    --semantic-info: #6f3cff;
+    --focus-ring: #6f3cff;
+
+    --chip-bg: #ffffff;
+    --chip-border: #b898f0;
+    --chip-hover-bg: #fff0ff;
+
+    --radius-sm: 12px;
+    --radius-md: 22px;
+    --radius-pill: 9999px;
+    --shadow-card: 0 10px 0 rgba(20, 20, 20, 0.08), 0 16px 32px rgba(111, 60, 255, 0.18);
+    --shadow-card-hover: 0 12px 0 rgba(20, 20, 20, 0.09), 0 20px 40px rgba(255, 77, 173, 0.2);
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+
+    --font-display: "Fredoka", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --text-title: 1.375rem;
+    --text-stat: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

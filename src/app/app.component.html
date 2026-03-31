@@ -2,40 +2,40 @@
 <div class="battle-container">
   <div class="visually-hidden" aria-live="polite" aria-atomic="true">
     @if (vm.opponentLoading) {
-      <span>Choosing your opponent.</span>
+      <span>picking your opponent…</span>
     } @else if (!vm.opponent?.name) {
-      <span>Opponent could not join the battle.</span>
+      <span>no opponent this round.</span>
     } @else {
-      <span>Opponent ready: {{ vm.opponent.name }}.</span>
+      <span>opponent ready: {{ vm.opponent.name }}.</span>
     }
     @if (vm.playerLoading) {
-      <span>Loading your Pokémon.</span>
+      <span>loading your pokémon…</span>
     }
   </div>
-  <section class="opponent battle-opponent" aria-label="Your opponent" [attr.aria-busy]="vm.opponentLoading">
+  <section class="opponent battle-opponent" aria-label="Opponent" [attr.aria-busy]="vm.opponentLoading">
     @if (vm.opponentLoading) {
       <div class="pokemon-opponent-loading" role="status">
-        <span class="loading-label" aria-hidden="true">Choosing your opponent…</span>
+        <span class="loading-label" aria-hidden="true">⚡ picking your opponent…</span>
       </div>
     }
     @if (!vm.opponentLoading && !vm.opponent?.name) {
       <div class="pokemon-opponent-error">
-        <span class="opponent-error" aria-hidden="true">Oh no! It seems like your opponent doesn't want to fight.</span>
-        <button type="button" class="opponent-retry" (click)="battle.loadOpponent()">Choose Again</button>
+        <span class="opponent-error" aria-hidden="true">💔 no opponent this time — wanna try again?</span>
+        <button type="button" class="opponent-retry" (click)="battle.loadOpponent()">try again</button>
       </div>
     }
     @if (!vm.opponentLoading && vm.opponent?.name) {
       <div>
-        <h2 id="opponent-heading" class="battle-section-heading">Your Opponent:</h2>
+        <h2 id="opponent-heading" class="battle-section-heading">your opponent ✨</h2>
         <app-pokemon-details [pokemonDetails]="vm.opponent" [prioritizeLcp]="true"></app-pokemon-details>
       </div>
     }
   </section>
   <section class="choice battle-choice" aria-labelledby="choice-heading" [attr.aria-busy]="vm.playerLoading">
-    <h2 id="choice-heading" class="battle-section-heading">Your Choice:</h2>
+    <h2 id="choice-heading" class="battle-section-heading">your pick 💫</h2>
     @if (vm.playerLoading) {
       <div class="choice-loading" role="status">
-        <span class="loading-label" aria-hidden="true">Loading your Pokémon…</span>
+        <span class="loading-label" aria-hidden="true">🔮 summoning your pokémon…</span>
       </div>
     }
     @if (vm.player?.name && !vm.playerLoading) {
@@ -58,5 +58,7 @@
 @defer (on idle) {
   <app-pokemon-selector></app-pokemon-selector>
 } @placeholder {
-  <div class="selector-defer-placeholder" aria-hidden="true"></div>
+  <div class="selector-defer-placeholder" aria-hidden="true">
+    <span class="selector-defer-hint">rounding up types… 🌀</span>
+  </div>
 }

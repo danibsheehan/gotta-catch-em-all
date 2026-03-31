@@ -4,7 +4,7 @@
       <img
         class="pokemon-image"
         [src]="pokemonDetails.sprites.front_default"
-        [alt]="pokemonDetails?.name || 'pokemon image'"
+        [alt]="pokemonDetails?.name || 'pokémon sprite'"
         width="96"
         height="96"
         [attr.loading]="prioritizeLcp ? 'eager' : 'lazy'"
@@ -14,6 +14,8 @@
       <div
         class="pokemon-image pokemon-image-placeholder"
         role="img"
-        [attr.aria-label]="pokemonDetails?.name ? 'No sprite image for ' + pokemonDetails.name : 'Pokémon sprite unavailable'"></div>
+        [attr.aria-label]="pokemonDetails?.name ? 'no sprite for ' + pokemonDetails.name : 'sprite coming soon'">
+        <span class="pokemon-placeholder-emoji" aria-hidden="true">✨</span>
+      </div>
     }
 </div>

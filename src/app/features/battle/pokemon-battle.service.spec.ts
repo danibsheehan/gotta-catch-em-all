@@ -155,9 +155,7 @@ describe('PokemonBattleService', () => {
       filter((vm) => vm.playerError.length > 0),
       take(1),
     ).subscribe((vm) => {
-      expect(vm.playerError).toBe(
-        'Pokemon data could not be found. Please choose another pokemon.',
-      );
+      expect(vm.playerError).toBe("couldn't load that pokémon — try another? 🔄");
       expect(vm.player).toEqual({});
       done();
     });

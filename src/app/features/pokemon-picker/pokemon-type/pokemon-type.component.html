@@ -16,7 +16,7 @@
     role="region"
     [attr.aria-labelledby]="'type-btn-' + pokemonType.name">
     @if (isLoadingPokemonNames) {
-      <span class="pokemon-type-loading" role="status" aria-busy="true">Loading Pokémon names…</span>
+      <span class="pokemon-type-loading" role="status" aria-busy="true">✨ loading names…</span>
     }
     @if (pokemonLoadError) {
       <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
@@ -25,16 +25,16 @@
       <select
         #pokemonSelect
         class="pokemon-type-dropdown"
-        [attr.aria-label]="'Choose a ' + pokemonType.name + ' Pokémon'"
+        [attr.aria-label]="'choose a ' + pokemonType.name + ' pokémon'"
         (change)="selectPokemon($any($event.target).value)">
-        <option value="">Choose a {{ pokemonType.name }} pokemon</option>
+        <option value="">choose a pokémon</option>
         @for (pokemonName of pokemonNames; track pokemonName) {
           <option [value]="pokemonName">{{ pokemonName }}</option>
         }
       </select>
     }
     @if (!isLoadingPokemonNames && !pokemonLoadError && !pokemonNames.length) {
-      <span class="pokemon-type-loading">No pokemon were found for {{ pokemonType.name }}.</span>
+      <span class="pokemon-type-loading">👀 no {{ pokemonType.name }} friends here…</span>
     }
   </div>
 }

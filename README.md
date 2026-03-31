@@ -6,13 +6,14 @@
 
 This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
 
-**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), RxJS 7, SCSS, Karma/Jasmine.
+**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), RxJS 7, SCSS (global tokens in `src/styles/`), Karma/Jasmine.
 
 ## Source layout
 
 | Area | Path |
 | --- | --- |
 | App shell | `src/app/app.component.*`, `app.config.ts` |
+| Global styles | `src/styles.scss`, `src/styles/_tokens.scss` (CSS variables, theme) |
 | Core (HTTP API client) | `src/app/core/api/` |
 | Shared models | `src/app/shared/models/` (`Pokemon`, types, type list) |
 | Battle feature | `src/app/features/battle/` — services (battle / player / opponent), `special-attack-battle.ts`, `pokemon-battle-result/` |
@@ -86,16 +87,21 @@ npm run build:github-pages
 
 ## Configuration
 
-API root URLs and dex upper bound live in `src/environments/environment*.ts` (`pokeApi.baseUrl`, `pokeApi.frontSpriteBaseUrl`, `maxPokemonSpeciesId`). `PokeApiClient` builds request URLs from those values.
+| Field | Where | Description |
+| --- | --- | --- |
+| `pokeApi.baseUrl` | `environment*.ts` | PokeAPI v2 root (no trailing slash). |
+| `pokeApi.frontSpriteBaseUrl` | `environment*.ts` | Base URL for opponent front sprites by national dex id. |
+| `maxPokemonSpeciesId` | `environment*.ts` | Inclusive upper bound when rolling a random opponent id. |
 
-To point at a mock server or another deployment, change those environment fields (and rebuild).
+`PokeApiClient` assembles HTTP requests from these values. Swap URLs for a mock server or mirror, then rebuild; production uses `environment.prod.ts` via `angular.json` file replacement.
 
 ## Contributing
 
 | Script | Purpose |
 | --- | --- |
 | `npm start` | Dev server (`ng serve`). |
-| `npm run build` | Production build to `dist/gotta-catch-em-all/`. |
+| `npm run build` | Production build; static assets land in `dist/gotta-catch-em-all/browser/`. |
+| `npm run build:dev` | Development build (no prod env replacement). |
 | `npm run lint` | ESLint (Angular ESLint). |
 | `npm test` | Karma + Chrome (watch mode). |
 | `npm run test:ci` | Single run, headless Chrome with `--no-sandbox` (CI-friendly). |

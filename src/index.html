@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Pokémon battle — choose your Pokémon</title>
+  <title>pokémon battle — pick your fighter</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <!-- Warm connections for JSON (CORS) and sprite images to improve LCP -->
   <link rel="preconnect" href="https://pokeapi.co" crossorigin>
@@ -13,25 +16,50 @@
   <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
   <!-- Critical above-the-fold: no dependency on external CSS or Angular (FCP/LCP on mobile) -->
   <style>
+    html {
+      color-scheme: light;
+    }
     html, body {
       margin: 0;
     }
     body {
-      background: #fff;
-      color: #000;
+      background: #fff3d4;
+      color: #141414;
     }
     app-root {
       display: block;
     }
+    .app-shell {
+      box-sizing: border-box;
+      margin: 0 auto;
+      max-width: 72rem;
+      padding: 0 1rem 2rem;
+    }
     .app-hero-title {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 2.5rem;
+      font-family: "Fredoka", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+      font-size: clamp(2rem, 5vw, 2.75rem);
       font-weight: 700;
-      line-height: 1.2;
-      margin: 0 auto 0.25em;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 auto;
       max-width: 100%;
-      padding-top: 0.25rem;
+      padding-top: 1.5rem;
+      text-align: center;
+      text-shadow: 3px 3px 0 #ffee33;
+      width: min(95%, 48rem);
+    }
+    .app-hero-subtitle {
+      box-sizing: border-box;
+      color: #6f3cff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin: 0 auto 2rem;
+      max-width: 28rem;
+      padding: 0 1rem;
       text-align: center;
       width: 95%;
     }
@@ -53,9 +81,12 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <h1 class="app-hero-title">Pokemon Battle Royale!</h1>
-  <main id="main-content">
-    <app-root></app-root>
-  </main>
+  <div class="app-shell">
+    <h1 class="app-hero-title">pokémon battle royale ✨</h1>
+    <p class="app-hero-subtitle">pick a type, grab a fighter — let’s go 💛</p>
+    <main id="main-content">
+      <app-root></app-root>
+    </main>
+  </div>
 </body>
 </html>

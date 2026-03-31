@@ -3,6 +3,7 @@ import { SimpleChange } from '@angular/core';
 
 import { PokemonBattleResultComponent } from './pokemon-battle-result.component';
 import { PokemonBattleService } from '../pokemon-battle.service';
+import { SPECIAL_ATTACK_LOSE_MESSAGE, SPECIAL_ATTACK_WIN_MESSAGE } from '../special-attack-battle';
 import { Pokemon } from 'src/app/shared/models/pokemon';
 
 describe('PokemonBattleResultComponent', () => {
@@ -42,14 +43,14 @@ describe('PokemonBattleResultComponent', () => {
   });
 
   it('should not start battle when stats are missing', fakeAsync(() => {
-    component.pokemonChoice = {} as any;
+    component.pokemonChoice = {} as Partial<Pokemon>;
     component.pokemonOpponent = pokemonOpponentStub;
 
     component.ngOnChanges({
       pokemonChoice: new SimpleChange(pokemonChoiceStub, component.pokemonChoice, false)
     });
 
-    tick(5000);
+    tick(0);
     expect(component.battleResult).toBeFalsy();
     expect(component.choiceAttack).toBeUndefined();
   }));
@@ -89,7 +90,7 @@ describe('PokemonBattleResultComponent', () => {
     });
     tick(2000);
 
-    expect(component.battleResult).toBe('Congrats, you win!');
+    expect(component.battleResult).toBe(SPECIAL_ATTACK_WIN_MESSAGE);
     expect(component.pokemonVictor).toEqual(pokemonChoiceStub);
   }));
 
@@ -106,7 +107,7 @@ describe('PokemonBattleResultComponent', () => {
     });
     tick(2000);
 
-    expect(component.battleResult).toBe('Uh oh, you lose this battle. Maybe next time!');
+    expect(component.battleResult).toBe(SPECIAL_ATTACK_LOSE_MESSAGE);
     expect(component.pokemonVictor).toEqual(pokemonOpponentStub);
   }));
 

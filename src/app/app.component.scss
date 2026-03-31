@@ -1,28 +1,47 @@
 :host {
     display: block;
     margin: auto;
-    width: 95%;
+    width: 100%;
 }
 
 .selector-defer-placeholder {
+    align-items: center;
+    box-sizing: border-box;
+    color: var(--accent-lilac-deep);
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: center;
     min-height: 120px;
+    padding: var(--space-4);
+    text-align: center;
+}
+
+.selector-defer-hint {
+    opacity: 0.85;
 }
 
 .battle-container {
     display: grid;
+    gap: var(--space-5);
     grid-template-columns: 1fr;
-    margin: auto;
+    margin: 0 auto;
     text-align: center;
-    width: 60%;
+    width: 100%;
+}
+
+.battle-opponent,
+.battle-choice {
+    background: var(--surface-elevated);
+    border: 2px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    box-sizing: border-box;
+    padding: var(--space-5);
 }
 
 /* Reserve vertical space on narrow viewports so opponent / choice swaps do not jump layout */
 @media (max-width: 991px) {
-    .battle-container {
-        width: 100%;
-        max-width: 100%;
-    }
-
     .battle-opponent {
         min-height: 280px;
     }
@@ -46,45 +65,54 @@
 .pokemon-opponent-loading {
     display: inline-block;
     min-height: 3rem;
-    padding: 12px 0;
+    padding: var(--space-3) 0;
     text-align: center;
 }
 
 .opponent-error {
+    color: var(--semantic-danger);
     display: block;
+    margin-bottom: var(--space-3);
 }
 
 .loading-label {
-    color: #444;
-    font-style: italic;
+    color: var(--accent-lilac-deep);
+    font-style: normal;
+    font-weight: 600;
 }
 
 .choice-loading {
-    margin-top: 8px;
+    margin-top: var(--space-2);
     min-height: 3rem;
 }
 
 .choice-error {
-    color: #8f1414;
+    color: var(--semantic-danger);
     display: block;
-    margin-top: 8px;
+    margin-top: var(--space-2);
 }
 
 .battle-section-heading {
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-}
-
-.opponent-retry {
-    border-radius: 10px;
-    width: 100px;
+    color: var(--accent-lilac-deep);
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--space-4);
+    text-transform: none;
 }
 
 .battle-result {
-    margin: auto;
+    background: var(--surface-elevated);
+    border: 2px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    box-sizing: border-box;
+    margin: var(--space-6) auto 0;
+    max-width: 40rem;
+    padding: var(--space-5);
     text-align: center;
-    width: 60%;
+    width: 100%;
 }
 
 .pokemon-results {

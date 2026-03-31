@@ -1,11 +1,17 @@
 :host {
-	border: 2px solid black;
-	display: inline-block;
-	margin: 20px;
-	padding: 20px;
+    background: var(--surface-elevated);
+    border: 2px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    box-sizing: border-box;
+    display: inline-block;
+    margin: var(--space-5);
+    padding: var(--space-5);
 }
 
 .pokemon-brief {
-	display: inline-block;
-	text-transform: capitalize;
+    color: var(--text-primary);
+    display: inline-block;
+    font-weight: 600;
+    text-transform: capitalize;
 }
