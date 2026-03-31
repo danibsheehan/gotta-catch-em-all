@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680">
+  <defs>
+    <clipPath id="circleClip">
+      <circle cx="340" cy="340" r="280"/>
+    </clipPath>
+  </defs>
+
+  <!-- Top half - red -->
+  <rect x="60" y="60" width="560" height="280" fill="#E3263A" clip-path="url(#circleClip)"/>
+
+  <!-- Bottom half - white -->
+  <rect x="60" y="340" width="560" height="280" fill="#F5F5F5" clip-path="url(#circleClip)"/>
+
+  <!-- Outer circle border -->
+  <circle cx="340" cy="340" r="280" fill="none" stroke="#1A1A1A" stroke-width="22"/>
+
+  <!-- Center band -->
+  <rect x="60" y="316" width="560" height="48" fill="#1A1A1A" clip-path="url(#circleClip)"/>
+
+  <!-- Center button - outer ring (black) -->
+  <circle cx="340" cy="340" r="72" fill="#1A1A1A"/>
+
+  <!-- Center button - white ring -->
+  <circle cx="340" cy="340" r="56" fill="#F5F5F5"/>
+
+  <!-- Center button - inner core -->
+  <circle cx="340" cy="340" r="30" fill="#E8E8E8"/>
+
+  <!-- Highlight shine -->
+  <ellipse cx="255" cy="195" rx="52" ry="30" fill="#FF6B7A" opacity="0.5" clip-path="url(#circleClip)"/>
+</svg>
