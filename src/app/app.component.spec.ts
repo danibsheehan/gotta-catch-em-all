@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
@@ -38,6 +39,7 @@ describe('AppComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideNoopAnimations(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: pokemonPlayerSpy },
         { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
@@ -109,6 +111,7 @@ describe('AppComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideNoopAnimations(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: playerSpy },
         { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }

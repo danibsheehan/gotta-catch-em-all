@@ -6,7 +6,7 @@
 
 This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
 
-**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), RxJS 7, SCSS (global tokens in `src/styles/`), Karma/Jasmine.
+**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), Angular Animations (`@angular/animations`), RxJS 7, SCSS (global tokens in `src/styles/`), Karma/Jasmine.
 
 ## Source layout
 

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { PokemonBattleResultComponent } from './pokemon-battle-result.component';
 import { PokemonBattleService } from '../pokemon-battle.service';
@@ -25,7 +26,10 @@ describe('PokemonBattleResultComponent', () => {
     battle = jasmine.createSpyObj('PokemonBattleService', ['playAgain']);
     TestBed.configureTestingModule({
       imports: [PokemonBattleResultComponent],
-      providers: [{ provide: PokemonBattleService, useValue: battle }],
+      providers: [
+        { provide: PokemonBattleService, useValue: battle },
+        provideNoopAnimations(),
+      ],
     })
     .compileComponents();
   });

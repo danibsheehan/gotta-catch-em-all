@@ -92,6 +92,11 @@
     margin-top: var(--space-2);
 }
 
+.arena-opponent-reveal,
+.arena-choice-reveal {
+    width: 100%;
+}
+
 .battle-section-heading {
     color: var(--accent-lilac-deep);
     font-family: var(--font-display);

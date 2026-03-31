@@ -25,7 +25,7 @@
       </div>
     }
     @if (!vm.opponentLoading && vm.opponent?.name) {
-      <div>
+      <div [@arenaOpponentEnter] class="arena-opponent-reveal">
         <h2 id="opponent-heading" class="battle-section-heading">your opponent ✨</h2>
         <app-pokemon-details [pokemonDetails]="vm.opponent" [prioritizeLcp]="true"></app-pokemon-details>
       </div>
@@ -39,8 +39,10 @@
       </div>
     }
     @if (vm.player?.name && !vm.playerLoading) {
-      <app-pokemon-details [pokemonDetails]="vm.player">
-      </app-pokemon-details>
+      <div [@arenaChoiceEnter] class="arena-choice-reveal">
+        <app-pokemon-details [pokemonDetails]="vm.player">
+        </app-pokemon-details>
+      </div>
     }
     @if (vm.playerError && !vm.playerLoading) {
       <span class="choice-error" role="alert">{{ vm.playerError }}</span>

@@ -13,6 +13,13 @@
     width: 100%;
 }
 
+.battle-result-body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .battle-result-heading {
     color: var(--accent-lilac-deep);
     font-family: var(--font-display);
