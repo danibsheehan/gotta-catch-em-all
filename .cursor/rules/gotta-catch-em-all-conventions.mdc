@@ -1,0 +1,33 @@
+---
+description: Angular app layout, API boundaries, battle rules, and styling tokens for gotta-catch-em-all
+alwaysApply: true
+---
+
+# Gotta Catch Em All — project conventions
+
+## Stack and components
+
+- Angular ~20, **standalone** components/directives/pipes (`standalone: true`), `bootstrapApplication` + `app.config.ts`.
+- New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
+
+## Where code belongs
+
+- **`src/app/core/api/`** — HTTP to PokeAPI only via `PokeApiClient`. Do not scatter raw `HttpClient` URLs in features.
+- **`src/app/features/*/`** — feature services, components, and battle logic wiring.
+- **`src/app/shared/models/`** — shared TypeScript models (`Pokemon`, types, etc.).
+
+## HTTP caching
+
+- **`PokemonCatalogService`** caches the type index and per-type lists with `shareReplay(1)` on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
+
+## PokeAPI URLs
+
+- Path segments for names/ids go through **`PokeApiClient`**’s `encodePathSegment` (via `getTypeDetail` / `getPokemon`). Preserve that for any new endpoints on the client.
+
+## Battle resolution
+
+- Pure comparison logic stays in **`resolveSpecialAttackBattle()`** in `src/app/features/battle/special-attack-battle.ts` (stat name `special-attack`, tie → opponent wins, missing stat → `null`). UI components should not reimplement win/loss rules.
+
+## Styles
+
+- Global tokens: **`src/styles/_tokens.scss`** (`:root` CSS variables). Prefer `var(--…)` for colors, radius, shadows. Import patterns follow `src/styles.scss`.
