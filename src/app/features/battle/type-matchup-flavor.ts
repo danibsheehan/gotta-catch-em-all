@@ -57,14 +57,14 @@ export function typeMatchupMicrocopy(
 }
 
 const SESSION_QUIPS = [
-  'pokédex says “loves spreadsheets.” · entry #???',
-  'field test: one stat, zero excuses.',
-  'rival telemetry cached · refresh for new lore.',
-  'battle protocol v0 · special attack only · keep it silly.',
-  'trainer tip: types are flavor here — integers do the talking.',
-  'lab note: tie goes to rival — same as the stat compare.',
-  'session memory: last 3 scrapes · tape ’em to the fridge.',
-  'dex fine print: not affiliated with any region professor.',
+  'the type chart took the day off — special attack clocked in overtime.',
+  'no STAB sympathy: if your number’s bigger, you’re the headline.',
+  'this gym only grades one column; the rest is cosplay.',
+  'effective? resisted? irrelevant — we’re doing math homework in a stadium.',
+  'your rival didn’t bring type coverage; they brought a bigger integer.',
+  'ties go to the house — and the house is always the other trainer.',
+  'nature? ability? held item? cute. we brought a ruler.',
+  'hot take: both of you are “special” — one of you is just more special-attack.',
 ] as const;
 
 /** Deterministic quip from names so it doesn’t flicker on re-render. */

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { SimpleChange } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
+import { AudioService } from 'src/app/core/audio/audio.service';
 import { PokemonBattleResultComponent } from './pokemon-battle-result.component';
 import { BattleHistoryService } from '../battle-history.service';
 import { PokemonBattleService } from '../pokemon-battle.service';
@@ -13,6 +14,7 @@ describe('PokemonBattleResultComponent', () => {
   let fixture: ComponentFixture<PokemonBattleResultComponent>;
   let battle: jasmine.SpyObj<PokemonBattleService>;
   let battleHistory: jasmine.SpyObj<BattleHistoryService>;
+  let audio: jasmine.SpyObj<Pick<AudioService, 'playBattleResult'>>;
   const pokemonChoiceStub: Pokemon = {
     name: 'pikachu',
     sprites: { front_default: 'https://example.com/pikachu.png' },
@@ -27,11 +29,13 @@ describe('PokemonBattleResultComponent', () => {
   beforeEach(async () => {
     battle = jasmine.createSpyObj('PokemonBattleService', ['playAgain']);
     battleHistory = jasmine.createSpyObj('BattleHistoryService', ['recordMatch']);
+    audio = jasmine.createSpyObj('AudioService', ['playBattleResult']);
     TestBed.configureTestingModule({
       imports: [PokemonBattleResultComponent],
       providers: [
         { provide: PokemonBattleService, useValue: battle },
         { provide: BattleHistoryService, useValue: battleHistory },
+        { provide: AudioService, useValue: audio },
         provideNoopAnimations(),
       ],
     })
@@ -105,6 +109,7 @@ describe('PokemonBattleResultComponent', () => {
       playerName: 'pikachu',
       playerWon: true,
     });
+    expect(audio.playBattleResult).toHaveBeenCalledWith(true);
   }));
 
   it('should set lose result when choice attack is not greater', fakeAsync(() => {
@@ -127,6 +132,7 @@ describe('PokemonBattleResultComponent', () => {
       playerName: 'pikachu',
       playerWon: false,
     });
+    expect(audio.playBattleResult).toHaveBeenCalledWith(false);
   }));
 
   it('should clear timer on destroy', () => {

@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonType } from 'src/app/shared/models/pokemon-type';
+import { AudioService } from 'src/app/core/audio/audio.service';
 import { PokemonBattleService } from 'src/app/features/battle/pokemon-battle.service';
 import { PokemonCatalogService } from '../pokemon-catalog.service';
 
@@ -76,6 +77,7 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private pokemonCatalog: PokemonCatalogService,
     private battle: PokemonBattleService,
+    private audio: AudioService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -90,6 +92,7 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
 
   selectPokemon(name: string) {
     if (name) {
+      this.audio.playUiTick();
       this.battle.selectPlayerPokemon(name);
     }
   }

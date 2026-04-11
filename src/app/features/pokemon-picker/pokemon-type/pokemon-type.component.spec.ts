@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 
+import { AudioService } from 'src/app/core/audio/audio.service';
 import { PokemonTypeComponent } from './pokemon-type.component';
 import { PokemonType } from 'src/app/shared/models/pokemon-type';
 import { PokemonBrief } from 'src/app/shared/models/pokemon';
@@ -12,6 +13,7 @@ describe('PokemonTypeComponent', () => {
   let fixture: ComponentFixture<PokemonTypeComponent>;
   let pokemonCatalogSpy: jasmine.SpyObj<PokemonCatalogService>;
   let battleSpy: Pick<PokemonBattleService, 'selectPlayerPokemon' | 'closeSelectorDropdowns$'>;
+  let audioSpy: jasmine.SpyObj<Pick<AudioService, 'playUiTick'>>;
   let closeSelectorDropdowns$: Subject<void>;
   const pokemonTypeStub: PokemonType = {
     name: 'electric',
@@ -21,6 +23,7 @@ describe('PokemonTypeComponent', () => {
   beforeEach(async () => {
     closeSelectorDropdowns$ = new Subject<void>();
     pokemonCatalogSpy = jasmine.createSpyObj('PokemonCatalogService', ['getPokemonByType']);
+    audioSpy = jasmine.createSpyObj('AudioService', ['playUiTick']);
     battleSpy = {
       selectPlayerPokemon: jasmine.createSpy('selectPlayerPokemon'),
       closeSelectorDropdowns$: closeSelectorDropdowns$.asObservable(),
@@ -35,7 +38,8 @@ describe('PokemonTypeComponent', () => {
       imports: [PokemonTypeComponent],
       providers: [
         { provide: PokemonCatalogService, useValue: pokemonCatalogSpy },
-        { provide: PokemonBattleService, useValue: battleSpy }
+        { provide: PokemonBattleService, useValue: battleSpy },
+        { provide: AudioService, useValue: audioSpy },
       ]
     })
     .compileComponents();
@@ -118,6 +122,7 @@ describe('PokemonTypeComponent', () => {
     it('should call battle.selectPlayerPokemon when name is non-empty', () => {
       component.selectPokemon('pikachu');
 
+      expect(audioSpy.playUiTick).toHaveBeenCalled();
       expect(battleSpy.selectPlayerPokemon).toHaveBeenCalledWith('pikachu');
     });
 

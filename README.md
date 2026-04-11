@@ -6,7 +6,7 @@
 
 This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. Resolved matchups can appear in **Recent matchups** (session-scoped, last three). The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
 
-**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), Angular Animations (`@angular/animations`), RxJS 7, SCSS (global tokens in `src/styles/`), Karma/Jasmine.
+**Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), Angular Animations (`@angular/animations`; noop when `prefers-reduced-motion: reduce`), RxJS 7, SCSS (global tokens in `src/styles/`), optional Web Audio UI sounds, Karma/Jasmine.
 
 ## Source layout
 
@@ -15,8 +15,9 @@ This project is a small browser game for experimenting with Angular, `HttpClient
 | App shell | `src/app/app.component.*`, `app.config.ts` |
 | Global styles | `src/styles.scss` imports tokens and battle/arena partials: `_tokens.scss`, `_arena-type-wash.scss`, `_battle-chrome.scss`, `_battle-panel-frames.scss`. Picker type chips use `_pokemon-type-chips.scss`. |
 | Core (HTTP API client) | `src/app/core/api/` |
+| Core (audio) | `src/app/core/audio/` — `AudioService` (optional Web Audio ticks and battle-result stings) |
 | Shared models | `src/app/shared/models/` (`Pokemon`, types, type list) |
-| Battle feature | `src/app/features/battle/` — `PokemonBattleService`, player / opponent services, `battle-history.service`, `special-attack-battle.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
+| Battle feature | `src/app/features/battle/` — `PokemonBattleService`, player / opponent services, `battle-history.service`, `special-attack-battle.ts`, `type-matchup-flavor.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
 | Picker feature | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/` |
 | Display feature | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`) |
 
@@ -25,7 +26,8 @@ This project is a small browser game for experimenting with Angular, `HttpClient
 - Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu). The type-picker region is loaded with `@defer` (viewport + idle prefetch) so the battle shell can paint first.
 - Fetches full `pokemon` records when you confirm a selection.
 - Draws a random opponent (numeric id in `1…964`), preloads its front sprite for faster paint, and exposes **try again** when the opponent request fails.
-- Declares battle outcome via `resolveSpecialAttackBattle()`; `PokemonBattleResultComponent` handles timing, display, and recording the result to `BattleHistoryService`.
+- Declares battle outcome via `resolveSpecialAttackBattle()`; `PokemonBattleResultComponent` handles timing, display, and recording the result to `BattleHistoryService`. Some type pairs show a short flavor line (not damage math).
+- Optional **sound effects** via `AudioService`: arcade tick when confirming a pick and a win/loss sting when the result appears; off by default; enable from the header settings; preference is stored in `localStorage` (`gcea-sound-effects`).
 - Shows up to three **Recent matchups** for the tab session (`sessionStorage`, with in-memory fallback if storage is unavailable).
 - Caches type list and per-type Pokémon list responses with `shareReplay(1)` to avoid duplicate HTTP calls.
 - URL-encodes path segments when calling PokeAPI (handles names with spaces or special characters).
@@ -71,6 +73,7 @@ npm run build:github-pages
 | Symbol / area | Responsibility |
 | --- | --- |
 | `PokeApiClient` | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`). |
+| `AudioService` | Optional Web Audio SFX (`src/app/core/audio/`): `soundEnabled$`, `playUiTick()`, `playBattleResult()`; unlock/resume follows browser autoplay rules. |
 | `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`) in `features/pokemon-picker/`. |
 | `PokemonPlayerService` | Player selection (`features/battle/`): `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
 | `PokemonOpponentService` | Random opponent id, `getPokemonById`, sprite URL (`features/battle/`). |
@@ -86,7 +89,7 @@ npm run build:github-pages
 | `PokemonTypeComponent` | `features/pokemon-picker/` — dropdown, loads names on first open, `selectPlayerPokemon` on battle service. |
 | `resolveSpecialAttackBattle()` | Pure helper in `features/battle/special-attack-battle.ts` — **special-attack** comparison, messages, victor. |
 | `PokemonBattleResultComponent` | `features/battle/pokemon-battle-result/` — presentation + 2s delay; calls `BattleHistoryService.recordMatch` when a winner is known. |
-| `AppComponent` | Battle shell from `PokemonBattleService.vm$` (opponent retry → `battle.loadOpponent()`); deferred `app-pokemon-selector`; `app-battle-recent-matchups` below the fold. |
+| `AppComponent` | Battle shell from `PokemonBattleService.vm$` (opponent retry → `battle.loadOpponent()`); sound toggle wired to `AudioService`; deferred `app-pokemon-selector`; `app-battle-recent-matchups` below the fold. |
 
 ## Configuration
 

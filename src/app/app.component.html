@@ -1,3 +1,30 @@
+<section class="app-settings-panel" aria-labelledby="app-settings-heading">
+  <h2 id="app-settings-heading" class="visually-hidden">Sound settings</h2>
+  <div class="app-sound-cabinet">
+    <span class="app-sound-cabinet__tape" aria-hidden="true"></span>
+    <div class="app-sound-cabinet__head">
+      <span class="battle-ribbon battle-ribbon--tape app-sound-ribbon">sfx</span>
+    </div>
+    <label class="app-sound-toggle">
+      <input
+        type="checkbox"
+        class="visually-hidden app-sound-toggle-input"
+        [checked]="(audio.soundEnabled$ | async) ?? false"
+        (change)="onSoundSettingsChange($event)"
+      />
+      <span class="app-sound-toggle__lead" aria-hidden="true">
+        <span class="app-sound-toggle__emoji">🔊</span>
+      </span>
+      <span class="app-sound-toggle__copy">
+        <span class="app-sound-toggle__kicker">Cabinet audio bus</span>
+        <span class="app-sound-toggle__title">Sound effects</span>
+      </span>
+      <span class="app-sound-switch"></span>
+    </label>
+    <p class="app-sound-toggle-hint" aria-hidden="true">arcade tick &amp; result sting · off by default</p>
+  </div>
+</section>
+
 @if (battle.vm$ | async; as vm) {
 <div
   class="battle-container"

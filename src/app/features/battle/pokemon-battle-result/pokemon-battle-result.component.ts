@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { PokemonDetailsComponent } from 'src/app/features/pokemon-display/pokemon-details/pokemon-details.component';
 import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 
+import { AudioService } from 'src/app/core/audio/audio.service';
 import { BattleHistoryService } from '../battle-history.service';
 import { PokemonBattleService } from '../pokemon-battle.service';
 import { resolveSpecialAttackBattle } from '../special-attack-battle';
@@ -86,6 +87,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   constructor(
     private battle: PokemonBattleService,
     private battleHistory: BattleHistoryService,
+    private audio: AudioService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -139,6 +141,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
           this.primaryTypeName(this.pokemonOpponent),
         );
         this.sessionQuip = sessionBattleQuip(playerName, opponentName);
+        this.audio.playBattleResult(outcome.playerWon);
       } else {
         this.typeMatchupLine = null;
         this.sessionQuip = '';

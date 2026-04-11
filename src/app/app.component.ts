@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
+import { AudioService } from './core/audio/audio.service';
 import { BattleRecentMatchupsComponent } from './features/battle/battle-recent-matchups/battle-recent-matchups.component';
 import { PokemonBattleResultComponent } from './features/battle/pokemon-battle-result/pokemon-battle-result.component';
 import { PokemonBattleService, PokemonBattleVm } from './features/battle/pokemon-battle.service';
@@ -50,7 +51,18 @@ const ARENA_STAGGER = 95;
 export class AppComponent {
   title = 'gotta-catch-em-all';
 
-  constructor(public battle: PokemonBattleService) {}
+  constructor(
+    public battle: PokemonBattleService,
+    public audio: AudioService,
+  ) {}
+
+  onSoundSettingsChange(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    if (!input) {
+      return;
+    }
+    this.audio.setSoundEnabled(input.checked, true);
+  }
 
   /**
    * Primary type from the player’s Pokémon when set; otherwise the opponent’s — drives arena wash tint.
