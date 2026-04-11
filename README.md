@@ -112,6 +112,15 @@ If `npm test` fails with **ChromeHeadless cannot start**, run `npm run test:ci`.
 CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm run test:ci
 ```
 
+## Cursor (optional)
+
+This repo ships **Cursor** context under `.cursor/` (not required to run or build the app):
+
+| Path | Purpose |
+| --- | --- |
+| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions for the AI (layout, API boundaries, battle helper, styles). |
+| `.cursor/skills/*/` | Task-focused skills (e.g. definition-of-done checks, GitHub Pages notes, PokeAPI/RxJS patterns, Karma/Jasmine test generation, doc writing). |
+
 ## License
 
 MIT. See [`LICENSE`](LICENSE).
