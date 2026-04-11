@@ -39,6 +39,8 @@ describe('PokemonDetailsComponent', () => {
     expect(image.src).toContain('https://example.com/pikachu.png');
     expect(image.loading).toBe('lazy');
     expect(image.getAttribute('fetchpriority')).toBeNull();
+    expect(image.width).toBe(140);
+    expect(image.height).toBe(140);
   });
 
   it('should prioritize LCP image when prioritizeLcp is true', () => {

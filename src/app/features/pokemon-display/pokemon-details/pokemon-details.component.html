@@ -1,12 +1,19 @@
 <div [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''">
     <span class="pokemon-name">{{pokemonDetails?.name}}</span>
+    @if (specialAttackStat !== null) {
+      <p class="pokemon-stat-callout">
+        <span class="pokemon-stat-label">sp. atk</span>
+        <span class="pokemon-stat-value">{{ specialAttackStat }}</span>
+      </p>
+    }
     @if (pokemonDetails?.sprites?.front_default) {
       <img
         class="pokemon-image"
         [src]="pokemonDetails.sprites.front_default"
         [alt]="pokemonDetails?.name || 'pokémon sprite'"
-        width="96"
-        height="96"
+        width="140"
+        height="140"
+        sizes="140px"
         [attr.loading]="prioritizeLcp ? 'eager' : 'lazy'"
         [attr.fetchpriority]="prioritizeLcp ? 'high' : null"
         decoding="async">

@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { PokemonDetailsComponent } from 'src/app/features/pokemon-display/pokemon-details/pokemon-details.component';
 import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 
+import { BattleHistoryService } from '../battle-history.service';
 import { PokemonBattleService } from '../pokemon-battle.service';
 import { resolveSpecialAttackBattle } from '../special-attack-battle';
 
@@ -58,10 +59,13 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
   public battleResult: string;
   public pokemonVictor: Partial<Pokemon> | undefined;
+  /** Set when `battleResult` is shown — drives win/lose flourish (ties count as lose). */
+  public playerWon: boolean | undefined;
   public isResolvingBattle = false;
 
   constructor(
     private battle: PokemonBattleService,
+    private battleHistory: BattleHistoryService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -85,6 +89,7 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
 
     this.battleResult = '';
     this.pokemonVictor = undefined;
+    this.playerWon = undefined;
     this.choiceAttack = undefined;
     this.opponentAttack = undefined;
     this.isResolvingBattle = true;
@@ -97,6 +102,16 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
         this.opponentAttack = outcome.opponentStat;
         this.battleResult = outcome.message;
         this.pokemonVictor = outcome.victor;
+        this.playerWon = outcome.playerWon;
+        const playerName = this.pokemonChoice?.name;
+        const opponentName = this.pokemonOpponent?.name;
+        if (playerName && opponentName) {
+          this.battleHistory.recordMatch({
+            opponentName,
+            playerName,
+            playerWon: outcome.playerWon,
+          });
+        }
       }
       this.isResolvingBattle = false;
       this.cdr.markForCheck();

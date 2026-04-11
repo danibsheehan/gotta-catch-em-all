@@ -5,6 +5,16 @@
   <title>pokémon battle — pick your fighter</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pick a Pokémon by type, face a random rival, and settle the match on Special Attack stats. Powered by PokeAPI — runs in your browser.">
+  <!-- Open Graph / Twitter: update og:url and og:image when forking or using a custom domain -->
+  <meta property="og:title" content="Pokémon battle royale — pick your fighter">
+  <meta property="og:description" content="Pick a type, grab a fighter, clash on Special Attack. Fast, silly, no backend.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danibsheehan.github.io/gotta-catch-em-all/">
+  <meta property="og:image" content="https://danibsheehan.github.io/gotta-catch-em-all/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Pokémon battle royale — pick your fighter">
+  <meta name="twitter:description" content="Pick a type, grab a fighter, clash on Special Attack. Fast, silly, no backend.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
@@ -77,10 +87,14 @@
       left: 1rem;
       top: 1rem;
     }
+    .skip-link--picker:focus {
+      top: 4.25rem;
+    }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a class="skip-link skip-link--picker" href="#type-picker">Skip to type picker</a>
   <div class="app-shell">
     <h1 class="app-hero-title">pokémon battle royale ✨</h1>
     <p class="app-hero-subtitle">pick a type, grab a fighter — let’s go 💛</p>

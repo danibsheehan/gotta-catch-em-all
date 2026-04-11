@@ -13,23 +13,91 @@
     width: 100%;
 }
 
+.battle-flourish {
+    border-radius: var(--radius-md);
+    isolation: isolate;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.battle-flourish::before {
+    content: "";
+    inset: -45%;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .battle-flourish--win::before {
+        animation: battle-flourish-win 1.05s ease-out forwards;
+        background:
+            radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--accent-primary) 55%, transparent) 0%, transparent 52%),
+            radial-gradient(circle at 22% 78%, color-mix(in srgb, var(--accent-mint) 45%, transparent) 0%, transparent 48%),
+            radial-gradient(circle at 82% 72%, color-mix(in srgb, var(--accent-pink) 35%, transparent) 0%, transparent 45%);
+    }
+
+    .battle-flourish--lose::before {
+        animation: battle-flourish-lose 0.88s ease-out forwards;
+        background: radial-gradient(
+            circle at 50% 42%,
+            color-mix(in srgb, var(--accent-lilac-deep) 18%, transparent) 0%,
+            transparent 58%
+        );
+    }
+}
+
+@keyframes battle-flourish-win {
+    0% {
+        opacity: 0;
+        transform: scale(0.82);
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes battle-flourish-lose {
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 .battle-result-body {
     align-items: center;
     display: flex;
     flex-direction: column;
+    position: relative;
     width: 100%;
+    z-index: 1;
 }
 
 .battle-result-heading {
-    color: var(--accent-lilac-deep);
+    color: var(--text-battle-heading);
     font-family: var(--font-display);
     font-size: var(--text-title);
-    font-weight: 600;
+    font-weight: 700;
     margin: 0 0 var(--space-3);
 }
 
 .battle-resolving {
-    color: var(--accent-lilac-deep);
+    color: var(--text-battle-heading);
     font-style: normal;
     font-weight: 600;
     margin: var(--space-2) 0 0;

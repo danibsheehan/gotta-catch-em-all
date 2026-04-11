@@ -1,0 +1,12 @@
+@if (history$ | async; as entries) {
+  @if (entries.length) {
+    <section class="recent-matchups" aria-labelledby="recent-matchups-heading">
+      <h2 id="recent-matchups-heading" class="recent-matchups-title">this session · last {{ entries.length }} scrapes</h2>
+      <ol class="recent-matchups-list">
+        @for (entry of entries; track entry.at) {
+          <li class="recent-matchups-item">{{ formatLine(entry) }}</li>
+        }
+      </ol>
+    </section>
+  }
+}

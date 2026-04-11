@@ -33,6 +33,7 @@ describe('resolveSpecialAttackBattle', () => {
   it('declares the player the victor when special attack is higher', () => {
     const out = resolveSpecialAttackBattle(choice, opponent);
     expect(out?.message).toBe(SPECIAL_ATTACK_WIN_MESSAGE);
+    expect(out?.playerWon).toBe(true);
     expect(out?.victor).toBe(choice);
     expect(out?.choiceStat.base_stat).toBe(90);
     expect(out?.opponentStat.base_stat).toBe(65);
@@ -44,6 +45,7 @@ describe('resolveSpecialAttackBattle', () => {
       opponent,
     );
     expect(out?.message).toBe(SPECIAL_ATTACK_LOSE_MESSAGE);
+    expect(out?.playerWon).toBe(false);
     expect(out?.victor).toBe(opponent);
   });
 
@@ -54,6 +56,7 @@ describe('resolveSpecialAttackBattle', () => {
     };
     const out = resolveSpecialAttackBattle(tied, opponent);
     expect(out?.message).toBe(SPECIAL_ATTACK_LOSE_MESSAGE);
+    expect(out?.playerWon).toBe(false);
     expect(out?.victor).toBe(opponent);
   });
 

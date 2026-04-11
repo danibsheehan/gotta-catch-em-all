@@ -3,10 +3,16 @@
   type="button"
   class="pokemon-type-button"
   [id]="'type-btn-' + pokemonType.name"
+  [disabled]="isCheckingTypePokemon || typeHasNoPokemon"
+  [attr.aria-busy]="isCheckingTypePokemon"
   [attr.aria-expanded]="isOpen"
   [attr.aria-controls]="'type-panel-' + pokemonType.name"
+  [attr.title]="typeHasNoPokemon ? 'no pokémon of this type in the dex' : null"
   (click)="toggleTypeDropdown()">
-  {{ pokemonType.name }}
+  <span class="pokemon-type-button-inner">
+    <span class="pokemon-type-icon" aria-hidden="true">{{ typeGlyph }}</span>
+    <span class="pokemon-type-label">{{ pokemonType.name }}</span>
+  </span>
 </button>
 
 @if (isOpen) {

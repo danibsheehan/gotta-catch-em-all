@@ -1,0 +1,116 @@
+/* Pokémon type strip — per-type tints (Pokémon-style palette, adapted for UI contrast). */
+@mixin type-chip-variants {
+    :host([data-type="bug"]) {
+        --type-tint: #c6d16e;
+        --type-deep: #6d7815;
+        --type-dropdown-tint: color-mix(in srgb, #c6d16e 28%, var(--surface-muted));
+    }
+
+    :host([data-type="dark"]) {
+        --type-tint: #a29288;
+        --type-deep: #49392f;
+        --type-dropdown-tint: color-mix(in srgb, #a29288 26%, var(--surface-muted));
+    }
+
+    :host([data-type="dragon"]) {
+        --type-tint: #a27dfa;
+        --type-deep: #4c3b9e;
+        --type-dropdown-tint: color-mix(in srgb, #a27dfa 22%, var(--surface-muted));
+    }
+
+    :host([data-type="electric"]) {
+        --type-tint: #f8e078;
+        --type-deep: #a87b00;
+        --type-dropdown-tint: color-mix(in srgb, #f8e078 30%, var(--surface-muted));
+    }
+
+    :host([data-type="fairy"]) {
+        --type-tint: #f8a8b8;
+        --type-deep: #9b6470;
+        --type-dropdown-tint: color-mix(in srgb, #f8a8b8 28%, var(--surface-muted));
+    }
+
+    :host([data-type="fighting"]) {
+        --type-tint: #e09088;
+        --type-deep: #7c2c24;
+        --type-dropdown-tint: color-mix(in srgb, #e09088 24%, var(--surface-muted));
+    }
+
+    :host([data-type="fire"]) {
+        --type-tint: #f8a060;
+        --type-deep: #b04000;
+        --type-dropdown-tint: color-mix(in srgb, #f8a060 26%, var(--surface-muted));
+    }
+
+    :host([data-type="flying"]) {
+        --type-tint: #b8a8f8;
+        --type-deep: #5848a8;
+        --type-dropdown-tint: color-mix(in srgb, #b8a8f8 24%, var(--surface-muted));
+    }
+
+    :host([data-type="ghost"]) {
+        --type-tint: #a890c8;
+        --type-deep: #483860;
+        --type-dropdown-tint: color-mix(in srgb, #a890c8 24%, var(--surface-muted));
+    }
+
+    :host([data-type="grass"]) {
+        --type-tint: #a8e078;
+        --type-deep: #3a7c1a;
+        --type-dropdown-tint: color-mix(in srgb, #a8e078 28%, var(--surface-muted));
+    }
+
+    :host([data-type="ground"]) {
+        --type-tint: #e8d078;
+        --type-deep: #887010;
+        --type-dropdown-tint: color-mix(in srgb, #e8d078 28%, var(--surface-muted));
+    }
+
+    :host([data-type="ice"]) {
+        --type-tint: #b8e8e8;
+        --type-deep: #388898;
+        --type-dropdown-tint: color-mix(in srgb, #b8e8e8 32%, var(--surface-muted));
+    }
+
+    :host([data-type="normal"]) {
+        --type-tint: #c8c8a8;
+        --type-deep: #686850;
+        --type-dropdown-tint: color-mix(in srgb, #c8c8a8 22%, var(--surface-muted));
+    }
+
+    :host([data-type="poison"]) {
+        --type-tint: #c890e8;
+        --type-deep: #682878;
+        --type-dropdown-tint: color-mix(in srgb, #c890e8 22%, var(--surface-muted));
+    }
+
+    :host([data-type="psychic"]) {
+        --type-tint: #f898b8;
+        --type-deep: #982050;
+        --type-dropdown-tint: color-mix(in srgb, #f898b8 24%, var(--surface-muted));
+    }
+
+    :host([data-type="rock"]) {
+        --type-tint: #d0c078;
+        --type-deep: #786018;
+        --type-dropdown-tint: color-mix(in srgb, #d0c078 26%, var(--surface-muted));
+    }
+
+    :host([data-type="steel"]) {
+        --type-tint: #d8d8e8;
+        --type-deep: #606878;
+        --type-dropdown-tint: color-mix(in srgb, #d8d8e8 25%, var(--surface-muted));
+    }
+
+    :host([data-type="water"]) {
+        --type-tint: #78b8f8;
+        --type-deep: #1858a8;
+        --type-dropdown-tint: color-mix(in srgb, #78b8f8 26%, var(--surface-muted));
+    }
+
+    :host([data-type="stellar"]) {
+        --type-tint: #b8a0f8;
+        --type-deep: #5038a0;
+        --type-dropdown-tint: color-mix(in srgb, #b8a0f8 24%, var(--surface-muted));
+    }
+}

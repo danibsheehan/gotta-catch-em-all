@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostBinding,
   HostListener,
   Input,
   OnChanges,
@@ -15,6 +16,28 @@ import { PokemonType } from 'src/app/shared/models/pokemon-type';
 import { PokemonBattleService } from 'src/app/features/battle/pokemon-battle.service';
 import { PokemonCatalogService } from '../pokemon-catalog.service';
 
+const TYPE_GLYPHS: Record<string, string> = {
+  bug: '🐛',
+  dark: '🌙',
+  dragon: '🐉',
+  electric: '⚡',
+  fairy: '✨',
+  fighting: '✊',
+  fire: '🔥',
+  flying: '🪶',
+  ghost: '👻',
+  grass: '🌿',
+  ground: '🏜️',
+  ice: '❄️',
+  normal: '◇',
+  poison: '☠️',
+  psychic: '🔮',
+  rock: '🪨',
+  steel: '⚙️',
+  water: '💧',
+  stellar: '✦',
+};
+
 @Component({
     selector: 'app-pokemon-type',
     templateUrl: './pokemon-type.component.html',
@@ -24,14 +47,30 @@ import { PokemonCatalogService } from '../pokemon-catalog.service';
 })
 export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() pokemonType: PokemonType;
+
+  @HostBinding('attr.data-type')
+  get dataTypeAttr(): string {
+    return this.pokemonType?.name ?? '';
+  }
+
+  get typeGlyph(): string {
+    const name = this.pokemonType?.name;
+    return name ? TYPE_GLYPHS[name] ?? '◆' : '◆';
+  }
+
   @ViewChild('typeButton') typeButton?: ElementRef<HTMLButtonElement>;
   @ViewChild('pokemonSelect') pokemonSelect?: ElementRef<HTMLSelectElement>;
 
   public isOpen = false;
   public isLoadingPokemonNames = false;
+  /** True after a successful type fetch that returned zero Pokémon (button stays disabled). */
+  public typeHasNoPokemon = false;
+  /** True while the initial per-type list is loading (button disabled until resolved). */
+  public isCheckingTypePokemon = true;
   public pokemonNames: string[] = [];
   public pokemonLoadError = '';
   private loadPokemonNamesSub?: Subscription;
+  private prefetchTypeSub?: Subscription;
   private closeDropdownsSub?: Subscription;
 
   constructor(
@@ -56,6 +95,9 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   toggleTypeDropdown() {
+    if (this.isCheckingTypePokemon || this.typeHasNoPokemon) {
+      return;
+    }
     this.isOpen = !this.isOpen;
     if (this.isOpen && !this.pokemonNames.length && !this.isLoadingPokemonNames && !this.pokemonLoadError) {
       this.loadPokemonNames();
@@ -77,16 +119,43 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.loadPokemonNamesSub?.unsubscribe();
+    this.prefetchTypeSub?.unsubscribe();
     this.closeDropdownsSub?.unsubscribe();
   }
 
   private resetTypePickerState(): void {
+    this.prefetchTypeSub?.unsubscribe();
+    this.loadPokemonNamesSub?.unsubscribe();
     this.pokemonNames = [];
     this.pokemonLoadError = '';
     this.isLoadingPokemonNames = false;
     this.isOpen = false;
-    this.loadPokemonNamesSub?.unsubscribe();
+    this.typeHasNoPokemon = false;
+    this.isCheckingTypePokemon = true;
+    this.prefetchPokemonForType();
     this.cdr.markForCheck();
+  }
+
+  private prefetchPokemonForType(): void {
+    const typeName = this.pokemonType?.name;
+    if (!typeName) {
+      this.isCheckingTypePokemon = false;
+      return;
+    }
+    this.prefetchTypeSub = this.pokemonCatalog.getPokemonByType(typeName).subscribe({
+      next: (pokemon) => {
+        this.isCheckingTypePokemon = false;
+        this.pokemonNames = pokemon.map((entry) => entry.name);
+        this.typeHasNoPokemon = this.pokemonNames.length === 0;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.isCheckingTypePokemon = false;
+        this.typeHasNoPokemon = false;
+        this.pokemonNames = [];
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   private closeDropdown(): void {
@@ -104,6 +173,7 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
     this.loadPokemonNamesSub = this.pokemonCatalog.getPokemonByType(this.pokemonType.name).subscribe(
       (pokemon) => {
         this.pokemonNames = pokemon.map((pokemonEntry) => pokemonEntry.name);
+        this.typeHasNoPokemon = this.pokemonNames.length === 0;
         this.pokemonLoadError = this.pokemonNames.length
           ? ''
           : `👀 no ${this.pokemonType.name} crew in the dex rn`;

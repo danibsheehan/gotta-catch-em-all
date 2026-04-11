@@ -1,0 +1,40 @@
+.recent-matchups {
+    border-top: 1px solid color-mix(in srgb, var(--border-subtle) 50%, transparent);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+}
+
+.recent-matchups-title {
+    color: var(--text-secondary);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin: 0 0 var(--space-3);
+    text-align: center;
+    text-transform: lowercase;
+}
+
+.recent-matchups-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0 auto;
+    max-width: 28rem;
+    padding: 0;
+}
+
+.recent-matchups-item {
+    background: color-mix(in srgb, var(--surface-elevated) 92%, var(--surface-canvas));
+    border: 2px solid color-mix(in srgb, var(--border-outline) 88%, var(--surface-canvas));
+    border-radius: var(--radius-sm);
+    box-shadow: 0 3px 0 rgba(20, 20, 20, 0.06);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: var(--space-3) var(--space-4);
+    text-align: center;
+    text-transform: lowercase;
+}

@@ -9,6 +9,8 @@ export interface SpecialAttackBattleOutcome {
   choiceStat: Stat;
   opponentStat: Stat;
   message: string;
+  /** True when the player’s Pokémon wins the special-attack comparison (ties → false). */
+  playerWon: boolean;
   victor: Partial<Pokemon>;
 }
 
@@ -31,6 +33,7 @@ export function resolveSpecialAttackBattle(
     choiceStat,
     opponentStat,
     message: playerWins ? SPECIAL_ATTACK_WIN_MESSAGE : SPECIAL_ATTACK_LOSE_MESSAGE,
+    playerWon: playerWins,
     victor: playerWins ? choice : opponent,
   };
 }

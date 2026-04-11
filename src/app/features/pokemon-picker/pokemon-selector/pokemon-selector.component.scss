@@ -1,5 +1,7 @@
 .pokemon-selector-section {
+    border-top: 1px solid color-mix(in srgb, var(--border-subtle) 55%, transparent);
     margin-top: var(--space-6);
+    padding-top: var(--space-5);
 }
 
 h2,
@@ -14,12 +16,12 @@ h4 {
 
 .pokemon-cta {
     color: var(--text-primary);
+    font-family: var(--font-display);
     font-size: var(--text-title);
     font-weight: 600;
-    font-family: var(--font-display);
     letter-spacing: 0.02em;
     margin: 0 0 var(--space-4);
-    text-shadow: 2px 2px 0 rgba(255, 77, 173, 0.5);
+    text-shadow: 1px 1px 0 color-mix(in srgb, var(--accent-pink) 35%, transparent);
 }
 
 h4 {
@@ -36,13 +38,14 @@ h4 {
 }
 
 .pokemon-selector-error {
-    background: var(--semantic-danger-bg);
-    border-radius: var(--radius-sm);
     color: var(--semantic-danger);
     margin: var(--space-3) auto 0;
     max-width: 1200px;
-    padding: var(--space-3);
-    text-align: center;
+}
+
+.pokemon-selector-error-text {
+    color: var(--semantic-danger);
+    margin: 0;
 }
 
 .pokemon-search-container {
@@ -86,18 +89,28 @@ h4 {
 
 /* overflow: visible so native <select> menus are not clipped (overflow: hidden truncates popups). */
 .pokemon-type-item {
-    background: var(--surface-elevated);
-    border: 2px solid var(--border-outline);
+    background: color-mix(in srgb, var(--surface-elevated) 96%, var(--surface-canvas));
+    border: 2px solid color-mix(in srgb, var(--border-outline) 88%, var(--surface-canvas));
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-selector-chip);
     box-sizing: border-box;
     margin: 0;
     min-width: 0;
     overflow: visible;
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .pokemon-type-item:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-selector-chip-hover);
+    transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pokemon-type-item {
+        transition: box-shadow 0.18s ease;
+    }
+
+    .pokemon-type-item:hover {
+        transform: none;
+    }
 }

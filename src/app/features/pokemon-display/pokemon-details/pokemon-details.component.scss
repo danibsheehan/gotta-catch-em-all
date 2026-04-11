@@ -23,12 +23,29 @@
         color-mix(in srgb, var(--surface-muted) 85%, white) 45%,
         color-mix(in srgb, var(--accent-primary) 18%, white) 100%
     );
-    border: 2px solid var(--border-outline);
+    border: 3px solid var(--border-outline);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-pokemon-card);
     box-sizing: border-box;
     min-height: 172px;
     min-width: min(100%, 148px);
     padding: var(--space-4) var(--space-3) var(--space-3);
+    position: relative;
+}
+
+.current-pokemon::after {
+    border: 2px dashed color-mix(in srgb, var(--border-subtle) 65%, var(--border-outline));
+    border-radius: calc(var(--radius-md) - 9px);
+    content: "";
+    inset: 8px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+.current-pokemon > * {
+    position: relative;
+    z-index: 1;
 }
 
 .pokemon-name {
@@ -40,10 +57,42 @@
     text-transform: capitalize;
 }
 
+.pokemon-stat-callout {
+    align-items: baseline;
+    background: color-mix(in srgb, var(--accent-mint) 14%, var(--surface-elevated));
+    border: 2px solid color-mix(in srgb, var(--border-subtle) 80%, var(--border-outline));
+    border-radius: var(--radius-pill);
+    box-sizing: border-box;
+    display: inline-flex;
+    gap: var(--space-2);
+    justify-content: center;
+    margin: var(--space-2) auto var(--space-3);
+    max-width: 100%;
+    padding: var(--space-2) var(--space-4);
+}
+
+.pokemon-stat-label {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.pokemon-stat-value {
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: var(--text-stat);
+    font-weight: 700;
+    line-height: 1;
+}
+
 .pokemon-image {
     aspect-ratio: 1;
     display: block;
-    height: auto;
+    /* Matches width/height attributes — reserves LCP box and limits CLS */
+    height: 140px;
+    image-rendering: pixelated;
     margin: 0 auto;
     max-width: 140px;
     object-fit: contain;

@@ -14,12 +14,32 @@ body {
     line-height: 1.5;
     margin: 0;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Very light halftone grain — sits on canvas only; does not affect layout */
+body::before {
+    background-image: radial-gradient(rgba(20, 20, 20, 0.055) 0.55px, transparent 0.65px);
+    background-size: 5px 5px;
+    content: "";
+    inset: 0;
+    opacity: var(--canvas-grain-opacity);
+    pointer-events: none;
+    position: fixed;
+    z-index: 0;
+}
+
+app-root {
+    display: block;
+    position: relative;
+    z-index: 1;
 }
 
 /* Hero: matches index.html critical path; full styles when CSS loads */
 .app-hero-title {
     box-sizing: border-box;
     color: var(--text-primary);
+    contain: layout;
     font-family: var(--font-display);
     font-size: clamp(2rem, 5vw, 2.75rem);
     font-weight: 700;
@@ -69,6 +89,61 @@ body {
     top: 1rem;
 }
 
+.skip-link--picker:focus {
+    top: 4.25rem;
+}
+
+/* Shared sticker panels (errors, notices) — matches battle panel language */
+.sticker-notice {
+    background: linear-gradient(
+        165deg,
+        var(--surface-elevated) 0%,
+        color-mix(in srgb, var(--surface-muted) 55%, white) 100%
+    );
+    border: 3px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-battle-panel);
+    box-sizing: border-box;
+    margin: 0;
+    overflow: hidden;
+    padding: var(--space-4) var(--space-5);
+    position: relative;
+    text-align: center;
+}
+
+.sticker-notice::after {
+    border: 2px dashed color-mix(in srgb, var(--border-subtle) 75%, var(--border-outline));
+    border-radius: calc(var(--radius-md) - 10px);
+    content: "";
+    inset: 8px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+.sticker-notice > * {
+    position: relative;
+    z-index: 1;
+}
+
+.sticker-notice--danger {
+    background: linear-gradient(
+        165deg,
+        var(--semantic-danger-bg) 0%,
+        color-mix(in srgb, var(--surface-elevated) 88%, var(--semantic-danger-bg)) 100%
+    );
+}
+
+.sticker-notice-text {
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0 0 var(--space-3);
+}
+
+.sticker-notice .opponent-retry {
+    margin-top: 0;
+}
+
 .visually-hidden {
     border: 0;
     clip: rect(0, 0, 0, 0);
@@ -112,4 +187,10 @@ body {
 :where(.play-again, .opponent-retry):active {
     box-shadow: 0 2px 0 rgba(26, 26, 26, 0.12);
     transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :where(.play-again, .opponent-retry):active {
+        transform: none;
+    }
 }

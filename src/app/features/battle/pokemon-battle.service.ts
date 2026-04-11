@@ -6,6 +6,9 @@ import { Pokemon } from 'src/app/shared/models/pokemon';
 import { PokemonOpponentService } from './pokemon-opponent.service';
 import { PokemonPlayerService } from './pokemon-player.service';
 
+/** `id` on the battle shell in `app.component.html` — used for `scrollIntoView` after pick / play again. */
+export const BATTLE_ARENA_ELEMENT_ID = 'battle-arena';
+
 /** Single snapshot for the battle shell + result (player + opponent). */
 export interface PokemonBattleVm {
   opponentLoading: boolean;
@@ -70,6 +73,7 @@ export class PokemonBattleService {
 
   selectPlayerPokemon(name: string): void {
     this.player.getPokemonDetails(name);
+    this.scheduleScrollBattleArenaIntoView();
   }
 
   /** Reset the player's Pokémon and draw a new opponent for another round. */
@@ -77,6 +81,7 @@ export class PokemonBattleService {
     this.closeSelectorDropdowns$$.next();
     this.player.clearPlayerSelection();
     this.loadOpponent();
+    this.scheduleScrollBattleArenaIntoView();
   }
 
   private bindOpponentLoads(): void {
@@ -98,6 +103,22 @@ export class PokemonBattleService {
       });
 
     this.loadOpponent();
+  }
+
+  /** After layout, scroll the battle region into view (picker is often below the fold). */
+  private scheduleScrollBattleArenaIntoView(): void {
+    if (typeof document === 'undefined' || typeof window === 'undefined') {
+      return;
+    }
+    const run = (): void => {
+      const el = document.getElementById(BATTLE_ARENA_ELEMENT_ID);
+      if (!el) {
+        return;
+      }
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+      el.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+    };
+    setTimeout(run, 0);
   }
 
   private preloadOpponentSprite(href: string): void {

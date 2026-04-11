@@ -15,4 +15,10 @@ export class PokemonDetailsComponent {
   @Input() pokemonDetails: Partial<Pokemon>;
   /** When true, image loads eagerly with high fetch priority (use for above-the-fold LCP candidates). */
   @Input() prioritizeLcp = false;
+
+  /** `null` when stats are missing or there is no special-attack entry. */
+  get specialAttackStat(): number | null {
+    const row = this.pokemonDetails?.stats?.find((s) => s.stat.name === 'special-attack');
+    return row !== undefined ? row.base_stat : null;
+  }
 }

@@ -1,45 +1,97 @@
+@use "../../../../styles/pokemon-type-chips" as ptc;
+
 :host {
+    --type-tint: color-mix(in srgb, var(--accent-lilac) 24%, white);
+    --type-deep: var(--accent-lilac-deep);
+    --type-dropdown-tint: var(--surface-muted);
     border-radius: var(--radius-md);
     color-scheme: light;
     display: block;
     overflow: visible;
 }
 
+@include ptc.type-chip-variants;
+
 .pokemon-type-button {
-    background: var(--chip-bg);
-    border: none;
-    border-bottom: 1px solid var(--border-subtle);
+    background: linear-gradient(
+        175deg,
+        color-mix(in srgb, var(--type-tint) 42%, white) 0%,
+        var(--chip-bg) 100%
+    );
+    border: 2px solid color-mix(in srgb, var(--type-deep) 42%, var(--border-outline));
     border-radius: var(--radius-md);
     color: var(--text-primary);
     cursor: pointer;
     font: inherit;
     font-weight: 700;
-    padding: var(--space-4) var(--space-4);
+    padding: var(--space-3) var(--space-4);
     text-align: center;
     text-transform: capitalize;
-    transition: background 0.15s ease;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     width: 100%;
 }
 
-/* Full rounding when panel is closed (button is the only child). */
-.pokemon-type-button:only-child {
-    border-bottom: none;
+.pokemon-type-button-inner {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: center;
+    width: 100%;
 }
 
+.pokemon-type-icon {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.pokemon-type-label {
+    min-width: 0;
+    text-transform: capitalize;
+}
+
+/* Full rounding when panel is closed (button is the only child). */
 .pokemon-type-button:not(:only-child) {
     border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .pokemon-type-button:hover {
-    background: color-mix(in srgb, var(--accent-primary) 32%, white);
+    background: linear-gradient(
+        175deg,
+        color-mix(in srgb, var(--type-tint) 58%, white) 0%,
+        color-mix(in srgb, var(--type-tint) 12%, var(--chip-bg)) 100%
+    );
 }
 
 .pokemon-type-button:active {
-    background: color-mix(in srgb, var(--accent-lilac) 38%, white);
+    background: color-mix(in srgb, var(--type-tint) 24%, white);
+    transform: scale(0.99);
+}
+
+.pokemon-type-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    pointer-events: none;
+    transform: none;
+}
+
+.pokemon-type-button:disabled:hover {
+    background: linear-gradient(
+        175deg,
+        color-mix(in srgb, var(--type-tint) 42%, white) 0%,
+        var(--chip-bg) 100%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pokemon-type-button:active {
+        transform: none;
+    }
 }
 
 .pokemon-type-dropdown-container {
-    background: var(--surface-muted);
+    background: var(--type-dropdown-tint);
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     box-sizing: border-box;
     min-height: 2.75rem;
@@ -66,7 +118,7 @@
 .pokemon-type-dropdown {
     accent-color: var(--semantic-info);
     background-color: #ffffff;
-    border: 2px solid var(--chip-border);
+    border: 2px solid color-mix(in srgb, var(--type-deep) 28%, var(--chip-border));
     border-radius: var(--radius-sm);
     box-sizing: border-box;
     color: var(--text-primary);

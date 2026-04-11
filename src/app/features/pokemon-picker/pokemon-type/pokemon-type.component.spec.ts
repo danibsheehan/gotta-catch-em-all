@@ -54,10 +54,13 @@ describe('PokemonTypeComponent', () => {
   });
 
   describe('toggleTypeDropdown()', () => {
-    it('should load pokemon names when opening dropdown', () => {
+    it('should open dropdown using prefetched pokemon names without a second catalog call', () => {
+      expect(component.pokemonNames).toEqual(['pikachu', 'raichu']);
+      expect(pokemonCatalogSpy.getPokemonByType).toHaveBeenCalledTimes(1);
+
       component.toggleTypeDropdown();
 
-      expect(pokemonCatalogSpy.getPokemonByType).toHaveBeenCalledWith('electric');
+      expect(pokemonCatalogSpy.getPokemonByType).toHaveBeenCalledTimes(1);
       expect(component.pokemonNames).toEqual(['pikachu', 'raichu']);
       expect(component.isOpen).toBe(true);
     });
@@ -70,22 +73,34 @@ describe('PokemonTypeComponent', () => {
       expect(pokemonCatalogSpy.getPokemonByType).toHaveBeenCalledTimes(1);
     });
 
-    it('should set empty-results message when catalog returns no pokemon', () => {
+    it('should disable the type when prefetch finds no pokemon', () => {
       pokemonCatalogSpy.getPokemonByType.and.returnValue(of([]));
+      const emptyFixture = TestBed.createComponent(PokemonTypeComponent);
+      const emptyComp = emptyFixture.componentInstance;
+      emptyComp.pokemonType = pokemonTypeStub;
+      emptyComp.ngOnChanges();
+      emptyFixture.detectChanges();
 
-      component.toggleTypeDropdown();
+      const btn = emptyFixture.nativeElement.querySelector('button') as HTMLButtonElement;
+      expect(btn.disabled).toBe(true);
+      expect(emptyComp.typeHasNoPokemon).toBe(true);
 
-      expect(component.pokemonNames).toEqual([]);
-      expect(component.pokemonLoadError).toBe('👀 no electric crew in the dex rn');
+      emptyComp.toggleTypeDropdown();
+      expect(emptyComp.isOpen).toBe(false);
     });
 
-    it('should set load error when catalog request fails', () => {
+    it('should set load error when catalog request fails after prefetch error', () => {
       pokemonCatalogSpy.getPokemonByType.and.returnValue(throwError(() => new Error('failed')));
+      const errFixture = TestBed.createComponent(PokemonTypeComponent);
+      const errComp = errFixture.componentInstance;
+      errComp.pokemonType = pokemonTypeStub;
+      errComp.ngOnChanges();
+      errFixture.detectChanges();
 
-      component.toggleTypeDropdown();
+      errComp.toggleTypeDropdown();
 
-      expect(component.pokemonNames).toEqual([]);
-      expect(component.pokemonLoadError).toBe("😵 couldn't fetch electric — tap refresh?");
+      expect(errComp.pokemonNames).toEqual([]);
+      expect(errComp.pokemonLoadError).toBe("😵 couldn't fetch electric — tap refresh?");
     });
 
     it('should close dropdown on Escape', fakeAsync(() => {
@@ -123,7 +138,7 @@ describe('PokemonTypeComponent', () => {
       fixture.detectChanges();
 
       expect(component.isOpen).toBe(false);
-      expect(component.pokemonNames).toEqual([]);
+      expect(component.pokemonNames).toEqual(['pikachu', 'raichu']);
       expect(component.pokemonLoadError).toBe('');
       expect(component.isLoadingPokemonNames).toBe(false);
     });

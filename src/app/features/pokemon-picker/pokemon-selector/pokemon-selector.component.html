@@ -9,7 +9,9 @@
   }
 
   @if (pokemonTypesError) {
-    <div class="pokemon-selector-error">{{ pokemonTypesError }}</div>
+    <div class="pokemon-selector-error sticker-notice sticker-notice--danger" role="alert">
+      <p class="sticker-notice-text pokemon-selector-error-text">{{ pokemonTypesError }}</p>
+    </div>
   }
 </div>
 

@@ -3,6 +3,7 @@ import { SimpleChange } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { PokemonBattleResultComponent } from './pokemon-battle-result.component';
+import { BattleHistoryService } from '../battle-history.service';
 import { PokemonBattleService } from '../pokemon-battle.service';
 import { SPECIAL_ATTACK_LOSE_MESSAGE, SPECIAL_ATTACK_WIN_MESSAGE } from '../special-attack-battle';
 import { Pokemon } from 'src/app/shared/models/pokemon';
@@ -11,6 +12,7 @@ describe('PokemonBattleResultComponent', () => {
   let component: PokemonBattleResultComponent;
   let fixture: ComponentFixture<PokemonBattleResultComponent>;
   let battle: jasmine.SpyObj<PokemonBattleService>;
+  let battleHistory: jasmine.SpyObj<BattleHistoryService>;
   const pokemonChoiceStub: Pokemon = {
     name: 'pikachu',
     sprites: { front_default: 'https://example.com/pikachu.png' },
@@ -24,10 +26,12 @@ describe('PokemonBattleResultComponent', () => {
 
   beforeEach(async () => {
     battle = jasmine.createSpyObj('PokemonBattleService', ['playAgain']);
+    battleHistory = jasmine.createSpyObj('BattleHistoryService', ['recordMatch']);
     TestBed.configureTestingModule({
       imports: [PokemonBattleResultComponent],
       providers: [
         { provide: PokemonBattleService, useValue: battle },
+        { provide: BattleHistoryService, useValue: battleHistory },
         provideNoopAnimations(),
       ],
     })
@@ -96,6 +100,11 @@ describe('PokemonBattleResultComponent', () => {
 
     expect(component.battleResult).toBe(SPECIAL_ATTACK_WIN_MESSAGE);
     expect(component.pokemonVictor).toEqual(pokemonChoiceStub);
+    expect(battleHistory.recordMatch).toHaveBeenCalledWith({
+      opponentName: 'bulbasaur',
+      playerName: 'pikachu',
+      playerWon: true,
+    });
   }));
 
   it('should set lose result when choice attack is not greater', fakeAsync(() => {
@@ -113,6 +122,11 @@ describe('PokemonBattleResultComponent', () => {
 
     expect(component.battleResult).toBe(SPECIAL_ATTACK_LOSE_MESSAGE);
     expect(component.pokemonVictor).toEqual(pokemonOpponentStub);
+    expect(battleHistory.recordMatch).toHaveBeenCalledWith({
+      opponentName: 'bulbasaur',
+      playerName: 'pikachu',
+      playerWon: false,
+    });
   }));
 
   it('should clear timer on destroy', () => {
@@ -158,5 +172,6 @@ describe('PokemonBattleResultComponent', () => {
     expect(component.choiceAttack).toBeUndefined();
     expect(component.opponentAttack).toBeUndefined();
     expect(component.isResolvingBattle).toBe(false);
+    expect(battleHistory.recordMatch).not.toHaveBeenCalled();
   }));
 });

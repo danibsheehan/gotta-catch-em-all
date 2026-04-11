@@ -9,8 +9,14 @@ import { PokemonPlayerService } from './pokemon-player.service';
 describe('PokemonBattleService', () => {
   let service: PokemonBattleService;
   let httpMock: HttpTestingController;
+  let scrollIntoViewSpy: jasmine.Spy;
 
   beforeEach(() => {
+    scrollIntoViewSpy = spyOn(HTMLElement.prototype, 'scrollIntoView').and.stub();
+    const arena = document.createElement('div');
+    arena.id = 'battle-arena';
+    document.body.appendChild(arena);
+
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
@@ -23,7 +29,10 @@ describe('PokemonBattleService', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => httpMock.verify());
+  afterEach(() => {
+    document.getElementById('battle-arena')?.remove();
+    httpMock.verify();
+  });
 
   it('should load opponent on init and expose on vm', (done) => {
     service.vm$.pipe(
@@ -31,6 +40,7 @@ describe('PokemonBattleService', () => {
       take(1),
     ).subscribe((vm) => {
       expect(vm.opponent.name).toBe('bulbasaur');
+      expect(scrollIntoViewSpy).not.toHaveBeenCalled();
       done();
     });
 
@@ -180,5 +190,48 @@ describe('PokemonBattleService', () => {
       expect(vm.opponent.name).toBe('second');
       done();
     });
+  });
+
+  it('should scroll battle arena into view after selecting a player pokemon', (done) => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    service.selectPlayerPokemon('pikachu');
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+    playerReq.flush({
+      name: 'pikachu',
+      sprites: { front_default: 'x' },
+      stats: [],
+    });
+
+    setTimeout(() => {
+      expect(scrollIntoViewSpy).toHaveBeenCalledWith(
+        jasmine.objectContaining({ block: 'start' }),
+      );
+      done();
+    }, 0);
+  });
+
+  it('should scroll battle arena into view on playAgain', (done) => {
+    const initialOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initialOpponentReq.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    service.selectPlayerPokemon('pikachu');
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+    playerReq.flush({ name: 'pikachu', sprites: {}, stats: [] });
+
+    scrollIntoViewSpy.calls.reset();
+
+    service.playAgain();
+
+    const nextOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    nextOpponentReq.flush({ name: 'newfoe', sprites: {}, stats: [] });
+
+    setTimeout(() => {
+      expect(scrollIntoViewSpy).toHaveBeenCalledWith(
+        jasmine.objectContaining({ block: 'start' }),
+      );
+      done();
+    }, 0);
   });
 });

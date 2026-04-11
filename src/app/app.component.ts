@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
+import { BattleRecentMatchupsComponent } from './features/battle/battle-recent-matchups/battle-recent-matchups.component';
 import { PokemonBattleResultComponent } from './features/battle/pokemon-battle-result/pokemon-battle-result.component';
 import { PokemonBattleService } from './features/battle/pokemon-battle.service';
 import { PokemonDetailsComponent } from './features/pokemon-display/pokemon-details/pokemon-details.component';
@@ -18,6 +19,7 @@ const ARENA_STAGGER = 110;
     standalone: true,
     imports: [
       AsyncPipe,
+      BattleRecentMatchupsComponent,
       PokemonBattleResultComponent,
       PokemonDetailsComponent,
       PokemonSelectorComponent,
