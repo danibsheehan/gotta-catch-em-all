@@ -4,7 +4,7 @@
 
 ## Overview
 
-This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
+This project is a small browser game for experimenting with Angular, `HttpClient`, and RxJS against a public REST API. You choose your fighter from a per-type menu; the app assigns a random opponent and compares each Pokémon’s `special-attack` base stat to pick a winner. Resolved matchups can appear in **Recent matchups** (session-scoped, last three). The UI surfaces loading and error states (including retry) so failed fetches do not leave the screen stuck.
 
 **Stack:** Angular ~20.3 (standalone components, `bootstrapApplication` + `app.config.ts`), Angular Animations (`@angular/animations`), RxJS 7, SCSS (global tokens in `src/styles/`), Karma/Jasmine.
 
@@ -16,16 +16,17 @@ This project is a small browser game for experimenting with Angular, `HttpClient
 | Global styles | `src/styles.scss`, `src/styles/_tokens.scss` (CSS variables, theme) |
 | Core (HTTP API client) | `src/app/core/api/` |
 | Shared models | `src/app/shared/models/` (`Pokemon`, types, type list) |
-| Battle feature | `src/app/features/battle/` — services (battle / player / opponent), `special-attack-battle.ts`, `pokemon-battle-result/` |
+| Battle feature | `src/app/features/battle/` — `PokemonBattleService`, player / opponent services, `battle-history.service`, `special-attack-battle.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
 | Picker feature | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/` |
 | Display feature | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`) |
 
 ## Features
 
-- Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu).
+- Loads the type index from PokeAPI and renders one collapsible menu per type (names for a type load when you first open that menu). The type-picker region is loaded with `@defer` (viewport + idle prefetch) so the battle shell can paint first.
 - Fetches full `pokemon` records when you confirm a selection.
-- Draws a random opponent (numeric id in `1…964`), preloads its front sprite for faster paint, and exposes **Choose Again** when the opponent request fails.
-- Declares battle outcome via `resolveSpecialAttackBattle()`; `PokemonBattleResultComponent` handles only timing and display.
+- Draws a random opponent (numeric id in `1…964`), preloads its front sprite for faster paint, and exposes **try again** when the opponent request fails.
+- Declares battle outcome via `resolveSpecialAttackBattle()`; `PokemonBattleResultComponent` handles timing, display, and recording the result to `BattleHistoryService`.
+- Shows up to three **Recent matchups** for the tab session (`sessionStorage`, with in-memory fallback if storage is unavailable).
 - Caches type list and per-type Pokémon list responses with `shareReplay(1)` to avoid duplicate HTTP calls.
 - URL-encodes path segments when calling PokeAPI (handles names with spaces or special characters).
 
@@ -73,17 +74,19 @@ npm run build:github-pages
 | `PokemonCatalogService` | Cached type index and per-type Pokémon lists (`shareReplay`) in `features/pokemon-picker/`. |
 | `PokemonPlayerService` | Player selection (`features/battle/`): `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError` streams. |
 | `PokemonOpponentService` | Random opponent id, `getPokemonById`, sprite URL (`features/battle/`). |
-| `PokemonBattleService` | Unified battle state (`features/battle/`): `vm$`, `loadOpponent()` / `selectPlayerPokemon()`. |
+| `PokemonBattleService` | Unified battle state (`features/battle/`): `vm$` (`PokemonBattleVm`: opponent/player loading, partial Pokémon, player error), `loadOpponent()`, `selectPlayerPokemon()`, `playAgain()` (clears player, notifies `closeSelectorDropdowns$`, reloads opponent), split streams (`playerDetails$`, `opponent$`, etc.). |
+| `BattleHistoryService` | `features/battle/` — `entries$` and `recordMatch()`; keeps newest three `BattleHistoryEntry` values in `sessionStorage` (`gcea-battle-history-v1`). |
+| `BattleRecentMatchupsComponent` | `features/battle/battle-recent-matchups/` — reads `BattleHistoryService.entries$` and formats lines for the list. |
 | `getPokemonTypes()` | `GET /type/` — returns the paginated type list (names + URLs). |
 | `getPokemonByType(typeName)` | `GET /type/{typeName}` — returns brief entries for Pokémon in that type. |
 | `getPokemonDetails(name)` | `GET /pokemon/{name}` — pushes full details into `pokemonDetails` or sets `pokemonDetailsError`. |
 | `getPokemonById(id)` | `GET /pokemon/{id}` — used for the opponent and for `getPokemonOpponent()`. |
 | `pickRandomOpponentId()` | Returns a random integer from 1 through `environment.maxPokemonSpeciesId`. |
-| `PokemonSelectorComponent` | `features/pokemon-picker/` — defers the initial type request until after first render. |
+| `PokemonSelectorComponent` | `features/pokemon-picker/` — after first render, loads the type index (`afterNextRender`); wrapped by `@defer` in `AppComponent` for viewport-based loading. |
 | `PokemonTypeComponent` | `features/pokemon-picker/` — dropdown, loads names on first open, `selectPlayerPokemon` on battle service. |
 | `resolveSpecialAttackBattle()` | Pure helper in `features/battle/special-attack-battle.ts` — **special-attack** comparison, messages, victor. |
-| `PokemonBattleResultComponent` | `features/battle/pokemon-battle-result/` — presentation + 2s delay. |
-| `AppComponent` | Renders the battle UI from `PokemonBattleService.vm$` (retry calls `battle.loadOpponent()`). |
+| `PokemonBattleResultComponent` | `features/battle/pokemon-battle-result/` — presentation + 2s delay; calls `BattleHistoryService.recordMatch` when a winner is known. |
+| `AppComponent` | Battle shell from `PokemonBattleService.vm$` (opponent retry → `battle.loadOpponent()`); deferred `app-pokemon-selector`; `app-battle-recent-matchups` below the fold. |
 
 ## Configuration
 
