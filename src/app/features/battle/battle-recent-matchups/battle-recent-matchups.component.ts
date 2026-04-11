@@ -24,6 +24,18 @@ export class BattleRecentMatchupsComponent {
       : `${them} out-sp.atk’d ${you} — tough luck`;
   }
 
+  /** Polaroid headline — “Pikachu × Onix”. */
+  versusLine(entry: BattleHistoryEntry): string {
+    const you = this.titleCase(entry.playerName);
+    const them = this.titleCase(entry.opponentName);
+    return `${you} × ${them}`;
+  }
+
+  /** Short verdict line under the matchup. */
+  verdictLine(entry: BattleHistoryEntry): string {
+    return entry.playerWon ? 'your sp.atk carried · win' : 'their sp.atk edged · loss';
+  }
+
   private titleCase(name: string): string {
     return name ? name.charAt(0).toUpperCase() + name.slice(1) : name;
   }

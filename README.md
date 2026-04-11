@@ -13,7 +13,7 @@ This project is a small browser game for experimenting with Angular, `HttpClient
 | Area | Path |
 | --- | --- |
 | App shell | `src/app/app.component.*`, `app.config.ts` |
-| Global styles | `src/styles.scss`, `src/styles/_tokens.scss` (CSS variables, theme) |
+| Global styles | `src/styles.scss` imports tokens and battle/arena partials: `_tokens.scss`, `_arena-type-wash.scss`, `_battle-chrome.scss`, `_battle-panel-frames.scss`. Picker type chips use `_pokemon-type-chips.scss`. |
 | Core (HTTP API client) | `src/app/core/api/` |
 | Shared models | `src/app/shared/models/` (`Pokemon`, types, type list) |
 | Battle feature | `src/app/features/battle/` — `PokemonBattleService`, player / opponent services, `battle-history.service`, `special-attack-battle.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
@@ -105,6 +105,8 @@ npm run build:github-pages
 | `npm start` | Dev server (`ng serve`). |
 | `npm run build` | Production build; static assets land in `dist/gotta-catch-em-all/browser/`. |
 | `npm run build:dev` | Development build (no prod env replacement). |
+| `npm run build:github-pages` | Production build with GitHub Pages `base-href` (`/gotta-catch-em-all/`). |
+| `npm run serve:dist` | Serves the production output folder on port 8080 (after `npm run build`). |
 | `npm run lint` | ESLint (Angular ESLint). |
 | `npm test` | Karma + Chrome (watch mode). |
 | `npm run test:ci` | Single run, headless Chrome with `--no-sandbox` (CI-friendly). |

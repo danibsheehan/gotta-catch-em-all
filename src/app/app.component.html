@@ -1,5 +1,11 @@
 @if (battle.vm$ | async; as vm) {
-<div class="battle-container" id="battle-arena" role="region" aria-label="Battle arena">
+<div
+  class="battle-container"
+  id="battle-arena"
+  role="region"
+  aria-label="Battle arena"
+  [attr.data-arena-type]="arenaAmbientType(vm)"
+>
   <div class="visually-hidden" aria-live="polite" aria-atomic="true">
     @if (vm.opponentLoading) {
       <span>step 1: loading your opponent — hang tight.</span>
@@ -12,6 +18,13 @@
       <span>step 2: loading your pokémon from the PC.</span>
     }
   </div>
+  <div class="battle-panel-rim battle-panel-rim--opponent">
+    <span class="battle-sleeve-nick battle-sleeve-nick--left" aria-hidden="true"></span>
+    <span class="battle-sleeve-nick battle-sleeve-nick--right" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tr" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--bl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--br" aria-hidden="true"></span>
   <section class="opponent battle-opponent" aria-label="Opponent" [attr.aria-busy]="vm.opponentLoading">
     @if (vm.opponentLoading) {
       <div class="battle-loading battle-loading--opponent pokemon-opponent-loading" role="status">
@@ -36,13 +49,37 @@
     }
     @if (!vm.opponentLoading && vm.opponent?.name) {
       <div [@arenaOpponentEnter] class="arena-opponent-reveal">
-        <h2 id="opponent-heading" class="battle-section-heading">your opponent ✨</h2>
-        <app-pokemon-details [pokemonDetails]="vm.opponent" [prioritizeLcp]="true"></app-pokemon-details>
+        <header class="battle-heading-stack">
+          <div class="battle-heading-main">
+            <p class="battle-micro-label">round 1 · rival revealed</p>
+            <h2 id="opponent-heading" class="battle-section-heading">your opponent ✨</h2>
+          </div>
+          <span class="battle-ribbon battle-ribbon--tape battle-ribbon--foe">foe</span>
+        </header>
+        <app-pokemon-details
+          [pokemonDetails]="vm.opponent"
+          [prioritizeLcp]="true"
+          [staggerEntrance]="true"
+        ></app-pokemon-details>
       </div>
     }
   </section>
+  </div>
+  <div class="battle-panel-rim battle-panel-rim--choice">
+    <span class="battle-sleeve-nick battle-sleeve-nick--left" aria-hidden="true"></span>
+    <span class="battle-sleeve-nick battle-sleeve-nick--right" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tr" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--bl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--br" aria-hidden="true"></span>
   <section class="choice battle-choice" aria-labelledby="choice-heading" [attr.aria-busy]="vm.playerLoading">
-    <h2 id="choice-heading" class="battle-section-heading">your pick 💫</h2>
+    <header class="battle-heading-stack">
+      <div class="battle-heading-main">
+        <p class="battle-micro-label battle-micro-label--mint">special attack clash · round 2</p>
+        <h2 id="choice-heading" class="battle-section-heading">your pick 💫</h2>
+      </div>
+      <span class="battle-ribbon battle-ribbon--tape battle-ribbon--pick">your pick</span>
+    </header>
     @if (vm.opponentLoading) {
       <p class="choice-sequencing-hint">Unlocks after your rival appears — you’re on deck.</p>
     }
@@ -64,9 +101,8 @@
       </div>
     }
     @if (vm.player?.name && !vm.playerLoading) {
-      <div [@arenaChoiceEnter] class="arena-choice-reveal">
-        <app-pokemon-details [pokemonDetails]="vm.player">
-        </app-pokemon-details>
+      <div class="arena-choice-reveal">
+        <app-pokemon-details [pokemonDetails]="vm.player" [staggerEntrance]="true"></app-pokemon-details>
       </div>
     }
     @if (vm.playerError && !vm.playerLoading) {
@@ -75,11 +111,20 @@
       </div>
     }
   </section>
+  </div>
 </div>
 
 @if (!vm.opponentLoading && vm.player?.name && !vm.playerLoading) {
+  <div class="battle-panel-rim battle-panel-rim--result">
+    <span class="battle-sleeve-nick battle-sleeve-nick--left battle-sleeve-nick--subtle" aria-hidden="true"></span>
+    <span class="battle-sleeve-nick battle-sleeve-nick--right battle-sleeve-nick--subtle" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--tr" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--bl" aria-hidden="true"></span>
+    <span class="battle-corner-bracket battle-corner-bracket--br" aria-hidden="true"></span>
   <div class="battle-result" role="region" aria-label="Battle outcome">
     <app-pokemon-battle-result [pokemonOpponent]="vm.opponent" [pokemonChoice]="vm.player"></app-pokemon-battle-result>
+  </div>
   </div>
 }
 }

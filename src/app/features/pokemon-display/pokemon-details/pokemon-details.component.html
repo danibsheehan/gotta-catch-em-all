@@ -1,4 +1,7 @@
-<div [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''">
+<div
+  [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''"
+  [class.pokemon-details--stagger-in]="staggerEntrance"
+>
     <span class="pokemon-name">{{pokemonDetails?.name}}</span>
     @if (specialAttackStat !== null) {
       <p class="pokemon-stat-callout">

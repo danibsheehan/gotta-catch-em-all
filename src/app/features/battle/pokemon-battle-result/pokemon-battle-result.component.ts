@@ -6,11 +6,12 @@ import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 import { BattleHistoryService } from '../battle-history.service';
 import { PokemonBattleService } from '../pokemon-battle.service';
 import { resolveSpecialAttackBattle } from '../special-attack-battle';
+import { sessionBattleQuip, typeMatchupMicrocopy } from '../type-matchup-flavor';
 
 const EASE_OUT_BACK = 'cubic-bezier(0.22, 1, 0.36, 1)';
 const EASE_SPRING = 'cubic-bezier(0.34, 1.65, 0.64, 1)';
-const REVEAL_DURATION = '520ms';
-const REVEAL_STAGGER = 105;
+const REVEAL_DURATION = '480ms';
+const REVEAL_STAGGER = 72;
 
 @Component({
     selector: 'app-pokemon-battle-result',
@@ -32,17 +33,17 @@ const REVEAL_STAGGER = 105;
         trigger('resultReveal', [
             transition(':enter', [
                 query(
-                    'app-pokemon-details, .battle-result-announce, .battle-stats, .play-again',
+                    'header.battle-result-heading-block, app-pokemon-details, .battle-result-announce, .battle-flavor-strip, .battle-stats-row, .play-again',
                     [
-                        style({ opacity: 0, transform: 'translateY(2rem) scale(0.92)' }),
+                        style({ opacity: 0, transform: 'translateY(1.75rem) scale(0.94)' }),
                         stagger(REVEAL_STAGGER, [
                             animate(
                                 `${REVEAL_DURATION} ${EASE_SPRING}`,
-                                style({ opacity: 1, transform: 'translateY(0) scale(1)' })
+                                style({ opacity: 1, transform: 'translateY(0) scale(1)' }),
                             ),
                         ]),
                     ],
-                    { optional: true }
+                    { optional: true },
                 ),
             ]),
         ]),
@@ -62,6 +63,25 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   /** Set when `battleResult` is shown — drives win/lose flourish (ties count as lose). */
   public playerWon: boolean | undefined;
   public isResolvingBattle = false;
+  /** Optional type-chart flavor line (stats still decide). */
+  public typeMatchupLine: string | null = null;
+  /** Rotating trainer-dex quip for this pairing. */
+  public sessionQuip = '';
+
+  /** Higher stat row highlight — strict inequality (ties: neither). */
+  get theirStatHigher(): boolean {
+    if (this.opponentAttack == null || this.choiceAttack == null) {
+      return false;
+    }
+    return this.opponentAttack.base_stat > this.choiceAttack.base_stat;
+  }
+
+  get yourStatHigher(): boolean {
+    if (this.opponentAttack == null || this.choiceAttack == null) {
+      return false;
+    }
+    return this.choiceAttack.base_stat > this.opponentAttack.base_stat;
+  }
 
   constructor(
     private battle: PokemonBattleService,
@@ -92,6 +112,8 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
     this.playerWon = undefined;
     this.choiceAttack = undefined;
     this.opponentAttack = undefined;
+    this.typeMatchupLine = null;
+    this.sessionQuip = '';
     this.isResolvingBattle = true;
     this.cdr.markForCheck();
 
@@ -112,6 +134,14 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
             playerWon: outcome.playerWon,
           });
         }
+        this.typeMatchupLine = typeMatchupMicrocopy(
+          this.primaryTypeName(this.pokemonChoice),
+          this.primaryTypeName(this.pokemonOpponent),
+        );
+        this.sessionQuip = sessionBattleQuip(playerName, opponentName);
+      } else {
+        this.typeMatchupLine = null;
+        this.sessionQuip = '';
       }
       this.isResolvingBattle = false;
       this.cdr.markForCheck();
@@ -122,6 +152,14 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
     if (this.battleTimer) {
       clearTimeout(this.battleTimer);
     }
+  }
+
+  private primaryTypeName(p: Partial<Pokemon> | undefined): string | undefined {
+    const slots = p?.types;
+    if (!slots?.length) {
+      return undefined;
+    }
+    return [...slots].sort((a, b) => a.slot - b.slot)[0]?.type?.name;
   }
 
 }

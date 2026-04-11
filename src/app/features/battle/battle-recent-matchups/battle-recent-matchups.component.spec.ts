@@ -34,7 +34,7 @@ describe('BattleRecentMatchupsComponent', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.recent-matchups-item')?.textContent).toContain('Pikachu');
-    expect(el.textContent).toContain('out-sp.atk');
+    expect(el.querySelector('.polaroid-vs')?.textContent).toContain('Pikachu');
+    expect(el.textContent).toContain('×');
   });
 });

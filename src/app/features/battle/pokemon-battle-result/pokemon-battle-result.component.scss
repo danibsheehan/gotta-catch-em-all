@@ -16,9 +16,104 @@
 .battle-flourish {
     border-radius: var(--radius-md);
     isolation: isolate;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .battle-flourish--win.battle-flourish--impact {
+        animation: battle-result-shake 0.58s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+}
+
+@keyframes battle-result-shake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    20% {
+        transform: translate(-3px, 1px) rotate(-0.25deg);
+    }
+
+    40% {
+        transform: translate(4px, -2px) rotate(0.3deg);
+    }
+
+    60% {
+        transform: translate(-2px, 2px) rotate(-0.2deg);
+    }
+
+    80% {
+        transform: translate(2px, -1px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.battle-sparks {
+    inset: -12% -8% auto;
+    height: 55%;
+    min-height: 5.5rem;
+    pointer-events: none;
+    position: absolute;
+    z-index: 3;
+}
+
+.battle-sparks-svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .battle-sparks-burst .battle-spark {
+        animation: battle-spark-pop 0.85s ease-out forwards;
+        opacity: 0;
+        transform-origin: center;
+    }
+
+    .battle-spark--a {
+        animation-delay: 0.05s;
+    }
+
+    .battle-spark--b {
+        animation-delay: 0.12s;
+    }
+
+    .battle-spark--c {
+        animation-delay: 0.08s;
+    }
+
+    .battle-spark--d {
+        animation-delay: 0.18s;
+    }
+
+    .battle-spark--e {
+        animation-delay: 0.02s;
+    }
+
+    .battle-spark--f {
+        animation-delay: 0.22s;
+    }
+}
+
+@keyframes battle-spark-pop {
+    0% {
+        opacity: 0;
+        transform: scale(0.15) rotate(-18deg);
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.15) rotate(6deg);
+    }
 }
 
 .battle-flourish::before {
@@ -93,7 +188,8 @@
     font-family: var(--font-display);
     font-size: var(--text-title);
     font-weight: 700;
-    margin: 0 0 var(--space-3);
+    margin: 0;
+    text-shadow: var(--battle-heading-sticker-shadow);
 }
 
 .battle-resolving {
@@ -119,8 +215,38 @@
 }
 
 .battle-stats-row {
+    border-radius: var(--radius-sm);
     margin: 0;
     min-width: 0;
+    padding: var(--space-2);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .battle-stats-row--winner {
+        animation: battle-stat-win-pop 0.72s cubic-bezier(0.34, 1.45, 0.64, 1) 0.15s both;
+        background: color-mix(in srgb, var(--accent-primary) 22%, var(--surface-elevated));
+        box-shadow:
+            0 0 0 2px color-mix(in srgb, var(--arcade-neon) 55%, transparent),
+            0 6px 14px rgba(111, 60, 255, 0.12);
+    }
+}
+
+@keyframes battle-stat-win-pop {
+    0% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+
+    45% {
+        filter: brightness(1.12);
+        transform: scale(1.06);
+    }
+
+    100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
 }
 
 .battle-stats dt {
@@ -155,6 +281,68 @@
     margin: 0;
     padding-left: var(--space-4);
     text-align: left;
+}
+
+.battle-flavor-strip {
+    box-sizing: border-box;
+    margin: var(--space-4) 0 0;
+    max-width: 100%;
+    padding: 0 var(--space-1);
+    position: relative;
+    text-align: left;
+    width: 100%;
+}
+
+.battle-flavor-strip::before {
+    background: repeating-linear-gradient(
+        -88deg,
+        transparent,
+        transparent 3px,
+        rgba(40, 30, 60, 0.06) 3px,
+        rgba(40, 30, 60, 0.06) 4px
+    );
+    border-left: 3px solid color-mix(in srgb, var(--accent-lilac-deep) 35%, var(--border-outline));
+    border-radius: 2px;
+    content: "";
+    height: calc(100% + 6px);
+    left: -2px;
+    opacity: 0.85;
+    pointer-events: none;
+    position: absolute;
+    top: -3px;
+    width: 14px;
+    z-index: 0;
+}
+
+.battle-type-hint-tape,
+.battle-session-quip {
+    margin: 0;
+    padding-left: var(--space-5);
+    position: relative;
+    z-index: 1;
+}
+
+.battle-type-hint-tape {
+    background: color-mix(in srgb, var(--accent-primary) 18%, var(--surface-elevated));
+    border: 2px dashed color-mix(in srgb, var(--border-subtle) 70%, var(--border-outline));
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 3px 0 rgba(20, 20, 20, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.45;
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+    transform: rotate(-0.4deg);
+}
+
+.battle-session-quip {
+    color: color-mix(in srgb, var(--accent-lilac-deep) 75%, var(--text-secondary));
+    font-family: var(--font-chrome);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    margin-top: var(--space-3);
+    text-transform: uppercase;
 }
 
 .play-again {

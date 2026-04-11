@@ -1,12 +1,35 @@
 @if (history$ | async; as entries) {
   @if (entries.length) {
     <section class="recent-matchups" aria-labelledby="recent-matchups-heading">
-      <h2 id="recent-matchups-heading" class="recent-matchups-title">this session · last {{ entries.length }} scrapes</h2>
-      <ol class="recent-matchups-list">
-        @for (entry of entries; track entry.at) {
-          <li class="recent-matchups-item">{{ formatLine(entry) }}</li>
+      <div class="recent-matchups-header">
+        <span class="recent-matchups-stamp" aria-hidden="true">session</span>
+        <h2 id="recent-matchups-heading" class="recent-matchups-title">last {{ entries.length }} scraps · tape to the fridge</h2>
+      </div>
+      <div class="recent-matchups-scrapbook" role="list">
+        @for (entry of entries; track entry.at; let i = $index) {
+          <article
+            class="polaroid-card"
+            role="listitem"
+            [attr.aria-label]="formatLine(entry)"
+          >
+            <span class="polaroid-tape polaroid-tape--tl" aria-hidden="true"></span>
+            <span class="polaroid-tape polaroid-tape--tr" aria-hidden="true"></span>
+            <div class="polaroid-frame">
+              <span
+                class="polaroid-stamp"
+                [class.polaroid-stamp--win]="entry.playerWon"
+                [class.polaroid-stamp--lose]="!entry.playerWon"
+                aria-hidden="true"
+              >
+                {{ entry.playerWon ? 'WIN' : 'OUCH' }}
+              </span>
+              <p class="polaroid-vs">{{ versusLine(entry) }}</p>
+              <p class="polaroid-caption">{{ verdictLine(entry) }}</p>
+            </div>
+            <span class="polaroid-catalog" aria-hidden="true">cat. {{ i + 1 }} · vol. session</span>
+          </article>
         }
-      </ol>
+      </div>
     </section>
   }
 }

@@ -1,0 +1,109 @@
+/* Shared battle chrome — used by app shell + battle-result (global; not component-scoped). */
+
+.battle-heading-stack {
+    align-items: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: space-between;
+    margin: 0 0 var(--space-4);
+    text-align: left;
+    width: 100%;
+}
+
+.battle-heading-main {
+    flex: 1 1 12rem;
+    min-width: 0;
+}
+
+.battle-heading-main .battle-section-heading {
+    margin: 0;
+    text-align: left;
+}
+
+.battle-micro-label {
+    color: color-mix(in srgb, var(--accent-lilac-deep) 88%, var(--text-primary));
+    display: block;
+    font-family: var(--font-chrome);
+    font-size: clamp(0.68rem, 1.9vw, 0.82rem);
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-2);
+    max-width: 22rem;
+    text-transform: uppercase;
+    transform: rotate(-1.25deg);
+}
+
+.battle-micro-label--mint {
+    color: color-mix(in srgb, var(--accent-mint) 45%, var(--accent-lilac-deep));
+}
+
+.battle-micro-label--verdict {
+    color: color-mix(in srgb, var(--accent-pink) 35%, var(--accent-lilac-deep));
+    margin-bottom: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .battle-micro-label {
+        transform: none;
+    }
+}
+
+.battle-ribbon {
+    border: 2px solid var(--border-outline);
+    border-radius: 3px;
+    box-shadow:
+        2px 3px 0 rgba(20, 20, 20, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    color: var(--text-primary);
+    flex: 0 0 auto;
+    font-family: var(--font-chrome);
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    padding: var(--space-2) var(--space-4);
+    text-transform: uppercase;
+    transform: skewX(-6deg);
+}
+
+.battle-ribbon--tape {
+    background: linear-gradient(
+        165deg,
+        var(--surface-elevated) 0%,
+        color-mix(in srgb, var(--surface-muted) 35%, var(--surface-elevated)) 100%
+    );
+    clip-path: polygon(4% 0, 100% 0, 100% 100%, 0 100%, 3% 72%, 0 45%);
+}
+
+.battle-ribbon--foe {
+    color: color-mix(in srgb, var(--accent-lilac-deep) 55%, var(--text-primary));
+}
+
+.battle-ribbon--pick {
+    color: color-mix(in srgb, var(--accent-mint) 35%, var(--text-primary));
+}
+
+.battle-ribbon--mystery {
+    color: color-mix(in srgb, var(--accent-lilac-deep) 62%, var(--text-primary));
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+}
+
+.battle-result-heading-block {
+    align-items: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: space-between;
+    margin: 0 0 var(--space-3);
+    text-align: left;
+    width: 100%;
+}
+
+.battle-result-heading-block .battle-result-heading {
+    flex: 1 0 100%;
+    margin: var(--space-2) 0 0;
+}

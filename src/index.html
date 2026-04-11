@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="Pick a type, grab a fighter, clash on Special Attack. Fast, silly, no backend.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <!-- Warm connections for JSON (CORS) and sprite images to improve LCP -->
   <link rel="preconnect" href="https://pokeapi.co" crossorigin>
@@ -96,11 +96,27 @@
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <a class="skip-link skip-link--picker" href="#type-picker">Skip to type picker</a>
   <div class="app-shell">
-    <h1 class="app-hero-title">pokémon battle royale ✨</h1>
-    <p class="app-hero-subtitle">pick a type, grab a fighter — let’s go 💛</p>
-    <main id="main-content">
+    <div class="app-hero-strip">
+      <h1 class="app-hero-title">pokémon battle royale ✨</h1>
+      <p class="app-hero-subtitle">pick a type, grab a fighter — let’s go 💛</p>
+    </div>
+    <main id="main-content" class="app-main-content">
       <app-root></app-root>
     </main>
   </div>
+  <footer class="app-site-footer">
+    <div class="app-footer-row">
+      <span class="app-footer-icon" aria-hidden="true">📇</span>
+      <p class="app-footer-lede">
+        trainer field notes · <span class="app-footer-mono">sp.atk</span> research div. · session cache only
+      </p>
+    </div>
+    <p class="app-footer-fine">
+      catalog no. — · region dex memo vol. 0 · not affiliated · compare one stat, keep it silly
+    </p>
+    <p class="app-footer-easter" aria-hidden="true">
+      rotom says hi · box wallpaper not included · #??? loves spreadsheets
+    </p>
+  </footer>
 </body>
 </html>

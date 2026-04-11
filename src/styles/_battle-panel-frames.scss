@@ -1,0 +1,122 @@
+/* Stacked “card sleeve” rims, sleeve nicks, corner brackets — global (battle shell markup). */
+
+.battle-panel-rim {
+    border-radius: calc(var(--radius-md) + 6px);
+    box-shadow: var(--battle-rim-shadow);
+    box-sizing: border-box;
+    display: block;
+    isolation: isolate;
+    max-width: 100%;
+    padding: 5px;
+    position: relative;
+    width: 100%;
+}
+
+.battle-panel-rim--opponent {
+    background: linear-gradient(
+        128deg,
+        var(--accent-primary) 0%,
+        color-mix(in srgb, var(--accent-lilac) 85%, white) 38%,
+        var(--accent-pink) 100%
+    );
+}
+
+.battle-panel-rim--choice {
+    background: linear-gradient(
+        138deg,
+        color-mix(in srgb, var(--accent-mint) 72%, white) 0%,
+        var(--accent-primary) 42%,
+        color-mix(in srgb, var(--accent-lilac) 55%, white) 100%
+    );
+}
+
+.battle-panel-rim--result {
+    background: linear-gradient(
+        125deg,
+        var(--accent-pink) 0%,
+        var(--accent-lilac) 48%,
+        var(--accent-primary) 100%
+    );
+    margin: var(--space-6) auto 0;
+    max-width: calc(40rem + 18px);
+}
+
+.battle-sleeve-nick {
+    background: linear-gradient(
+        175deg,
+        color-mix(in srgb, var(--surface-elevated) 55%, var(--accent-primary)) 0%,
+        var(--surface-elevated) 100%
+    );
+    border: 2px solid var(--border-outline);
+    border-radius: 0 0 10px 10px;
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.65);
+    height: 13px;
+    pointer-events: none;
+    position: absolute;
+    top: -4px;
+    width: 32px;
+    z-index: 3;
+}
+
+.battle-sleeve-nick--left {
+    left: 14%;
+    transform: rotate(-7deg);
+}
+
+.battle-sleeve-nick--right {
+    right: 14%;
+    transform: rotate(7deg);
+}
+
+.battle-sleeve-nick--subtle {
+    opacity: 0.92;
+    top: -3px;
+}
+
+.battle-corner-bracket {
+    border: 0 solid var(--border-outline);
+    height: 18px;
+    pointer-events: none;
+    position: absolute;
+    width: 18px;
+    z-index: 4;
+}
+
+.battle-corner-bracket--tl {
+    border-top-width: 3px;
+    border-left-width: 3px;
+    border-radius: 4px 0 0 0;
+    left: 7px;
+    top: 7px;
+}
+
+.battle-corner-bracket--tr {
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-radius: 0 4px 0 0;
+    right: 7px;
+    top: 7px;
+}
+
+.battle-corner-bracket--bl {
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-radius: 0 0 0 4px;
+    bottom: 7px;
+    left: 7px;
+}
+
+.battle-corner-bracket--br {
+    border-bottom-width: 3px;
+    border-right-width: 3px;
+    border-radius: 0 0 4px 0;
+    bottom: 7px;
+    right: 7px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .battle-sleeve-nick--left,
+    .battle-sleeve-nick--right {
+        transform: none;
+    }
+}

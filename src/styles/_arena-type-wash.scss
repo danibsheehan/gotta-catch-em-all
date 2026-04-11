@@ -1,0 +1,100 @@
+/* Full-bleed arena tint from primary type (PokeAPI `types[0]`) — matches chip palette in `_pokemon-type-chips`. */
+#battle-arena {
+    --arena-type-bloom-mid: color-mix(in srgb, var(--accent-lilac) 12%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, var(--accent-pink) 7%, transparent);
+}
+
+#battle-arena[data-arena-type="bug"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #c6d16e 16%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #6d7815 8%, transparent);
+}
+
+#battle-arena[data-arena-type="dark"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #a29288 14%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #49392f 9%, transparent);
+}
+
+#battle-arena[data-arena-type="dragon"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #a27dfa 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #4c3b9e 8%, transparent);
+}
+
+#battle-arena[data-arena-type="electric"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #f8e078 18%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #a87b00 7%, transparent);
+}
+
+#battle-arena[data-arena-type="fairy"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #f8a8b8 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #9b6470 7%, transparent);
+}
+
+#battle-arena[data-arena-type="fighting"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #e09088 14%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #7c2c24 8%, transparent);
+}
+
+#battle-arena[data-arena-type="fire"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #f8a060 17%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #b04000 8%, transparent);
+}
+
+#battle-arena[data-arena-type="flying"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #b8a8f8 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #5848a8 7%, transparent);
+}
+
+#battle-arena[data-arena-type="ghost"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #a890c8 14%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #483860 8%, transparent);
+}
+
+#battle-arena[data-arena-type="grass"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #a8e078 16%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #3a7c1a 7%, transparent);
+}
+
+#battle-arena[data-arena-type="ground"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #e8d078 16%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #887010 7%, transparent);
+}
+
+#battle-arena[data-arena-type="ice"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #b8e8e8 17%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #388898 7%, transparent);
+}
+
+#battle-arena[data-arena-type="normal"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #c8c8a8 13%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #686850 7%, transparent);
+}
+
+#battle-arena[data-arena-type="poison"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #c890e8 14%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #682878 8%, transparent);
+}
+
+#battle-arena[data-arena-type="psychic"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #f898b8 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #982050 7%, transparent);
+}
+
+#battle-arena[data-arena-type="rock"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #d0c078 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #786018 7%, transparent);
+}
+
+#battle-arena[data-arena-type="steel"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #d8d8e8 13%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #606878 8%, transparent);
+}
+
+#battle-arena[data-arena-type="water"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #78b8f8 16%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #1858a8 7%, transparent);
+}
+
+#battle-arena[data-arena-type="stellar"] {
+    --arena-type-bloom-mid: color-mix(in srgb, #b8a0f8 15%, transparent);
+    --arena-type-bloom-corner: color-mix(in srgb, #5038a0 8%, transparent);
+}

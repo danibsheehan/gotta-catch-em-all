@@ -1,5 +1,4 @@
-<section class="battle-result-section" aria-labelledby="victor-heading">
-  <h2 id="victor-heading" class="battle-result-heading">the victor 🏆</h2>
+<section class="battle-result-section" role="region" aria-label="Battle outcome">
   @if (isResolvingBattle) {
     <p
       [@battleResolving]
@@ -15,18 +14,58 @@
       class="battle-flourish"
       [class.battle-flourish--win]="playerWon === true"
       [class.battle-flourish--lose]="playerWon === false"
+      [class.battle-flourish--impact]="playerWon === true"
     >
+      @if (playerWon === true) {
+        <div class="battle-sparks" aria-hidden="true">
+          <svg class="battle-sparks-svg" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="sparkGradA" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent-primary)" />
+                <stop offset="100%" stop-color="var(--accent-pink)" />
+              </linearGradient>
+            </defs>
+            <g class="battle-sparks-burst">
+              <path class="battle-spark battle-spark--a" fill="url(#sparkGradA)" d="M78 8l4 12 12 2-12 6-4 14-4-14-12-6 12-2z" />
+              <path class="battle-spark battle-spark--b" fill="var(--accent-mint)" d="M122 38l3 9 9 2-9 4-3 10-3-10-9-4 9-2z" />
+              <path class="battle-spark battle-spark--c" fill="var(--accent-lilac)" d="M38 42l3 10 10 2-10 5-3 12-3-12-10-5 10-2z" />
+              <path class="battle-spark battle-spark--d" fill="url(#sparkGradA)" d="M88 58l5 14 14 3-14 7-5 16-5-16-14-7 14-3z" />
+              <circle class="battle-spark battle-spark--e" cx="52" cy="22" r="3" fill="var(--accent-primary)" />
+              <circle class="battle-spark battle-spark--f" cx="128" cy="68" r="2.5" fill="var(--accent-pink)" />
+            </g>
+          </svg>
+        </div>
+      }
       <div [@resultReveal] class="battle-result-body">
+        <header class="battle-result-heading-block">
+          <p class="battle-micro-label battle-micro-label--verdict">special attack clash</p>
+          <span class="battle-ribbon battle-ribbon--tape battle-ribbon--mystery">type advantage?</span>
+          <h2 id="victor-heading" class="battle-result-heading">the victor 🏆</h2>
+        </header>
         <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>
         <div class="battle-result-announce" aria-live="polite" aria-atomic="true">
           <p class="battle-result-message">{{ battleResult }}</p>
         </div>
+        <div class="battle-flavor-strip">
+          @if (typeMatchupLine) {
+            <p class="battle-type-hint-tape">{{ typeMatchupLine }}</p>
+          }
+          @if (sessionQuip) {
+            <p class="battle-session-quip">{{ sessionQuip }}</p>
+          }
+        </div>
         <dl class="battle-stats">
-          <div class="battle-stats-row">
+          <div
+            class="battle-stats-row battle-stats-row--their"
+            [class.battle-stats-row--winner]="theirStatHigher"
+          >
             <dt class="battle-stats-label">their sp. atk</dt>
             <dd>{{ opponentAttack.base_stat }}</dd>
           </div>
-          <div class="battle-stats-row">
+          <div
+            class="battle-stats-row battle-stats-row--yours"
+            [class.battle-stats-row--winner]="yourStatHigher"
+          >
             <dt class="battle-stats-label">your sp. atk</dt>
             <dd>{{ choiceAttack.base_stat }}</dd>
           </div>

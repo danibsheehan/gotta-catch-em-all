@@ -15,6 +15,8 @@ export class PokemonDetailsComponent {
   @Input() pokemonDetails: Partial<Pokemon>;
   /** When true, image loads eagerly with high fetch priority (use for above-the-fold LCP candidates). */
   @Input() prioritizeLcp = false;
+  /** Sequential name → stat → sprite entrance (CSS; disabled when `prefers-reduced-motion: reduce`). */
+  @Input() staggerEntrance = false;
 
   /** `null` when stats are missing or there is no special-attack entry. */
   get specialAttackStat(): number | null {

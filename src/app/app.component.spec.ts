@@ -5,7 +5,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
-import { PokemonBattleService } from './features/battle/pokemon-battle.service';
+import { PokemonBattleService, PokemonBattleVm } from './features/battle/pokemon-battle.service';
 import { PokemonOpponentService } from './features/battle/pokemon-opponent.service';
 import { PokemonPlayerService } from './features/battle/pokemon-player.service';
 
@@ -64,6 +64,26 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('.battle-container')).toBeTruthy();
+  });
+
+  it('arenaAmbientType should prefer player primary type over opponent', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const vm: PokemonBattleVm = {
+      opponentLoading: false,
+      opponent: {
+        types: [{ slot: 1, type: { name: 'water', url: '' } }],
+      } as any,
+      player: {
+        types: [
+          { slot: 2, type: { name: 'flying', url: '' } },
+          { slot: 1, type: { name: 'fire', url: '' } },
+        ],
+      } as any,
+      playerError: '',
+      playerLoading: false,
+    };
+    expect(app.arenaAmbientType(vm)).toBe('fire');
   });
 
   it('should expose player details and errors on the battle view model', (done) => {

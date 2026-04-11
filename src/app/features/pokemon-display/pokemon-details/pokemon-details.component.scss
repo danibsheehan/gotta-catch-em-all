@@ -25,12 +25,45 @@
     );
     border: 3px solid var(--border-outline);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-pokemon-card);
+    box-shadow:
+        var(--shadow-pokemon-card),
+        0 0 0 2px color-mix(in srgb, var(--accent-lilac) 42%, transparent),
+        var(--battle-inner-glow);
     box-sizing: border-box;
     min-height: 172px;
     min-width: min(100%, 148px);
     padding: var(--space-4) var(--space-3) var(--space-3);
     position: relative;
+}
+
+/* Paper crease + halftone / stripe underlay on the fighter card */
+.current-pokemon::before {
+    background-image:
+        linear-gradient(
+            170deg,
+            rgba(255, 255, 255, 0.42) 0%,
+            rgba(255, 255, 255, 0.06) 34%,
+            transparent 36%,
+            transparent 54%,
+            rgba(25, 18, 50, 0.055) 55.5%,
+            transparent 57.5%
+        ),
+        repeating-linear-gradient(
+            -18deg,
+            rgba(20, 20, 20, 0.03) 0,
+            rgba(20, 20, 20, 0.03) 1px,
+            transparent 1px,
+            transparent 8px
+        ),
+        radial-gradient(rgba(255, 255, 255, 0.18) 0.5px, transparent 0.65px);
+    background-size: auto, auto, 5px 5px;
+    border-radius: inherit;
+    content: "";
+    inset: 0;
+    opacity: var(--battle-halftone-opacity);
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
 }
 
 .current-pokemon::after {
@@ -40,12 +73,55 @@
     inset: 8px;
     pointer-events: none;
     position: absolute;
-    z-index: 0;
+    z-index: 1;
 }
 
 .current-pokemon > * {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+}
+
+/* Arena choreography — name → sp. atk → sprite (motion preference respected globally in `_tokens`) */
+.pokemon-details--stagger-in.current-pokemon .pokemon-name {
+    animation: pokemon-stagger-bit 0.48s var(--pokemon-stagger-ease, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+    animation-delay: 0ms;
+    opacity: 0;
+}
+
+.pokemon-details--stagger-in.current-pokemon .pokemon-stat-callout {
+    animation: pokemon-stagger-bit 0.48s var(--pokemon-stagger-ease, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+    animation-delay: 95ms;
+    opacity: 0;
+}
+
+.pokemon-details--stagger-in.current-pokemon .pokemon-image,
+.pokemon-details--stagger-in.current-pokemon .pokemon-image-placeholder {
+    animation: pokemon-stagger-bit 0.52s var(--pokemon-stagger-ease, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+    animation-delay: 190ms;
+    opacity: 0;
+}
+
+@keyframes pokemon-stagger-bit {
+    from {
+        opacity: 0;
+        transform: translateY(0.55rem) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pokemon-details--stagger-in.current-pokemon .pokemon-name,
+    .pokemon-details--stagger-in.current-pokemon .pokemon-stat-callout,
+    .pokemon-details--stagger-in.current-pokemon .pokemon-image,
+    .pokemon-details--stagger-in.current-pokemon .pokemon-image-placeholder {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 .pokemon-name {
@@ -90,6 +166,7 @@
 .pokemon-image {
     aspect-ratio: 1;
     display: block;
+    filter: drop-shadow(0 -2px 1px rgba(255, 255, 255, 0.9)) drop-shadow(0 3px 8px rgba(40, 25, 95, 0.18));
     /* Matches width/height attributes — reserves LCP box and limits CLS */
     height: 140px;
     image-rendering: pixelated;
@@ -122,4 +199,10 @@
     line-height: 1;
     opacity: 0.9;
     user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pokemon-image {
+        filter: none;
+    }
 }
