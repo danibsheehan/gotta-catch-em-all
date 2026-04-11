@@ -1,0 +1,70 @@
+/* Shared sticker panels (errors, notices) — matches battle panel language */
+.sticker-notice {
+    background: linear-gradient(
+        165deg,
+        var(--surface-elevated) 0%,
+        color-mix(in srgb, var(--surface-muted) 55%, white) 100%
+    );
+    border: 3px solid var(--border-outline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-battle-panel);
+    box-sizing: border-box;
+    margin: 0;
+    overflow: hidden;
+    padding: var(--space-4) var(--space-5);
+    position: relative;
+    text-align: center;
+}
+
+/* Paper fold / crease + slight top sheen — sits under dashed frame */
+.sticker-notice::before {
+    background: linear-gradient(
+        172deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.08) 36%,
+        transparent 38%,
+        transparent 55%,
+        rgba(30, 20, 55, 0.06) 56%,
+        transparent 58%,
+        transparent 100%
+    );
+    border-radius: inherit;
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+.sticker-notice::after {
+    border: 2px dashed color-mix(in srgb, var(--border-subtle) 75%, var(--border-outline));
+    border-radius: calc(var(--radius-md) - 10px);
+    content: "";
+    inset: 8px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.sticker-notice > * {
+    position: relative;
+    z-index: 2;
+}
+
+.sticker-notice--danger {
+    background: linear-gradient(
+        165deg,
+        var(--semantic-danger-bg) 0%,
+        color-mix(in srgb, var(--surface-elevated) 88%, var(--semantic-danger-bg)) 100%
+    );
+}
+
+.sticker-notice-text {
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0 0 var(--space-3);
+}
+
+.sticker-notice .opponent-retry {
+    margin-top: 0;
+}

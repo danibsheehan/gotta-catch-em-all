@@ -1,0 +1,27 @@
+html {
+    /* App is light-themed; prevents native controls (e.g. <select>) using dark palettes on dark OS. */
+    color-scheme: light;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--surface-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Halftone grain — light on the page; hero gets an extra heavy layer */
+body::before {
+    background-image: radial-gradient(rgba(20, 20, 20, 0.055) 0.55px, transparent 0.65px);
+    background-size: 5px 5px;
+    content: "";
+    inset: 0;
+    opacity: var(--canvas-grain-opacity);
+    pointer-events: none;
+    position: fixed;
+    z-index: 0;
+}

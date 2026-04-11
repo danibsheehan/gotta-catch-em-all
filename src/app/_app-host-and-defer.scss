@@ -1,0 +1,23 @@
+:host {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+.selector-defer-placeholder {
+    align-items: center;
+    box-sizing: border-box;
+    color: var(--accent-lilac-deep);
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: center;
+    /* Reserve ~one type row so defer swap does not jump layout */
+    min-height: 160px;
+    padding: var(--space-4);
+    text-align: center;
+}
+
+.selector-defer-hint {
+    opacity: 0.85;
+}

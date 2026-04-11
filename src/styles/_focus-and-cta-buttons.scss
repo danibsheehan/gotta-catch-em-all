@@ -1,0 +1,69 @@
+.visually-hidden {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+:where(button, [href], select, input, textarea, summary):focus-visible {
+    box-shadow: 0 0 0 2px var(--surface-canvas), 0 0 0 5px var(--arcade-neon);
+    outline: 2px solid var(--border-outline);
+    outline-offset: 2px;
+}
+
+/* Primary actions: play again, try again — yellow fill + neon rim (cabinet) */
+:where(.play-again, .opponent-retry) {
+    appearance: none;
+    background: var(--accent-primary);
+    border: 3px solid var(--border-outline);
+    border-radius: var(--radius-pill);
+    box-shadow:
+        0 0 0 2px var(--arcade-neon),
+        0 0 18px color-mix(in srgb, var(--arcade-neon) 35%, transparent),
+        0 4px 0 rgba(26, 26, 26, 0.12);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    max-width: 280px;
+    min-height: 44px;
+    padding: var(--space-3) var(--space-5);
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    width: 100%;
+}
+
+:where(.play-again, .opponent-retry):hover {
+    background: var(--accent-primary-pressed);
+    box-shadow:
+        0 0 0 2px var(--arcade-neon-deep),
+        0 0 22px color-mix(in srgb, var(--arcade-neon) 45%, transparent),
+        0 4px 0 rgba(26, 26, 26, 0.12);
+}
+
+:where(.play-again, .opponent-retry):focus-visible {
+    box-shadow:
+        0 0 0 2px var(--surface-canvas),
+        0 0 0 5px var(--arcade-neon),
+        0 0 24px color-mix(in srgb, var(--arcade-neon) 50%, transparent),
+        0 4px 0 rgba(26, 26, 26, 0.12);
+    outline: none;
+}
+
+:where(.play-again, .opponent-retry):active {
+    box-shadow:
+        0 0 0 2px var(--arcade-neon-deep),
+        0 2px 0 rgba(26, 26, 26, 0.12);
+    transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :where(.play-again, .opponent-retry):active {
+        transform: none;
+    }
+}

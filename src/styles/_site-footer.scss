@@ -1,0 +1,28 @@
+/* Site footer — attribution and disclaimer */
+.app-site-footer {
+    border-top: 1px dashed color-mix(in srgb, var(--border-subtle) 65%, transparent);
+    margin-top: var(--space-6);
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    text-align: center;
+}
+
+.app-footer-lede {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 40rem;
+}
+
+.app-footer-link {
+    color: var(--accent-lilac-deep);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.15em;
+
+    &:hover {
+        color: var(--accent-pink);
+    }
+}

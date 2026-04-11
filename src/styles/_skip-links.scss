@@ -1,0 +1,24 @@
+.skip-link {
+    background: var(--text-primary);
+    color: var(--surface-elevated);
+    left: -9999px;
+    padding: 0.5rem 1rem;
+    position: absolute;
+    text-decoration: none;
+    top: 0;
+    z-index: 10000;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+}
+
+.skip-link--picker:focus {
+    top: 4.25rem;
+}
+
+.skip-link:focus-visible {
+    box-shadow: 0 0 0 2px var(--surface-canvas), 0 0 0 5px var(--arcade-neon);
+    outline: 2px solid var(--border-outline);
+}

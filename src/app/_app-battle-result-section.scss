@@ -1,0 +1,69 @@
+.arena-opponent-reveal,
+.arena-choice-reveal {
+    width: 100%;
+}
+
+.battle-section-heading {
+    color: var(--text-battle-heading);
+    font-family: var(--font-display);
+    font-size: var(--text-title);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--space-4);
+    text-shadow: var(--battle-heading-sticker-shadow);
+    text-transform: none;
+}
+
+.battle-panel-rim--result .battle-result {
+    margin: 0 auto;
+    max-width: none;
+}
+
+.battle-result {
+    background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.36) 0%, transparent 44%),
+        repeating-linear-gradient(
+            -18deg,
+            rgba(20, 20, 20, 0.028) 0,
+            rgba(20, 20, 20, 0.028) 1px,
+            transparent 1px,
+            transparent 12px
+        ),
+        linear-gradient(
+            180deg,
+            var(--surface-elevated) 0%,
+            color-mix(in srgb, var(--surface-muted) 35%, var(--surface-elevated)) 55%,
+            color-mix(in srgb, var(--accent-pink) 12%, white) 100%
+        );
+    border: 3px solid var(--border-outline);
+    border-radius: calc(var(--radius-md) - 1px);
+    box-shadow: var(--shadow-battle-panel), var(--battle-inner-glow);
+    box-sizing: border-box;
+    margin: var(--space-6) auto 0;
+    max-width: 40rem;
+    overflow: visible;
+    padding: var(--space-5);
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.battle-result::after {
+    border: 2px dashed color-mix(in srgb, var(--border-subtle) 75%, var(--border-outline));
+    border-radius: calc(var(--radius-md) - 10px);
+    content: "";
+    inset: 10px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+.battle-result > * {
+    position: relative;
+    z-index: 1;
+}
+
+.pokemon-results {
+    display: flex;
+    justify-content: space-evenly;
+}

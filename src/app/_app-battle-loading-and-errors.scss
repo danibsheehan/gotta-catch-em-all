@@ -1,0 +1,193 @@
+.pokemon-opponent-error {
+    display: block;
+    margin-inline: auto;
+    max-width: 22rem;
+    text-align: center;
+}
+
+.pokemon-opponent-loading {
+    box-sizing: border-box;
+    margin-inline: auto;
+    max-width: 20rem;
+    min-height: 10rem;
+    padding: var(--space-2) 0 var(--space-3);
+    text-align: center;
+    width: 100%;
+}
+
+.opponent-error {
+    color: var(--semantic-danger);
+}
+
+.battle-loading-step {
+    color: var(--accent-lilac-deep);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin: 0 0 var(--space-2);
+    text-transform: uppercase;
+}
+
+.battle-loading-title {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 var(--space-4);
+}
+
+.battle-loading--opponent .battle-loading-title {
+    color: var(--accent-lilac-deep);
+}
+
+.battle-loading--choice .battle-loading-title {
+    color: color-mix(in srgb, var(--accent-mint) 55%, var(--text-secondary));
+}
+
+.battle-skeleton {
+    display: flex;
+    margin: 0 auto var(--space-4);
+}
+
+.battle-skeleton--opponent {
+    align-items: center;
+    gap: var(--space-4);
+    justify-content: center;
+}
+
+.battle-skeleton-orb {
+    background: linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--accent-lilac) 35%, var(--surface-elevated)),
+        color-mix(in srgb, var(--accent-pink) 22%, var(--surface-elevated))
+    );
+    border: 2px solid color-mix(in srgb, var(--border-subtle) 80%, var(--border-outline));
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+    height: 3.25rem;
+    width: 3.25rem;
+}
+
+.battle-skeleton-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+    width: min(100%, 11rem);
+}
+
+.battle-skeleton-line {
+    background: color-mix(in srgb, var(--border-subtle) 45%, var(--surface-elevated));
+    border-radius: var(--radius-pill);
+    display: block;
+    height: 0.65rem;
+}
+
+.battle-skeleton-line--long {
+    width: 100%;
+}
+
+.battle-skeleton-line--mid {
+    width: 78%;
+}
+
+.battle-skeleton-line--short {
+    width: 52%;
+}
+
+.battle-skeleton-line--wide {
+    width: 100%;
+}
+
+.battle-skeleton--choice {
+    align-items: center;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.battle-skeleton-ring {
+    background: conic-gradient(
+        from 200deg,
+        color-mix(in srgb, var(--accent-primary) 45%, var(--surface-elevated)),
+        color-mix(in srgb, var(--accent-mint) 50%, var(--surface-elevated)),
+        color-mix(in srgb, var(--accent-lilac) 40%, var(--surface-elevated)),
+        color-mix(in srgb, var(--accent-primary) 45%, var(--surface-elevated))
+    );
+    border: 3px solid var(--border-outline);
+    border-radius: 50%;
+    flex-shrink: 0;
+    height: 5rem;
+    width: 5rem;
+}
+
+.battle-skeleton-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: min(100%, 12rem);
+}
+
+.loading-label {
+    color: var(--accent-lilac-deep);
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.loading-label--opponent {
+    color: var(--accent-lilac-deep);
+}
+
+.loading-label--choice {
+    color: color-mix(in srgb, var(--accent-lilac-deep) 55%, var(--accent-mint));
+}
+
+.choice-sequencing-hint {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+}
+
+.choice-sequencing-hint--warn {
+    color: color-mix(in srgb, var(--semantic-danger) 75%, var(--text-secondary));
+}
+
+.choice-loading {
+    margin-top: 0;
+    min-height: 11rem;
+}
+
+.choice-error {
+    color: var(--semantic-danger);
+    display: block;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.choice-error-wrap {
+    margin-top: var(--space-3);
+    text-align: center;
+}
+
+.type-picker-region {
+    scroll-margin-top: var(--space-4);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .battle-skeleton-line,
+    .battle-skeleton-orb,
+    .battle-skeleton-ring {
+        animation: battle-skeleton-pulse 1.15s ease-in-out infinite;
+    }
+}
+
+@keyframes battle-skeleton-pulse {
+    50% {
+        filter: brightness(0.97);
+        opacity: 0.88;
+    }
+}
