@@ -30,6 +30,9 @@
     "tslib": "^2.0.0",
     "zone.js": "~0.15.1"
   },
+  "overrides": {
+    "picomatch": "^4.0.4"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~20.3.23",
     "@angular/cli": "~20.3.21",

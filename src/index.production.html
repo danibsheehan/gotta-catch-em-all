@@ -1,0 +1,127 @@
+<!doctype html>
+<!--
+  Production HTML shell — keep in sync with index.html except the security <meta> block below.
+  frame-ancestors is ignored in <meta> CSP; use a CDN / reverse proxy header if you need clickjacking protection.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>pokémon battle — pick your fighter</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <!--
+    CSP tuned for production output: inlined critical CSS (style-src 'unsafe-inline'), PokeAPI fetches,
+    HTTPS sprites from the API, fonts from gstatic after inlining, and the CLI’s async CSS link onload handler
+    (script-src hash + 'unsafe-hashes' per CSP Level 3).
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://pokeapi.co; form-action 'self'; upgrade-insecure-requests">
+  <meta name="description" content="Pick a Pokémon by type, face a random rival, and settle the match on Special Attack stats. Powered by PokeAPI — runs in your browser.">
+  <!-- Open Graph / Twitter: update og:url and og:image when forking or using a custom domain -->
+  <meta property="og:title" content="Pokémon battle royale — pick your fighter">
+  <meta property="og:description" content="Pick a type, grab a fighter, clash on Special Attack. Fast, silly, no backend.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://danibsheehan.github.io/gotta-catch-em-all/">
+  <meta property="og:image" content="https://danibsheehan.github.io/gotta-catch-em-all/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Pokémon battle royale — pick your fighter">
+  <meta name="twitter:description" content="Pick a type, grab a fighter, clash on Special Attack. Fast, silly, no backend.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Warm connections for JSON (CORS) and sprite images to improve LCP -->
+  <link rel="preconnect" href="https://pokeapi.co" crossorigin>
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://pokeapi.co">
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <!-- Critical above-the-fold: no dependency on external CSS or Angular (FCP/LCP on mobile) -->
+  <style>
+    html {
+      color-scheme: light;
+    }
+    html, body {
+      margin: 0;
+    }
+    body {
+      background: #fff3d4;
+      color: #141414;
+    }
+    app-root {
+      display: block;
+    }
+    .app-shell {
+      box-sizing: border-box;
+      margin: 0 auto;
+      max-width: 72rem;
+      padding: 0 1rem 2rem;
+    }
+    .app-hero-title {
+      box-sizing: border-box;
+      font-family: "Fredoka", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 auto;
+      max-width: 100%;
+      padding-top: 1.5rem;
+      text-align: center;
+      text-shadow: 3px 3px 0 #ffee33;
+      width: min(95%, 48rem);
+    }
+    .app-hero-subtitle {
+      box-sizing: border-box;
+      color: #6f3cff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin: 0 auto 2rem;
+      max-width: 28rem;
+      padding: 0 1rem;
+      text-align: center;
+      width: 95%;
+    }
+    .skip-link {
+      background: #000;
+      color: #fff;
+      left: -9999px;
+      padding: 0.5rem 1rem;
+      position: absolute;
+      text-decoration: none;
+      top: 0;
+      z-index: 10000;
+    }
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+    }
+    .skip-link--picker:focus {
+      top: 4.25rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a class="skip-link skip-link--picker" href="#type-picker">Skip to type picker</a>
+  <div class="app-shell">
+    <div class="app-hero-strip">
+      <h1 class="app-hero-title">pokémon battle royale ✨</h1>
+      <p class="app-hero-subtitle">pick a type, grab a fighter — let’s go 💛</p>
+    </div>
+    <main id="main-content" class="app-main-content">
+      <app-root></app-root>
+    </main>
+  </div>
+  <footer class="app-site-footer">
+    <p class="app-footer-lede">
+      Pokémon data from
+      <a class="app-footer-link" href="https://pokeapi.co/" rel="noopener noreferrer" target="_blank">PokéAPI</a>.
+      Unofficial fan project — not affiliated with Nintendo, Game Freak, or The Pokémon Company.
+    </p>
+  </footer>
+</body>
+</html>

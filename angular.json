@@ -52,6 +52,11 @@
               "namedChunks": true
             },
             "production": {
+              "index": {
+                "input": "src/index.production.html",
+                "output": "index.html"
+              },
+              "subresourceIntegrity": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
