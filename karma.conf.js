@@ -11,16 +11,24 @@ module.exports = function (config) {
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
+      require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
+    coverageReporter: {
       dir: require('path').join(__dirname, './coverage/gotta-catch-em-all'),
-      reports: ['html', 'lcovonly', 'text-summary'],
-      fixWebpackSourcePaths: true
+      subdir: '.',
+      reporters: [{ type: 'html' }, { type: 'lcovonly' }, { type: 'text-summary' }],
+      check: {
+        global: {
+          statements: 82,
+          branches: 67,
+          functions: 88,
+          lines: 82
+        }
+      }
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,

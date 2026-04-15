@@ -1,0 +1,50 @@
+# Runs unit tests with coverage on pushes to main and on pull requests.
+# On pull requests from the same repository, posts an updated coverage comment.
+
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - uses: browser-actions/setup-chrome@v1
+        id: setup-chrome
+
+      - run: npm ci
+
+      - name: Unit tests with coverage
+        run: npm run test:ci
+        env:
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+      - name: Post coverage comment
+        if: >
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: romeovs/lcov-reporter-action@v0.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: coverage/gotta-catch-em-all/lcov.info
+          delete-old-comments: true
+          title: "## Test coverage"
