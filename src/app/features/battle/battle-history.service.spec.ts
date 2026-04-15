@@ -44,4 +44,82 @@ describe('BattleHistoryService', () => {
     expect(parsed[0].playerName).toBe('mew');
     expect(parsed[0].playerWon).toBe(true);
   });
+
+  describe('readStorage (session rehydration)', () => {
+    it('should rehydrate valid entries from sessionStorage on construction', async () => {
+      sessionStorage.setItem(
+        'gcea-battle-history-v1',
+        JSON.stringify([
+          { opponentName: 'a', playerName: 'x', playerWon: true, at: 10 },
+          { opponentName: 'b', playerName: 'y', playerWon: false, at: 20 },
+        ]),
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const fresh = TestBed.inject(BattleHistoryService);
+
+      expect(await firstValueFrom(fresh.entries$)).toEqual([
+        { opponentName: 'a', playerName: 'x', playerWon: true, at: 10 },
+        { opponentName: 'b', playerName: 'y', playerWon: false, at: 20 },
+      ]);
+    });
+
+    it('should yield an empty list when stored JSON is invalid', async () => {
+      sessionStorage.setItem('gcea-battle-history-v1', '{ not valid json');
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const fresh = TestBed.inject(BattleHistoryService);
+
+      expect(await firstValueFrom(fresh.entries$)).toEqual([]);
+    });
+
+    it('should yield an empty list when stored value is not an array', async () => {
+      sessionStorage.setItem('gcea-battle-history-v1', JSON.stringify({ rows: [] }));
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const fresh = TestBed.inject(BattleHistoryService);
+
+      expect(await firstValueFrom(fresh.entries$)).toEqual([]);
+    });
+
+    it('should filter out rows that do not match BattleHistoryEntry', async () => {
+      sessionStorage.setItem(
+        'gcea-battle-history-v1',
+        JSON.stringify([
+          { opponentName: 'good', playerName: 'ok', playerWon: true, at: 1 },
+          { opponentName: 'incomplete' },
+          null,
+          'not-an-object',
+          { opponentName: 'also', playerName: 'fine', playerWon: false, at: 2 },
+        ]),
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const fresh = TestBed.inject(BattleHistoryService);
+
+      expect(await firstValueFrom(fresh.entries$)).toEqual([
+        { opponentName: 'good', playerName: 'ok', playerWon: true, at: 1 },
+        { opponentName: 'also', playerName: 'fine', playerWon: false, at: 2 },
+      ]);
+    });
+
+    it('should keep at most 3 entries when reading from storage', async () => {
+      sessionStorage.setItem(
+        'gcea-battle-history-v1',
+        JSON.stringify([
+          { opponentName: '1', playerName: 'a', playerWon: true, at: 1 },
+          { opponentName: '2', playerName: 'b', playerWon: false, at: 2 },
+          { opponentName: '3', playerName: 'c', playerWon: true, at: 3 },
+          { opponentName: '4', playerName: 'd', playerWon: false, at: 4 },
+        ]),
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const fresh = TestBed.inject(BattleHistoryService);
+
+      const entries = await firstValueFrom(fresh.entries$);
+      expect(entries.length).toBe(3);
+      expect(entries.map((e) => e.opponentName)).toEqual(['1', '2', '3']);
+    });
+  });
 });

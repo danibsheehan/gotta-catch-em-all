@@ -50,4 +50,41 @@ describe('PokemonCatalogService', () => {
       { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' }
     ]);
   });
+
+  it('should not issue a second HTTP request when getPokemonTypes is subscribed again after the first completes', () => {
+    const first: unknown[] = [];
+    service.getPokemonTypes().subscribe((data) => first.push(data));
+    const typeListReq = httpMock.expectOne('https://pokeapi.co/api/v2/type/');
+    const payload = {
+      count: 1,
+      results: [{ name: 'electric', url: 'https://pokeapi.co/api/v2/type/13/' }],
+    };
+    typeListReq.flush(payload);
+
+    let second: unknown;
+    service.getPokemonTypes().subscribe((data) => {
+      second = data;
+    });
+    expect(second).toEqual(payload);
+    expect(first[0]).toEqual(payload);
+  });
+
+  it('should not issue a second HTTP request when getPokemonByType is called again for the same type', () => {
+    let first: unknown;
+    service.getPokemonByType('electric').subscribe((data) => {
+      first = data;
+    });
+    const typeDetailsReq = httpMock.expectOne('https://pokeapi.co/api/v2/type/electric');
+    const briefs = [{ name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' }];
+    typeDetailsReq.flush({
+      pokemon: [{ pokemon: briefs[0] }],
+    });
+    expect(first).toEqual(briefs);
+
+    let second: unknown;
+    service.getPokemonByType('electric').subscribe((data) => {
+      second = data;
+    });
+    expect(second).toEqual(briefs);
+  });
 });
