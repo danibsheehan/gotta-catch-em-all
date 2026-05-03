@@ -40,14 +40,14 @@
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ BATTLE BRIEF — WHAT THIS REPO *IS*
+## ★ BATTLE BRIEF — **what this is, fast**
 
 > **Angular ~20** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
 >  
 > You draft from a **per-type** menu; the app rolls an opponent and runs **`resolveSpecialAttackBattle()`** so the UI never reinvents win/loss rules. **Recent matchups** (session, **last 3**) remember the drama. **HTTP** hits PokeAPI **only** through **`PokeApiClient`**.
 
 <details>
-<summary><strong>▼ MORE HEX FROM THE SAME THEME (duplicate of <code>_tokens.scss</code> for skimming) ▼</strong></summary>
+<summary><strong>▼ Extra palette rows → same <code>_tokens.scss</code> as the UI ▼</strong></summary>
 
 | CSS variable | Hex | Where it shows up |
 | :--- | :--- | :--- |
@@ -68,7 +68,7 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ SOURCE MAP — WHERE EVERYTHING LIVES
+## ★ SOURCE MAP — **where each folder points**
 
 | ZONE | PATH |
 | :--- | :--- |
@@ -85,7 +85,7 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ FEATURE ROLL CALL — LOUD CHECKLIST
+## ★ FEATURE ROLL CALL — **what ships in the box**
 
 | TAG | WHAT HAPPENS |
 | :---: | :--- |
@@ -96,14 +96,14 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 | **VERDICT** | **`resolveSpecialAttackBattle()`** + `PokemonBattleResultComponent` timing/UI + **`BattleHistoryService.recordMatch`**. Optional **type-pair flavor** (not damage math). |
 | **SFX BUS** | **Sound off by default** — arcade tick on pick, sting on result; header toggle; `localStorage` **`gcea-sound-effects`**. |
 | **MEMORY LANE** | Up to **three** **Recent matchups** per tab — `sessionStorage`, in-memory fallback if storage is blocked. |
-| **`shareReplay(1)`** | Cached **type index** + **per-type lists** — don’t blast duplicate HTTP. |
+| **`shareReplay(1)`** | Cached **type index** + **per-type lists** — don't blast duplicate HTTP. |
 | **SAFE URLS** | Path segments encoded for PokeAPI (weird names survive). |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ PREREQS — BRING YOUR OWN NODE
+## ★ PREREQS — **install first**
 
 | REQUIREMENT | NOTES |
 | :--- | :--- |
@@ -114,7 +114,7 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ INSTALL · RUN · SHIP — COPY. PASTE. WIN.
+## ★ INSTALL · RUN · SHIP — **clone, dev, build**
 
 ```bash
 # ═══ GRAB THE REPO ═══
@@ -151,7 +151,7 @@ npm run build:github-pages
 ```
 
 <details>
-<summary><strong>▼ API REFERENCE (APP) — EXPAND FOR THE FULL SYMBOL TABLE ▼</strong></summary>
+<summary><strong>▼ Who owns what — services + HTTP ▼</strong></summary>
 
 | SYMBOL / AREA | RESPONSIBILITY |
 | :--- | :--- |
@@ -180,7 +180,7 @@ npm run build:github-pages
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ CONFIGURATION — DIALS ON THE BACK OF THE CABINET
+## ★ CONFIGURATION — **API + rival ID cap**
 
 | FIELD | WHERE | DESCRIPTION |
 | :--- | :--- | :--- |
@@ -194,7 +194,7 @@ npm run build:github-pages
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ SCRIPTS — THE BUTTON LAYOUT
+## ★ SCRIPTS — **npm, decoded**
 
 | SCRIPT | WHAT IT DOES |
 | :--- | :--- |
@@ -207,7 +207,7 @@ npm run build:github-pages
 | `npm test` | Karma + Chrome (**watch**). |
 | `npm run test:ci` | Single run, headless Chrome **`--no-sandbox`** (CI). |
 
-**ChromeHeadless won’t boot?** Run **`npm run test:ci`**. On macOS you can pin Chrome:
+**ChromeHeadless won't boot?** Run **`npm run test:ci`**. On macOS you can pin Chrome:
 
 ```bash
 CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm run test:ci
@@ -217,7 +217,7 @@ CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm ru
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ CURSOR — OPTIONAL SIDEKICK FILES
+## ★ CURSOR — **optional <code>.cursor</code> helpers**
 
 | PATH | PURPOSE |
 | :--- | :--- |
