@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/readme-ui-palette.svg" width="900" alt="UI palette swatches: canvas cream, muted lavender, neon yellow, electric purple, hot pink, mint, arcade cyan — matching src/styles/_tokens.scss" />
+  <img src="./docs/readme-ui-palette.svg" width="900" alt="UI palette swatches: canvas cream, muted lavender, neon yellow, electric purple, hot pink, mint, arcade cyan — matching src/styles/_tokens.scss" />
 </p>
 
 <p align="center">

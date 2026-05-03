@@ -1,59 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 154" role="img" aria-labelledby="readme-palette-title readme-palette-desc">
-  <title id="readme-palette-title">UI palette (matches src/styles/_tokens.scss)</title>
-  <desc id="readme-palette-desc">Swatches for surface canvas, accents, arcade neon, and muted lavender from the app design tokens.</desc>
-  <defs>
-    <pattern id="stripe" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(-28)">
-      <rect width="5" height="10" fill="#141414" opacity="0.06" />
-    </pattern>
-    <filter id="swatch-drop" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="5" stdDeviation="0" flood-color="#141414" flood-opacity="0.11" />
-    </filter>
-  </defs>
-  <!-- Panel: cream canvas + outline rim (battle chrome) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 154" role="img">
+  <title>UI palette (matches src/styles/_tokens.scss)</title>
+  <desc>Swatches for surface canvas, accents, arcade neon, and muted lavender from the app design tokens.</desc>
+  <!-- No url(#id) fills — GitHub’s SVG sanitizer can strip ids and break patterns/filters in README & preview. -->
   <rect x="2" y="2" width="896" height="150" rx="22" fill="#fff3d4" stroke="#141414" stroke-width="3" />
-  <rect x="2" y="2" width="896" height="150" rx="22" fill="url(#stripe)" />
-  <!-- Elevated runway (--surface-elevated + --border-subtle) so canvas swatch reads -->
   <rect x="20" y="24" width="860" height="112" rx="16" fill="#ffffff" stroke="#c9a8ff" stroke-width="2" />
-  <!-- Accent tape strips -->
   <rect x="2" y="2" width="896" height="10" rx="20" fill="#ff4dad" opacity="0.85" />
   <rect x="2" y="14" width="120" height="6" fill="#ffee33" opacity="0.95" />
 
-  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" filter="url(#swatch-drop)">
-    <!-- swatch: label, hex, fill, text fill -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
     <g transform="translate(28, 36)">
       <rect width="108" height="96" rx="12" fill="#fff3d4" stroke="#141414" stroke-width="2" />
-      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">--surface-canvas</text>
+      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">surface-canvas</text>
       <text x="54" y="56" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#4a3566">#fff3d4</text>
     </g>
     <g transform="translate(148, 36)">
       <rect width="108" height="96" rx="12" fill="#ead9ff" stroke="#141414" stroke-width="2" />
-      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">--surface-muted</text>
+      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">surface-muted</text>
       <text x="54" y="56" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#4a3566">#ead9ff</text>
     </g>
     <g transform="translate(268, 36)">
       <rect width="108" height="96" rx="12" fill="#ffee33" stroke="#141414" stroke-width="2" />
-      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">--accent-primary</text>
+      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">accent-primary</text>
       <text x="54" y="56" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#4a3566">#ffee33</text>
     </g>
     <g transform="translate(388, 36)">
       <rect width="108" height="96" rx="12" fill="#6f3cff" stroke="#141414" stroke-width="2" />
-      <text x="54" y="32" text-anchor="middle" font-size="9" font-weight="700" fill="#fff3d4">--accent-lilac-deep</text>
-      <text x="54" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#fff3d4">/ focus stack</text>
+      <text x="54" y="32" text-anchor="middle" font-size="9" font-weight="700" fill="#fff3d4">accent-lilac-deep</text>
+      <text x="54" y="48" text-anchor="middle" font-size="9" font-weight="700" fill="#fff3d4">focus stack</text>
       <text x="54" y="68" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#ffee33">#6f3cff</text>
     </g>
     <g transform="translate(508, 36)">
       <rect width="108" height="96" rx="12" fill="#ff4dad" stroke="#141414" stroke-width="2" />
-      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">--accent-pink</text>
+      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">accent-pink</text>
       <text x="54" y="56" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#141414">#ff4dad</text>
     </g>
     <g transform="translate(628, 36)">
       <rect width="108" height="96" rx="12" fill="#2ad4a8" stroke="#141414" stroke-width="2" />
-      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">--accent-mint</text>
+      <text x="54" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#141414">accent-mint</text>
       <text x="54" y="56" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#141414">#2ad4a8</text>
     </g>
     <g transform="translate(748, 36)">
       <rect width="108" height="96" rx="12" fill="#00e5c8" stroke="#141414" stroke-width="2" />
-      <text x="54" y="32" text-anchor="middle" font-size="9" font-weight="700" fill="#141414">--arcade-neon</text>
+      <text x="54" y="32" text-anchor="middle" font-size="9" font-weight="700" fill="#141414">arcade-neon</text>
       <text x="54" y="46" text-anchor="middle" font-size="8" font-weight="600" fill="#141414">focus / CTAs</text>
       <text x="54" y="66" text-anchor="middle" font-size="11" font-family="ui-monospace, monospace" fill="#141414">#00e5c8</text>
     </g>
