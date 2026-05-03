@@ -1,33 +1,42 @@
 ---
-description: Angular app layout, API boundaries, battle rules, and styling tokens for gotta-catch-em-all
+description: Angular app layout, API boundaries, battle rules, audio, history, and styling tokens for gotta-catch-em-all
 alwaysApply: true
 ---
 
 # Gotta Catch Em All — project conventions
 
-## Stack and components
+## Stack and shell
 
 - Angular ~20, **standalone** components/directives/pipes (`standalone: true`), `bootstrapApplication` + `app.config.ts`.
+- **`@angular/platform-browser/animations`**: `provideAnimations()` vs `provideNoopAnimations()` based on **`prefers-reduced-motion`** (reduced motion → noop).
 - New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
+- Type-picker region: **`@defer`** in the app shell so battle chrome can paint first (viewport + idle prefetch) — preserve that pattern when changing `AppComponent`.
 
 ## Where code belongs
 
-- **`src/app/core/api/`** — HTTP to PokeAPI only via `PokeApiClient`. Do not scatter raw `HttpClient` URLs in features.
-- **`src/app/features/*/`** — feature services, components, and battle logic wiring.
+- **`src/app/core/api/`** — HTTP to PokeAPI **only** via **`PokeApiClient`**. Do not scatter raw `HttpClient` URLs in features.
+- **`src/app/core/audio/`** — **`AudioService`**: optional Web Audio SFX (ticks, battle stings), autoplay-safe unlock; **sound off by default**; preference in **`localStorage`** key **`gcea-sound-effects`**.
+- **`src/app/features/battle/`** — battle orchestration: **`PokemonBattleService`**, **`PokemonPlayerService`**, **`PokemonOpponentService`**, **`BattleHistoryService`** (`recordMatch`, recent entries), **`resolveSpecialAttackBattle()`** in `special-attack-battle.ts`, flavor/helpers, result and recent-matchups UI.
+- **`src/app/features/pokemon-picker/`** — **`PokemonCatalogService`**, type index + menus (`pokemon-selector/`, `pokemon-type/`).
+- **`src/app/features/pokemon-display/`** — read-only presentation (`pokemon-details/`, `pokemon-card/`).
 - **`src/app/shared/models/`** — shared TypeScript models (`Pokemon`, types, etc.).
 
 ## HTTP caching
 
-- **`PokemonCatalogService`** caches the type index and per-type lists with `shareReplay(1)` on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
+- **`PokemonCatalogService`** (`features/pokemon-picker/`) caches the type index and per-type lists with **`shareReplay(1)`** on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
 
 ## PokeAPI URLs
 
 - Path segments for names/ids go through **`PokeApiClient`**’s `encodePathSegment` (via `getTypeDetail` / `getPokemon`). Preserve that for any new endpoints on the client.
+- Random opponent ids are **`1…environment.maxPokemonSpeciesId`** (inclusive upper bound from env).
 
 ## Battle resolution
 
-- Pure comparison logic stays in **`resolveSpecialAttackBattle()`** in `src/app/features/battle/special-attack-battle.ts` (stat name `special-attack`, tie → opponent wins, missing stat → `null`). UI components should not reimplement win/loss rules.
+- Pure comparison logic stays in **`resolveSpecialAttackBattle()`** in `src/app/features/battle/special-attack-battle.ts` (stat name **`special-attack`**, tie → **opponent wins**, missing stat → `null`). UI components must not reimplement win/loss rules.
+- **`BattleHistoryService`** persists the **newest three** matchups in **`sessionStorage`** under **`gcea-battle-history-v1`** (in-memory fallback if storage is blocked).
 
 ## Styles
 
-- Global tokens: **`src/styles/_tokens.scss`** (`:root` CSS variables). Prefer `var(--…)` for colors, radius, shadows. Import patterns follow `src/styles.scss`.
+- Global design tokens: **`src/styles/_tokens.scss`** (`:root` CSS variables). Prefer **`var(--…)`** for colors, radius, shadows. Battle chrome partials **consume** those variables — do not introduce a second ad-hoc palette in global SCSS.
+- **`src/styles.scss`** composes global modules from **`src/styles/`** (including **`_tokens.scss`**, **`_arena-type-wash.scss`**, **`_battle-chrome.scss`**, **`_battle-panel-frames.scss`**, plus shell/layout/focus partials). Type chip styling is centralized in **`_pokemon-type-chips.scss`** (shared with picker features).
+- If you change **`:root`** token values, keep **`README.md`** (palette table) and **`docs/readme-ui-palette.svg`** in sync so docs stay honest.

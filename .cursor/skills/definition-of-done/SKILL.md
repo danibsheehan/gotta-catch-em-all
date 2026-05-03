@@ -5,6 +5,8 @@ description: Verifies gotta-catch-em-all changes by running lint, tests, and pro
 
 # Definition of done (gotta-catch-em-all)
 
+**Prereq:** Node.js **`>= 20.19.0`** (see `package.json` `engines` and repo `README.md`).
+
 After **substantive** edits (features, services, components, tests, `angular.json`, environments, workflows), run these from the repo root in order:
 
 1. `npm run lint`

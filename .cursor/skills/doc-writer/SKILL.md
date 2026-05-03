@@ -46,3 +46,10 @@ Follow those guides for structure and tone.
 - **Write files in the workspace** at the paths the user asked for (e.g. repo root `README.md`, or next to the source file). Edit existing files in place when updating docs.
 - Do **not** use Claude-specific output paths or external “present file” steps—use normal file create/edit in this project.
 - Summarize for the user: what changed, where, and any gaps they should fill in.
+
+---
+
+## This repo (`gotta-catch-em-all`)
+
+- Root **`README.md`** is the stylized **source map** for folders, services, scripts, and deploy — prefer aligning new prose with its tables/sections when documenting the app.
+- Changing **`:root`** values in **`src/styles/_tokens.scss`**: also update the README palette table (see “Extra palette rows”) and **`docs/readme-ui-palette.svg`** so badges, docs, and UI stay consistent.

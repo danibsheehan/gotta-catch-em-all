@@ -171,3 +171,9 @@ Make sure to cover:
    - Number of `describe` blocks and `it` cases
    - Any notable mocking strategies used
    - Any gaps where the user should add domain-specific test data
+
+---
+
+## This repo (`gotta-catch-em-all`)
+
+- Run **`npm run test:ci`** for a single headless Karma pass (CI parity); **`npm test`** is watch mode.

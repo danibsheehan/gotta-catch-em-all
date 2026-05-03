@@ -8,7 +8,7 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 ## URLs
 
 - Live site shape: `https://<user>.github.io/<repository-name>/`
-- **Base href** must be `/<repository-name>/` (leading and trailing slash as Angular expects for the repo segment).
+- **Base href** must be `/<repository-name>/` (leading and trailing slash as Angular expects for the repo segment). Local check: **`npm run build:github-pages`** (same base href as CI for this repo name).
 
 ## Local vs CI
 
