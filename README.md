@@ -13,13 +13,21 @@
 </p>
 
 <p align="center">
-  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-20.3-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 20"></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-5.8-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript"></a>
-  <a href="https://rxjs.dev/"><img src="https://img.shields.io/badge/RxJS-7.8-b388ff?style=for-the-badge&logo=reactivex&logoColor=141414&labelColor=141414" alt="RxJS"></a>
+  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-20.3-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 20 — accent-lilac-deep on outline"></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-5.8-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript — accent-primary on lilac-deep"></a>
+  <a href="https://rxjs.dev/"><img src="https://img.shields.io/badge/RxJS-7.8-b388ff?style=for-the-badge&logo=reactivex&logoColor=ffee33&labelColor=141414" alt="RxJS — accent-lilac on outline"></a>
   <br>
-  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D20.19-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=141414" alt="Node.js"></a>
-  <a href="https://pokeapi.co/"><img src="https://img.shields.io/badge/POKEAPI-v2-ff4dad?style=for-the-badge&logo=pokemon&logoColor=ffee33&labelColor=141414" alt="PokeAPI"></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D20.19-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=ead9ff" alt="Node.js — accent-mint on surface-muted"></a>
+  <a href="https://pokeapi.co/"><img src="https://img.shields.io/badge/POKEAPI-v2-ff4dad?style=for-the-badge&logo=pokemon&logoColor=ffee33&labelColor=141414" alt="PokeAPI — accent-pink"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-ffee33?style=for-the-badge&logo=opensourceinitiative&logoColor=141414&labelColor=6f3cff" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <img src="docs/readme-ui-palette.svg" width="900" alt="UI palette swatches: canvas cream, muted lavender, neon yellow, electric purple, hot pink, mint, arcade cyan — matching src/styles/_tokens.scss" />
+</p>
+
+<p align="center">
+  <sub>Badges + strip use the same hex as <a href="src/styles/_tokens.scss"><code>src/styles/_tokens.scss</code></a> (<code>:root</code>) — cream canvas, <code>#ffee33</code> punch, <code>#6f3cff</code> depth, <code>#00e5c8</code> arcade focus ring, <code>#ff4dad</code> accent pop.</sub>
 </p>
 
 <p align="center">
@@ -34,9 +42,27 @@
 
 ## ★ BATTLE BRIEF — WHAT THIS REPO *IS*
 
-> **Angular ~20** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` (see `_tokens.scss` for the loud palette).  
+> **Angular ~20** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
 >  
 > You draft from a **per-type** menu; the app rolls an opponent and runs **`resolveSpecialAttackBattle()`** so the UI never reinvents win/loss rules. **Recent matchups** (session, **last 3**) remember the drama. **HTTP** hits PokeAPI **only** through **`PokeApiClient`**.
+
+<details>
+<summary><strong>▼ MORE HEX FROM THE SAME THEME (duplicate of <code>_tokens.scss</code> for skimming) ▼</strong></summary>
+
+| CSS variable | Hex | Where it shows up |
+| :--- | :--- | :--- |
+| `--border-outline` | `#141414` | Panel rims, sticker outlines, high-contrast strokes |
+| `--text-secondary` | `#4a3566` | Softer body / hints on pastel surfaces |
+| `--accent-lilac` | `#b388ff` | Mid lavender, gradients, secondary fills |
+| `--surface-wash-mint` | `#bfffec` | Arena wash / mint-tinted surfaces |
+| `--surface-elevated` | `#ffffff` | Cards and elevated strips (see SVG runway) |
+| `--border-subtle` | `#c9a8ff` | Soft dividers, chip rails |
+| `--semantic-danger` | `#ff2d6b` | Errors / destructive emphasis |
+| `--chip-border` | `#b898f0` | Type chips and selector chrome |
+
+Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg) whenever you change `:root` values so the README stays honest.
+
+</details>
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
