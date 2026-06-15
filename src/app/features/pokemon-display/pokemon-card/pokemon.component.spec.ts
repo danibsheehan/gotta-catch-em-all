@@ -36,9 +36,10 @@ describe('PokemonComponent', () => {
   });
 
   it('should not render name text when pokemonBrief name is missing', () => {
-    component.pokemonBrief = {} as PokemonBrief;
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const emptyFixture = TestBed.createComponent(PokemonComponent);
+    emptyFixture.componentInstance.pokemonBrief = {} as PokemonBrief;
+    emptyFixture.detectChanges();
+    const compiled = emptyFixture.nativeElement as HTMLElement;
 
     expect(compiled.textContent?.trim()).toBe('');
   });
