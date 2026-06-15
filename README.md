@@ -3,7 +3,7 @@
 <p align="center">
   <samp>
     <b>╔══════════════════════════════════════════════════════════════════╗</b><br>
-    <b>║</b>  <code>░░</code> <strong>SPECIAL ATTACK ONLY</strong> <code>░░</code> <strong>POKEAPI</strong> <code>░░</code> <strong>ANGULAR 20</strong> <code>░░</code>  <b>║</b><br>
+    <b>║</b>  <code>░░</code> <strong>SPECIAL ATTACK ONLY</strong> <code>░░</code> <strong>POKEAPI</strong> <code>░░</code> <strong>ANGULAR 21</strong> <code>░░</code>  <b>║</b><br>
     <b>║</b>  <code>░░</code> <strong>STICKER SHELL · MAX VOLUME UI</strong> <code>░░</code>                      <b>║</b><br>
     <b>╠══════════════════════════════════════════════════════════════════╣</b><br>
     <b>║</b>  cream canvas · halftone + stripe wash · rim shadows · neon CTAs <b>║</b><br>
@@ -13,11 +13,11 @@
 </p>
 
 <p align="center">
-  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-20.3-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 20 — accent-lilac-deep on outline"></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-5.8-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript — accent-primary on lilac-deep"></a>
+  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-21.2-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 21 — accent-lilac-deep on outline"></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-5.9-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript — accent-primary on lilac-deep"></a>
   <a href="https://rxjs.dev/"><img src="https://img.shields.io/badge/RxJS-7.8-b388ff?style=for-the-badge&logo=reactivex&logoColor=ffee33&labelColor=141414" alt="RxJS — accent-lilac on outline"></a>
   <br>
-  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D20.19-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=ead9ff" alt="Node.js — accent-mint on surface-muted"></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D22.12-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=ead9ff" alt="Node.js — accent-mint on surface-muted"></a>
   <a href="https://pokeapi.co/"><img src="https://img.shields.io/badge/POKEAPI-v2-ff4dad?style=for-the-badge&logo=pokemon&logoColor=ffee33&labelColor=141414" alt="PokeAPI — accent-pink"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-ffee33?style=for-the-badge&logo=opensourceinitiative&logoColor=141414&labelColor=6f3cff" alt="MIT License"></a>
 </p>
@@ -42,7 +42,7 @@
 
 ## ★ BATTLE BRIEF — **what this is, fast**
 
-> **Angular ~20** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
+> **Angular ~21** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
 >  
 > You draft from a **per-type** menu; the app rolls an opponent and runs **`resolveSpecialAttackBattle()`** so the UI never reinvents win/loss rules. **Recent matchups** (session, **last 3**) remember the drama. **HTTP** hits PokeAPI **only** through **`PokeApiClient`**.
 
@@ -107,8 +107,8 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 | REQUIREMENT | NOTES |
 | :--- | :--- |
-| **Node.js `>= 20.19.0`** | Matches `package.json` `engines` + current Angular CLI expectations. |
-| **nvm** *(optional)* | `.nvmrc` pins **`22.12.0`** if you like reproducible shells. |
+| **Node.js `>= 22.12.0`** | Matches `package.json` `engines`, `.nvmrc`, and CI. |
+| **nvm** *(optional)* | Run **`nvm use`** — `.nvmrc` pins **`22.12.0`**. |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
