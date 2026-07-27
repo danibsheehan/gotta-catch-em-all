@@ -31,7 +31,8 @@
     "zone.js": "~0.15.1"
   },
   "overrides": {
-    "picomatch": "^4.0.4"
+    "picomatch": "^4.0.4",
+    "js-yaml": "^4.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~21.2.19",
