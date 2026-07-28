@@ -28,7 +28,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - uses: browser-actions/setup-chrome@v1
+      - uses: browser-actions/setup-chrome@v2
         id: setup-chrome
 
       - run: npm ci
