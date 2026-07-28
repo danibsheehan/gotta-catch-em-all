@@ -5,36 +5,36 @@ import { BattleHistoryEntry, BattleHistoryService } from '../battle-history.serv
 import { BattleRecentMatchupsComponent } from './battle-recent-matchups.component';
 
 describe('BattleRecentMatchupsComponent', () => {
-  let fixture: ComponentFixture<BattleRecentMatchupsComponent>;
-  let entries$$: BehaviorSubject<BattleHistoryEntry[]>;
+    let fixture: ComponentFixture<BattleRecentMatchupsComponent>;
+    let entries$$: BehaviorSubject<BattleHistoryEntry[]>;
 
-  beforeEach(async () => {
-    entries$$ = new BehaviorSubject<BattleHistoryEntry[]>([]);
-    const battleHistoryStub = {
-      entries$: entries$$.asObservable(),
-    };
+    beforeEach(async () => {
+        entries$$ = new BehaviorSubject<BattleHistoryEntry[]>([]);
+        const battleHistoryStub = {
+            entries$: entries$$.asObservable(),
+        };
 
-    await TestBed.configureTestingModule({
-      imports: [BattleRecentMatchupsComponent],
-      providers: [{ provide: BattleHistoryService, useValue: battleHistoryStub }],
-    }).compileComponents();
+        await TestBed.configureTestingModule({
+            imports: [BattleRecentMatchupsComponent],
+            providers: [{ provide: BattleHistoryService, useValue: battleHistoryStub }],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(BattleRecentMatchupsComponent);
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(BattleRecentMatchupsComponent);
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(fixture.componentInstance).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(fixture.componentInstance).toBeTruthy();
+    });
 
-  it('should render rows when history has entries', () => {
-    entries$$.next([
-      { playerName: 'pikachu', opponentName: 'onix', playerWon: true, at: 1 },
-    ]);
-    fixture.detectChanges();
+    it('should render rows when history has entries', () => {
+        entries$$.next([
+            { playerName: 'pikachu', opponentName: 'onix', playerWon: true, at: 1 },
+        ]);
+        fixture.detectChanges();
 
-    const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.polaroid-vs')?.textContent).toContain('Pikachu');
-    expect(el.textContent).toContain('×');
-  });
+        const el = fixture.nativeElement as HTMLElement;
+        expect(el.querySelector('.polaroid-vs')?.textContent).toContain('Pikachu');
+        expect(el.textContent).toContain('×');
+    });
 });

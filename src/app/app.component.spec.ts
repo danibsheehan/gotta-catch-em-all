@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, of, throwError } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AppComponent } from './app.component';
 import { PokemonBattleService, PokemonBattleVm } from './features/battle/pokemon-battle.service';
@@ -10,8 +10,17 @@ import { PokemonOpponentService } from './features/battle/pokemon-opponent.servi
 import { PokemonPlayerService } from './features/battle/pokemon-player.service';
 
 describe('AppComponent', () => {
-  let pokemonPlayerSpy: jasmine.SpyObj<PokemonPlayerService>;
-  let pokemonOpponentSpy: jasmine.SpyObj<PokemonOpponentService>;
+  let pokemonPlayerSpy: {
+    getPokemonDetails: ReturnType<typeof vi.fn>;
+    pokemonDetails?: BehaviorSubject<any>;
+    pokemonDetailsError?: BehaviorSubject<string>;
+    playerDetailsLoading?: BehaviorSubject<boolean>;
+  };
+  let pokemonOpponentSpy: {
+    pickRandomOpponentId: ReturnType<typeof vi.fn>;
+    getPokemonById: ReturnType<typeof vi.fn>;
+    defaultFrontSpriteUrl: ReturnType<typeof vi.fn>;
+  };
   let detailsSubject: BehaviorSubject<any>;
   let detailsErrorSubject: BehaviorSubject<string>;
   let playerLoadingSubject: BehaviorSubject<boolean>;
@@ -20,18 +29,24 @@ describe('AppComponent', () => {
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
     playerLoadingSubject = new BehaviorSubject<boolean>(false);
-    pokemonPlayerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
-    (pokemonPlayerSpy as any).pokemonDetails = detailsSubject;
-    (pokemonPlayerSpy as any).pokemonDetailsError = detailsErrorSubject;
-    (pokemonPlayerSpy as any).playerDetailsLoading = playerLoadingSubject;
+    pokemonPlayerSpy = {
+      getPokemonDetails: vi.fn(),
+      pokemonDetails: detailsSubject,
+      pokemonDetailsError: detailsErrorSubject,
+      playerDetailsLoading: playerLoadingSubject,
+    };
 
-    pokemonOpponentSpy = jasmine.createSpyObj('PokemonOpponentService', ['pickRandomOpponentId', 'getPokemonById', 'defaultFrontSpriteUrl']);
-    pokemonOpponentSpy.pickRandomOpponentId.and.returnValue(25);
-    pokemonOpponentSpy.defaultFrontSpriteUrl.and.returnValue('https://sprites.example/25.png');
-    pokemonOpponentSpy.getPokemonById.and.returnValue(of({
+    pokemonOpponentSpy = {
+      pickRandomOpponentId: vi.fn(),
+      getPokemonById: vi.fn(),
+      defaultFrontSpriteUrl: vi.fn(),
+    };
+    pokemonOpponentSpy.pickRandomOpponentId.mockReturnValue(25);
+    pokemonOpponentSpy.defaultFrontSpriteUrl.mockReturnValue('https://sprites.example/25.png');
+    pokemonOpponentSpy.getPokemonById.mockReturnValue(of({
       name: 'pikachu',
       sprites: { front_default: 'image' },
-      stats: []
+      stats: [],
     } as any));
 
     TestBed.configureTestingModule({
@@ -42,8 +57,8 @@ describe('AppComponent', () => {
         provideNoopAnimations(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: pokemonPlayerSpy },
-        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
-      ]
+        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy },
+      ],
     }).compileComponents();
   });
 
@@ -86,44 +101,44 @@ describe('AppComponent', () => {
     expect(app.arenaAmbientType(vm)).toBe('fire');
   });
 
-  it('should expose player details and errors on the battle view model', (done) => {
+  it('should expose player details and errors on the battle view model', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const battle = fixture.componentInstance.battle;
 
     detailsSubject.next({ name: 'charizard' } as any);
     detailsErrorSubject.next('details error');
 
-    battle.vm$.pipe(take(1)).subscribe((vm) => {
-      expect((vm.player as any).name).toBe('charizard');
-      expect(vm.playerError).toBe('details error');
-      expect(vm.playerLoading).toBe(false);
-      done();
-    });
+    const vm = await firstValueFrom(battle.vm$.pipe(take(1)));
+    expect((vm.player as any).name).toBe('charizard');
+    expect(vm.playerError).toBe('details error');
+    expect(vm.playerLoading).toBe(false);
   });
 
-  it('should set opponent on battle vm when opponent fetch succeeds', (done) => {
+  it('should set opponent on battle vm when opponent fetch succeeds', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const battle = fixture.componentInstance.battle;
 
-    battle.vm$.pipe(
-      filter((vm) => !vm.opponentLoading && !!vm.opponent.name),
-      take(1),
-    ).subscribe((vm) => {
-      expect(vm.opponent.name).toBe('pikachu');
-      done();
-    });
+    const vm = await firstValueFrom(
+      battle.vm$.pipe(
+        filter((v) => !v.opponentLoading && !!v.opponent.name),
+        take(1),
+      ),
+    );
+    expect(vm.opponent.name).toBe('pikachu');
   });
 
-  it('should set fallback opponent on battle vm when opponent fetch fails', (done) => {
-    pokemonOpponentSpy.getPokemonById.and.returnValue(throwError(() => new Error('failed')));
+  it('should set fallback opponent on battle vm when opponent fetch fails', async () => {
+    pokemonOpponentSpy.getPokemonById.mockReturnValue(throwError(() => new Error('failed')));
 
     detailsSubject = new BehaviorSubject<any>({});
     detailsErrorSubject = new BehaviorSubject<string>('');
     const playerLoadingSubjectFallback = new BehaviorSubject<boolean>(false);
-    const playerSpy = jasmine.createSpyObj('PokemonPlayerService', ['getPokemonDetails']);
-    (playerSpy as any).pokemonDetails = detailsSubject;
-    (playerSpy as any).pokemonDetailsError = detailsErrorSubject;
-    (playerSpy as any).playerDetailsLoading = playerLoadingSubjectFallback;
+    const playerSpy = {
+      getPokemonDetails: vi.fn(),
+      pokemonDetails: detailsSubject,
+      pokemonDetailsError: detailsErrorSubject,
+      playerDetailsLoading: playerLoadingSubjectFallback,
+    };
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
@@ -134,19 +149,19 @@ describe('AppComponent', () => {
         provideNoopAnimations(),
         PokemonBattleService,
         { provide: PokemonPlayerService, useValue: playerSpy },
-        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy }
-      ]
+        { provide: PokemonOpponentService, useValue: pokemonOpponentSpy },
+      ],
     });
 
     const fixture = TestBed.createComponent(AppComponent);
     const battle = fixture.componentInstance.battle;
 
-    battle.vm$.pipe(
-      filter((vm) => !vm.opponentLoading),
-      take(1),
-    ).subscribe((vm) => {
-      expect(vm.opponent).toEqual({} as any);
-      done();
-    });
+    const vm = await firstValueFrom(
+      battle.vm$.pipe(
+        filter((v) => !v.opponentLoading),
+        take(1),
+      ),
+    );
+    expect(vm.opponent).toEqual({} as any);
   });
 });

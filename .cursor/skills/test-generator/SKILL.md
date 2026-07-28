@@ -1,11 +1,11 @@
 ---
 name: test-generator
-description: Generates Karma/Jasmine unit tests for TypeScript and Angular code. Use this skill whenever the user wants to write tests, generate test files, add test coverage, test a component/service/pipe/directive, or asks anything like "write tests for this", "generate specs", "add unit tests", "test this component", "how do I test this service", or "improve my test coverage". Trigger even if the user just pastes code and asks broadly how to improve it — testing is often the right answer.
+description: Generates Vitest unit tests for TypeScript and Angular code. Use this skill whenever the user wants to write tests, generate test files, add test coverage, test a component/service/pipe/directive, or asks anything like "write tests for this", "generate specs", "add unit tests", "test this component", "how do I test this service", or "improve my test coverage". Trigger even if the user just pastes code and asks broadly how to improve it — testing is often the right answer.
 ---
 
-# Test Generator — TypeScript / Angular (Karma + Jasmine)
+# Test Generator — TypeScript / Angular (Vitest)
 
-Generate thorough, idiomatic Karma/Jasmine unit tests for Angular and plain TypeScript code.
+Generate thorough, idiomatic Vitest unit tests for Angular and plain TypeScript code (via `@angular/build:unit-test`).
 
 ---
 
@@ -21,7 +21,7 @@ Generate thorough, idiomatic Karma/Jasmine unit tests for Angular and plain Type
    - Happy-path cases
    - Edge cases (empty input, null/undefined, boundary values)
    - Error cases (thrown exceptions, HTTP errors, rejected Promises/Observables)
-   - Any async flows (fakeAsync/tick, async/await, done callback)
+   - Any async flows (`fakeAsync`/`tick`, `async`/`await`, `firstValueFrom`)
 
 3. **Generate the spec file** — Follow the conventions below, then write the full file.
 
@@ -48,13 +48,14 @@ Place the spec file **next to** the source file unless the user specifies otherw
 
 ```typescript
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 ```
 
 - Use `TestBed.configureTestingModule({...})` for Angular classes.
 - For plain TS, instantiate directly — no TestBed needed.
-- Mock all external dependencies using `jasmine.createSpyObj` or manual stubs.
-- Use `HttpClientTestingModule` + `HttpTestingController` for services making HTTP calls.
+- Mock dependencies with `vi.fn()` / `vi.spyOn()` (Vitest globals are enabled).
+- Prefer `provideHttpClient()` + `provideHttpClientTesting()` over legacy `HttpClientTestingModule`.
 
 ### Structure Template
 
@@ -94,18 +95,19 @@ fixture.detectChanges(); // triggers ngOnInit
 
 **Mocking a service:**
 ```typescript
-const myServiceSpy = jasmine.createSpyObj('MyService', ['getData', 'save']);
+const myServiceSpy = {
+  getData: vi.fn(),
+  save: vi.fn(),
+};
 providers: [{ provide: MyService, useValue: myServiceSpy }]
 ```
 
 **Testing Observables:**
 ```typescript
-it('should emit value', fakeAsync(() => {
-  let result: string | undefined;
-  component.value$.subscribe(v => result = v);
-  tick();
+it('should emit value', async () => {
+  const result = await firstValueFrom(component.value$);
   expect(result).toBe('expected');
-}));
+});
 ```
 
 **Testing @Input / @Output:**
@@ -119,7 +121,7 @@ component.triggerAction();
 **Testing Router navigation:**
 ```typescript
 const router = TestBed.inject(Router);
-const spy = spyOn(router, 'navigate');
+const spy = vi.spyOn(router, 'navigate');
 component.goSomewhere();
 expect(spy).toHaveBeenCalledWith(['/expected-path']);
 ```
@@ -176,4 +178,4 @@ Make sure to cover:
 
 ## This repo (`gotta-catch-em-all`)
 
-- Run **`npm run test:ci`** for a single headless Karma pass (CI parity); **`npm test`** is watch mode.
+- Run **`npm run test:ci`** for a single Vitest pass with coverage (CI parity); **`npm test`** is watch mode.

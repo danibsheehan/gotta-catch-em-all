@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 import { AudioService } from './core/audio/audio.service';
@@ -25,6 +25,7 @@ const ARENA_STAGGER = 95;
       PokemonDetailsComponent,
       PokemonSelectorComponent,
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger('arenaOpponentEnter', [
             transition(':enter', [

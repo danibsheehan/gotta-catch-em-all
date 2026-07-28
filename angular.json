@@ -22,7 +22,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": {
               "base": "dist/gotta-catch-em-all"
@@ -80,12 +80,18 @@
                   "maximumError": "12kb"
                 }
               ]
+            },
+            "testing": {
+              "aot": false,
+              "polyfills": [
+                "zone.js"
+              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "gotta-catch-em-all:build:development"
           },
@@ -100,26 +106,36 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "gotta-catch-em-all:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.svg",
-              "src/assets"
+            "runner": "vitest",
+            "buildTarget": ":build:testing",
+            "setupFiles": [
+              "src/test-setup.ts"
             ],
-            "styles": [
-              "src/styles.scss"
+            "reporters": [
+              "default"
             ],
-            "scripts": []
+            "coverage": true,
+            "coverageReporters": [
+              "html",
+              "lcovonly",
+              "text-summary"
+            ],
+            "coverageThresholds": {
+              "statements": 82,
+              "branches": 67,
+              "functions": 88,
+              "lines": 82,
+              "perFile": false
+            }
           }
         },
         "lint": {

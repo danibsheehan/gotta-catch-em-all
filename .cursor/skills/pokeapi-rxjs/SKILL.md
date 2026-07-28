@@ -9,6 +9,7 @@ description: PokeAPI access and RxJS usage in gotta-catch-em-all—PokeApiClient
 
 - Add new PokeAPI calls on **`PokeApiClient`** (`src/app/core/api/poke-api.client.ts`) using `environment.pokeApi.baseUrl` (no trailing slash on base; paths like `/type/`, `/pokemon/{segment}`).
 - **Encode path segments** the same way as existing methods: names and ids can include characters that must not break URLs—use the private `encodePathSegment` pattern for any new path parameter.
+- App HTTP is wired with **`provideHttpClient(...)`** and Angular 22’s **Fetch** backend (default). Do **not** add **`withXhr()`** unless there is a concrete need for the legacy XHR backend.
 
 ## Environment
 

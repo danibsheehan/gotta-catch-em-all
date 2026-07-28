@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { UserService, User } from './user.service';
 
 const mockUsers: User[] = [
   { id: 1, name: 'Alice', email: 'alice@example.com' },
-  { id: 2, name: 'Bob',   email: 'bob@example.com' },
+  { id: 2, name: 'Bob', email: 'bob@example.com' },
 ];
 
 const mockUser: User = mockUsers[0];
@@ -15,8 +16,7 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [UserService],
+      providers: [UserService, provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -34,7 +34,7 @@ describe('UserService', () => {
 
   describe('getUsers()', () => {
     it('should GET all users from /api/users', () => {
-      service.getUsers().subscribe(users => {
+      service.getUsers().subscribe((users) => {
         expect(users).toEqual(mockUsers);
       });
 
@@ -61,7 +61,7 @@ describe('UserService', () => {
 
   describe('getUserById()', () => {
     it('should GET a single user by id', () => {
-      service.getUserById(1).subscribe(user => {
+      service.getUserById(1).subscribe((user) => {
         expect(user).toEqual(mockUser);
       });
 
@@ -100,7 +100,7 @@ describe('UserService', () => {
       const payload = { name: 'Carol', email: 'carol@example.com' };
       const created: User = { id: 3, ...payload };
 
-      service.createUser(payload).subscribe(user => {
+      service.createUser(payload).subscribe((user) => {
         expect(user).toEqual(created);
       });
 
@@ -115,7 +115,7 @@ describe('UserService', () => {
 
   describe('deleteUser()', () => {
     it('should DELETE a user by id', () => {
-      service.deleteUser(1).subscribe(result => {
+      service.deleteUser(1).subscribe((result) => {
         expect(result).toBeUndefined();
       });
 

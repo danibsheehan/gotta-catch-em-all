@@ -7,7 +7,7 @@ alwaysApply: true
 
 ## Stack and shell
 
-- Angular ~21, **standalone** components/directives/pipes (`standalone: true`), `bootstrapApplication` + `app.config.ts`.
+- Angular ~22, **standalone** components/directives/pipes (`standalone: true`), `bootstrapApplication` + `app.config.ts`.
 - **`@angular/platform-browser/animations`**: `provideAnimations()` vs `provideNoopAnimations()` based on **`prefers-reduced-motion`** (reduced motion → noop).
 - New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
 - Type-picker region: **`@defer`** in the app shell so battle chrome can paint first (viewport + idle prefetch) — preserve that pattern when changing `AppComponent`.
