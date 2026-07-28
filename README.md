@@ -42,7 +42,7 @@
 
 ## ★ BATTLE BRIEF — **what this is, fast**
 
-> **Angular ~21** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
+> **Angular ~22** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
 >  
 > You draft from a **per-type** menu; the app rolls an opponent and runs **`resolveSpecialAttackBattle()`** so the UI never reinvents win/loss rules. **Recent matchups** (session, **last 3**) remember the drama. **HTTP** hits PokeAPI **only** through **`PokeApiClient`**.
 
