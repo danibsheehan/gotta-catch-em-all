@@ -14,9 +14,6 @@
     "paths": {
       "src/*": ["./src/*"]
     },
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {

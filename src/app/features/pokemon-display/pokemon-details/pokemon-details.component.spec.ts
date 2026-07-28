@@ -37,7 +37,7 @@ describe('PokemonDetailsComponent', () => {
     const image = compiled.querySelector('.pokemon-image') as HTMLImageElement;
     expect(image).toBeTruthy();
     expect(image.src).toContain('https://example.com/pikachu.png');
-    expect(image.loading).toBe('lazy');
+    expect(image.getAttribute('loading')).toBe('lazy');
     expect(image.getAttribute('fetchpriority')).toBeNull();
     expect(image.width).toBe(140);
     expect(image.height).toBe(140);
@@ -47,7 +47,7 @@ describe('PokemonDetailsComponent', () => {
     fixture.componentRef.setInput('prioritizeLcp', true);
     fixture.detectChanges();
     const image = fixture.nativeElement.querySelector('.pokemon-image') as HTMLImageElement;
-    expect(image.loading).toBe('eager');
+    expect(image.getAttribute('loading')).toBe('eager');
     expect(image.getAttribute('fetchpriority')).toBe('high');
   });
 

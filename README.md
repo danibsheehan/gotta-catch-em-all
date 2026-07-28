@@ -204,14 +204,8 @@ npm run build:github-pages
 | `npm run build:github-pages` | Prod build + GitHub Pages base href **`/gotta-catch-em-all/`**. |
 | `npm run serve:dist` | Serves prod output on port **8080** (after `npm run build`). |
 | `npm run lint` | ESLint (Angular ESLint). |
-| `npm test` | Karma + Chrome (**watch**). |
-| `npm run test:ci` | Single run, headless Chrome **`--no-sandbox`** (CI). |
-
-**ChromeHeadless won't boot?** Run **`npm run test:ci`**. On macOS you can pin Chrome:
-
-```bash
-CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm run test:ci
-```
+| `npm test` | Vitest via Angular unit-test builder (**watch**). |
+| `npm run test:ci` | Single Vitest run with coverage thresholds. |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -222,7 +216,7 @@ CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm ru
 | PATH | PURPOSE |
 | :--- | :--- |
 | `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles). |
-| `.cursor/skills/*/` | Skills: definition-of-done, GitHub Pages, PokeAPI/RxJS, Karma/Jasmine tests, doc writer. |
+| `.cursor/skills/*/` | Skills: definition-of-done, GitHub Pages, PokeAPI/RxJS, Vitest tests, doc writer. |
 
 ```
 ██████████████████████████████████████████████████████████████████████████████
