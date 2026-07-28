@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PokemonOpponentService } from './pokemon-opponent.service';
@@ -9,7 +9,7 @@ describe('PokemonOpponentService', () => {
   let httpMock: HttpTestingController;
 
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [provideHttpClient(), provideHttpClientTesting()]
+    providers: [provideHttpClient(withXhr()), provideHttpClientTesting()]
   }));
 
   beforeEach(() => {
