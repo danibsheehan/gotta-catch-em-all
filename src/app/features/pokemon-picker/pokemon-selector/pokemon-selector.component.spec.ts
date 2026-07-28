@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PokemonSelectorComponent } from './pokemon-selector.component';
@@ -11,7 +11,7 @@ describe('PokemonSelectorComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [PokemonSelectorComponent],
-      providers: [provideHttpClient(withXhr()), provideHttpClientTesting()]
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
   });

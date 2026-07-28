@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
 
 function prefersReducedMotion(): boolean {
@@ -13,7 +13,7 @@ function prefersReducedMotion(): boolean {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(withXhr(), withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi()),
     ...(prefersReducedMotion() ? provideNoopAnimations() : provideAnimations()),
   ],
 };

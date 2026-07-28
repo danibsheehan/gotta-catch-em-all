@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { BehaviorSubject, firstValueFrom, of, throwError } from 'rxjs';
@@ -52,7 +52,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
-        provideHttpClient(withXhr()),
+        provideHttpClient(),
         provideHttpClientTesting(),
         provideNoopAnimations(),
         PokemonBattleService,
@@ -144,7 +144,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
-        provideHttpClient(withXhr()),
+        provideHttpClient(),
         provideHttpClientTesting(),
         provideNoopAnimations(),
         PokemonBattleService,

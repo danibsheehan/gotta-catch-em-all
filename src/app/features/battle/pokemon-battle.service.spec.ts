@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { firstValueFrom } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
@@ -21,7 +21,7 @@ describe('PokemonBattleService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(withXhr()),
+        provideHttpClient(),
         provideHttpClientTesting(),
         PokemonBattleService,
         PokemonPlayerService,

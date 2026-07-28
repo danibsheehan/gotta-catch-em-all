@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { PokeApiClient } from './poke-api.client';
@@ -9,7 +9,7 @@ describe('PokeApiClient', () => {
     let httpMock: HttpTestingController;
 
     beforeEach(() => TestBed.configureTestingModule({
-        providers: [provideHttpClient(withXhr()), provideHttpClientTesting()]
+        providers: [provideHttpClient(), provideHttpClientTesting()]
     }));
 
     beforeEach(() => {
