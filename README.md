@@ -17,7 +17,7 @@
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-6.0-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript — accent-primary on lilac-deep"></a>
   <a href="https://rxjs.dev/"><img src="https://img.shields.io/badge/RxJS-7.8-b388ff?style=for-the-badge&logo=reactivex&logoColor=ffee33&labelColor=141414" alt="RxJS — accent-lilac on outline"></a>
   <br>
-  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D22.12-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=ead9ff" alt="Node.js — accent-mint on surface-muted"></a>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D22.22-2ad4a8?style=for-the-badge&logo=node.js&logoColor=141414&labelColor=ead9ff" alt="Node.js — accent-mint on surface-muted"></a>
   <a href="https://pokeapi.co/"><img src="https://img.shields.io/badge/POKEAPI-v2-ff4dad?style=for-the-badge&logo=pokemon&logoColor=ffee33&labelColor=141414" alt="PokeAPI — accent-pink"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-ffee33?style=for-the-badge&logo=opensourceinitiative&logoColor=141414&labelColor=6f3cff" alt="MIT License"></a>
 </p>
@@ -107,8 +107,8 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 | REQUIREMENT | NOTES |
 | :--- | :--- |
-| **Node.js `>= 22.12.0`** | Matches `package.json` `engines`, `.nvmrc`, and CI. |
-| **nvm** *(optional)* | Run **`nvm use`** — `.nvmrc` pins **`22.12.0`**. |
+| **Node.js `>= 22.22.3`** | Matches `package.json` `engines`, `.nvmrc`, and CI (Angular 22 minimum). |
+| **nvm** *(optional)* | Run **`nvm use`** — `.nvmrc` pins **`22.22.3`**. |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
