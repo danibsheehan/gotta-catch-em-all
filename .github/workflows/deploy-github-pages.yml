@@ -37,7 +37,7 @@ jobs:
       - name: Disable Jekyll (static files only)
         run: touch dist/gotta-catch-em-all/browser/.nojekyll
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist/gotta-catch-em-all/browser
 
