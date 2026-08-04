@@ -1,0 +1,31 @@
+'area: battle':
+  - changed-files:
+      - any-glob-to-any-file: 'src/app/features/battle/**'
+
+'area: picker':
+  - changed-files:
+      - any-glob-to-any-file: 'src/app/features/pokemon-picker/**'
+
+'area: display':
+  - changed-files:
+      - any-glob-to-any-file: 'src/app/features/pokemon-display/**'
+
+'area: core':
+  - changed-files:
+      - any-glob-to-any-file: 'src/app/core/**'
+
+'area: styles':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/styles/**'
+          - 'src/styles.scss'
+
+'area: ci':
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+'area: docs':
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'README.md'
+          - 'docs/**'
