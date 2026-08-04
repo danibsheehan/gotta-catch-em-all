@@ -13,21 +13,21 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 ## Local vs CI
 
 - **package.json** script: `build:github-pages` uses `--base-href /gotta-catch-em-all/` (matches this repo name).
-- **CI** (`.github/workflows/deploy-github-pages.yml`) builds with:
+- **Test** (`.github/workflows/test.yml` → `quality`) builds with:
   `npx ng build --configuration production --base-href /${{ github.event.repository.name }}/`
   so the segment stays correct if the repo is renamed—then update the **npm script** to match.
+- On **`push` to `main`**, Test uploads artifact **`github-pages-site`** (`dist/.../browser` + `.nojekyll`).
 
 ## Workflow responsibilities
 
-- **Trigger:** runs after the **Test** workflow completes successfully on `main` (`workflow_run`), or via manual **`workflow_dispatch`**. Do not deploy on bare `push` to `main` — wait for green quality gates.
-- On `workflow_run`, check out **`github.event.workflow_run.head_sha`** so the Pages build matches the commit Test validated.
-- **Build output:** `dist/gotta-catch-em-all/browser` (application builder output).
-- After build: **`touch dist/gotta-catch-em-all/browser/.nojekyll`** so GitHub Pages does not run Jekyll on static assets.
-- **Artifact path** for `upload-pages-artifact` is that `browser` folder.
-- **Deploy** uses `deploy-pages` after the build job; requires repo **Settings → Pages → Source: GitHub Actions**.
+- **Deploy** (`.github/workflows/deploy-github-pages.yml`) has two jobs with separate trust paths:
+  - **`publish-from-test`** (`workflow_run` after Test on `main` **push**): download `github-pages-site` into **`${{ runner.temp }}/github-pages-site`** (never the workspace root), then `upload-pages-artifact` + `deploy-pages`. Do not rebuild.
+  - **`publish-manual`** (`workflow_dispatch`): checkout, build with the same base-href, upload + deploy. Never downloads Test artifacts.
+- Requires repo **Settings → Pages → Source: GitHub Actions**.
 
 ## When to edit the workflow
 
 - Change Node version, install steps, or base-href strategy.
-- Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch` and `upload-pages-artifact`.
-- Change when deploy is allowed (Test gate / manual dispatch).
+- Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch`, artifact upload, and Deploy.
+- Change when deploy is allowed (Test gate / manual dispatch) or artifact name/retention.
+- Keep artifact downloads under **`runner.temp`** and do not mix download + checkout in one job (CodeQL `actions/artifact-poisoning`).

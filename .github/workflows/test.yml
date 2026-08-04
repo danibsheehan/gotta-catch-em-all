@@ -1,5 +1,5 @@
 # Quality gates on pushes to main and on pull requests: format, lint, npm audit,
-# and production build in one job (single npm ci); unit tests stay separate for
+# and a Pages-ready production build in one job (single npm ci); unit tests stay separate for
 # Chrome. On pull requests from the same repository, posts an updated coverage
 # comment.
 
@@ -42,8 +42,21 @@ jobs:
       - name: npm audit (high+)
         run: npm audit --audit-level=high
 
-      - name: Production build
-        run: npm run build
+      # Same production config Deploy used to rebuild; base href matches repo Pages path.
+      - name: Production build (GitHub Pages base href)
+        run: npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
+
+      - name: Disable Jekyll (static files only)
+        run: touch dist/gotta-catch-em-all/browser/.nojekyll
+
+      - name: Upload Pages site artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: github-pages-site
+          path: dist/gotta-catch-em-all/browser
+          if-no-files-found: error
+          retention-days: 2
 
   unit-tests:
     runs-on: ubuntu-latest

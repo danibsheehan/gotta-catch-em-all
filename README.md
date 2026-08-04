@@ -198,12 +198,12 @@ npm run build:github-pages
 
 Pushes to **`main`** and pull requests run the **Test** workflow:
 
-| JOB              | COMMAND / CHECK                                                                       |
-| :--------------- | :------------------------------------------------------------------------------------ |
-| **`quality`**    | One `npm ci`, then `format:check` → `lint` → `npm audit --audit-level=high` → `build` |
-| **`unit-tests`** | Separate job (Chrome): `npm run test:ci` (+ coverage comment on same-repo PRs)        |
+| JOB              | COMMAND / CHECK                                                                                      |
+| :--------------- | :--------------------------------------------------------------------------------------------------- |
+| **`quality`**    | One `npm ci`, then `format:check` → `lint` → `npm audit --audit-level=high` → Pages-ready `ng build` |
+| **`unit-tests`** | Separate job (Chrome): `npm run test:ci` (+ coverage comment on same-repo PRs)                       |
 
-**GitHub Pages** (`.github/workflows/deploy-github-pages.yml`) deploys only after **Test** succeeds on `main` (`workflow_run`), or via manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
+**GitHub Pages:** Test’s **`quality`** job builds with the Pages **base href** and, on `main`, uploads artifact **`github-pages-site`**. Deploy downloads that artifact after Test succeeds (`workflow_run`)—no second `ng build`—or rebuilds on manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
