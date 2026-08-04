@@ -19,6 +19,8 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 
 ## Workflow responsibilities
 
+- **Trigger:** runs after the **Test** workflow completes successfully on `main` (`workflow_run`), or via manual **`workflow_dispatch`**. Do not deploy on bare `push` to `main` — wait for green quality gates.
+- On `workflow_run`, check out **`github.event.workflow_run.head_sha`** so the Pages build matches the commit Test validated.
 - **Build output:** `dist/gotta-catch-em-all/browser` (application builder output).
 - After build: **`touch dist/gotta-catch-em-all/browser/.nojekyll`** so GitHub Pages does not run Jekyll on static assets.
 - **Artifact path** for `upload-pages-artifact` is that `browser` folder.
@@ -28,3 +30,4 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 
 - Change Node version, install steps, or base-href strategy.
 - Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch` and `upload-pages-artifact`.
+- Change when deploy is allowed (Test gate / manual dispatch).
