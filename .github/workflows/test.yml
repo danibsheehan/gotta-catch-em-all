@@ -1,7 +1,8 @@
 # Quality gates on pushes to main and on pull requests: format, lint, npm audit,
-# and a Pages-ready production build in one job (single npm ci); unit tests stay separate for
-# Chrome. Skips draft pull requests. On same-repository PRs, posts an updated
-# coverage comment.
+# and a Pages-ready production build in one job (single npm ci); unit tests stay
+# separate for Chrome. Skips draft pull requests. Docs/skills-only PRs run a light
+# format check and skip heavy gates. On same-repository PRs, posts coverage when
+# unit tests run.
 
 name: Test
 
@@ -28,6 +29,28 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      - name: Detect app vs docs-only changes
+        if: github.event_name == 'pull_request'
+        id: filter
+        uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3
+        with:
+          filters: |
+            app:
+              - 'src/**'
+              - 'public/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'angular.json'
+              - 'tsconfig*.json'
+              - 'eslint.config.*'
+              - '.prettierrc*'
+              - '.prettierignore'
+              - '.nvmrc'
+              - 'index.html'
+              - '.github/workflows/**'
+              - '.github/dependabot.yml'
+              - '.github/labeler.yml'
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
@@ -39,16 +62,20 @@ jobs:
         run: npm run format:check
 
       - name: ESLint
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         run: npm run lint
 
       - name: npm audit (high+)
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         run: npm audit --audit-level=high
 
       # Same production config Deploy used to rebuild; base href matches repo Pages path.
       - name: Production build (GitHub Pages base href)
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         run: npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
 
       - name: Disable Jekyll (static files only)
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         run: touch dist/gotta-catch-em-all/browser/.nojekyll
 
       - name: Upload Pages site artifact
@@ -70,17 +97,47 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      - name: Detect app vs docs-only changes
+        if: github.event_name == 'pull_request'
+        id: filter
+        uses: dorny/paths-filter@d1c1ffe0248fe513906c8e24db8ea791d46f8590 # v3
+        with:
+          filters: |
+            app:
+              - 'src/**'
+              - 'public/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'angular.json'
+              - 'tsconfig*.json'
+              - 'eslint.config.*'
+              - '.prettierrc*'
+              - '.prettierignore'
+              - '.nvmrc'
+              - 'index.html'
+              - '.github/workflows/**'
+              - '.github/dependabot.yml'
+              - '.github/labeler.yml'
+
+      - name: Skip unit tests (docs/skills-only PR)
+        if: github.event_name == 'pull_request' && steps.filter.outputs.app != 'true'
+        run: echo 'No app-path changes; skipping unit tests.'
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         with:
           node-version-file: .nvmrc
           cache: npm
 
       - uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         id: setup-chrome
 
-      - run: npm ci
+      - if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
+        run: npm ci
 
       - name: Unit tests with coverage
+        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
         run: npm run test:ci
         env:
           CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
@@ -88,7 +145,8 @@ jobs:
       - name: Post coverage comment
         if: >
           github.event_name == 'pull_request' &&
-          github.event.pull_request.head.repo.full_name == github.repository
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          steps.filter.outputs.app == 'true'
         uses: romeovs/lcov-reporter-action@87a815f34ec27a5826abba44ce09bbc688da58fd # v0.4.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

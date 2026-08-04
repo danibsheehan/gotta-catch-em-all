@@ -198,10 +198,12 @@ npm run build:github-pages
 
 Pushes to **`main`** and pull requests run the **Test** workflow:
 
-| JOB              | COMMAND / CHECK                                                                                      |
-| :--------------- | :--------------------------------------------------------------------------------------------------- |
-| **`quality`**    | One `npm ci`, then `format:check` → `lint` → `npm audit --audit-level=high` → Pages-ready `ng build` |
-| **`unit-tests`** | Separate job (Chrome): `npm run test:ci` (+ coverage comment on same-repo PRs)                       |
+| JOB              | COMMAND / CHECK                                                                                              |
+| :--------------- | :----------------------------------------------------------------------------------------------------------- |
+| **`quality`**    | One `npm ci` + `format:check`; on app changes (or `main`) also `lint` → audit → Pages-ready `ng build`       |
+| **`unit-tests`** | Chrome + `test:ci` on app changes (or `main`); docs/skills-only PRs skip the suite (job still reports green) |
+
+Docs / `.cursor` / README-only PRs keep a light format path so required checks stay satisfied. **Push to `main` always runs the full gates** (Pages artifact).
 
 **GitHub Pages:** Test’s **`quality`** job builds with the Pages **base href** and, on `main`, uploads artifact **`github-pages-site`**. Deploy downloads that artifact after Test succeeds (`workflow_run`)—no second `ng build`—or rebuilds on manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
 
