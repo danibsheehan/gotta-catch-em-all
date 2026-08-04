@@ -1,5 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { afterNextRender, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
 
@@ -9,12 +14,12 @@ import { PokemonType } from 'src/app/shared/models/pokemon-type';
 import { PokemonTypeComponent } from '../pokemon-type/pokemon-type.component';
 
 @Component({
-    selector: 'app-pokemon-selector',
-    templateUrl: './pokemon-selector.component.html',
-    styleUrls: ['./pokemon-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [AsyncPipe, PokemonTypeComponent],
+  selector: 'app-pokemon-selector',
+  templateUrl: './pokemon-selector.component.html',
+  styleUrls: ['./pokemon-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, PokemonTypeComponent],
 })
 export class PokemonSelectorComponent {
   /** False until first paint; then true while the deferred type list request is in flight. */
@@ -24,7 +29,7 @@ export class PokemonSelectorComponent {
 
   constructor(
     private pokemonCatalog: PokemonCatalogService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     afterNextRender(() => {
       this.isLoadingTypes = true;
@@ -40,7 +45,7 @@ export class PokemonSelectorComponent {
         }),
         finalize(() => {
           this.isLoadingTypes = false;
-        })
+        }),
       );
       this.cdr.markForCheck();
     });

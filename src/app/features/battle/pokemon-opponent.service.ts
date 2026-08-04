@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Pokemon } from 'src/app/shared/models/pokemon';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonOpponentService {
   constructor(private pokeApi: PokeApiClient) {}

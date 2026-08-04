@@ -11,9 +11,8 @@ describe('PokemonSelectorComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [PokemonSelectorComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting()]
-    })
-    .compileComponents();
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    }).compileComponents();
   });
 
   beforeEach(() => {

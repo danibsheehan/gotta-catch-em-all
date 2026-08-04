@@ -2,30 +2,34 @@
   [ngClass]="pokemonDetails.hasOwnProperty('name') ? 'current-pokemon' : ''"
   [class.pokemon-details--stagger-in]="staggerEntrance"
 >
-    <span class="pokemon-name">{{pokemonDetails?.name}}</span>
-    @if (specialAttackStat !== null) {
-      <p class="pokemon-stat-callout">
-        <span class="pokemon-stat-label">sp. atk</span>
-        <span class="pokemon-stat-value">{{ specialAttackStat }}</span>
-      </p>
-    }
-    @if (pokemonDetails?.sprites?.front_default) {
-      <img
-        class="pokemon-image"
-        [src]="pokemonDetails.sprites.front_default"
-        [alt]="pokemonDetails?.name || 'pokémon sprite'"
-        width="140"
-        height="140"
-        sizes="140px"
-        [attr.loading]="prioritizeLcp ? 'eager' : 'lazy'"
-        [attr.fetchpriority]="prioritizeLcp ? 'high' : null"
-        decoding="async">
-    } @else {
-      <div
-        class="pokemon-image pokemon-image-placeholder"
-        role="img"
-        [attr.aria-label]="pokemonDetails?.name ? 'no sprite for ' + pokemonDetails.name : 'sprite coming soon'">
-        <span class="pokemon-placeholder-emoji" aria-hidden="true">✨</span>
-      </div>
-    }
+  <span class="pokemon-name">{{ pokemonDetails?.name }}</span>
+  @if (specialAttackStat !== null) {
+    <p class="pokemon-stat-callout">
+      <span class="pokemon-stat-label">sp. atk</span>
+      <span class="pokemon-stat-value">{{ specialAttackStat }}</span>
+    </p>
+  }
+  @if (pokemonDetails?.sprites?.front_default) {
+    <img
+      class="pokemon-image"
+      [src]="pokemonDetails.sprites.front_default"
+      [alt]="pokemonDetails?.name || 'pokémon sprite'"
+      width="140"
+      height="140"
+      sizes="140px"
+      [attr.loading]="prioritizeLcp ? 'eager' : 'lazy'"
+      [attr.fetchpriority]="prioritizeLcp ? 'high' : null"
+      decoding="async"
+    />
+  } @else {
+    <div
+      class="pokemon-image pokemon-image-placeholder"
+      role="img"
+      [attr.aria-label]="
+        pokemonDetails?.name ? 'no sprite for ' + pokemonDetails.name : 'sprite coming soon'
+      "
+    >
+      <span class="pokemon-placeholder-emoji" aria-hidden="true">✨</span>
+    </div>
+  }
 </div>

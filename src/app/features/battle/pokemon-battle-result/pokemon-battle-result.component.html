@@ -1,11 +1,6 @@
 <section class="battle-result-section" role="region" aria-label="Battle outcome">
   @if (isResolvingBattle) {
-    <p
-      [@battleResolving]
-      class="battle-resolving"
-      role="status"
-      aria-busy="true"
-    >
+    <p [@battleResolving] class="battle-resolving" role="status" aria-busy="true">
       ⚔️ crunching the numbers…
     </p>
   }
@@ -26,12 +21,40 @@
               </linearGradient>
             </defs>
             <g class="battle-sparks-burst">
-              <path class="battle-spark battle-spark--a" fill="url(#sparkGradA)" d="M78 8l4 12 12 2-12 6-4 14-4-14-12-6 12-2z" />
-              <path class="battle-spark battle-spark--b" fill="var(--accent-mint)" d="M122 38l3 9 9 2-9 4-3 10-3-10-9-4 9-2z" />
-              <path class="battle-spark battle-spark--c" fill="var(--accent-lilac)" d="M38 42l3 10 10 2-10 5-3 12-3-12-10-5 10-2z" />
-              <path class="battle-spark battle-spark--d" fill="url(#sparkGradA)" d="M88 58l5 14 14 3-14 7-5 16-5-16-14-7 14-3z" />
-              <circle class="battle-spark battle-spark--e" cx="52" cy="22" r="3" fill="var(--accent-primary)" />
-              <circle class="battle-spark battle-spark--f" cx="128" cy="68" r="2.5" fill="var(--accent-pink)" />
+              <path
+                class="battle-spark battle-spark--a"
+                fill="url(#sparkGradA)"
+                d="M78 8l4 12 12 2-12 6-4 14-4-14-12-6 12-2z"
+              />
+              <path
+                class="battle-spark battle-spark--b"
+                fill="var(--accent-mint)"
+                d="M122 38l3 9 9 2-9 4-3 10-3-10-9-4 9-2z"
+              />
+              <path
+                class="battle-spark battle-spark--c"
+                fill="var(--accent-lilac)"
+                d="M38 42l3 10 10 2-10 5-3 12-3-12-10-5 10-2z"
+              />
+              <path
+                class="battle-spark battle-spark--d"
+                fill="url(#sparkGradA)"
+                d="M88 58l5 14 14 3-14 7-5 16-5-16-14-7 14-3z"
+              />
+              <circle
+                class="battle-spark battle-spark--e"
+                cx="52"
+                cy="22"
+                r="3"
+                fill="var(--accent-primary)"
+              />
+              <circle
+                class="battle-spark battle-spark--f"
+                cx="128"
+                cy="68"
+                r="2.5"
+                fill="var(--accent-pink)"
+              />
             </g>
           </svg>
         </div>
@@ -39,7 +62,9 @@
       <div [@resultReveal] class="battle-result-body">
         <header class="battle-result-heading-block">
           <p class="battle-micro-label battle-micro-label--verdict">special attack clash</p>
-          <span class="battle-ribbon battle-ribbon--tape battle-ribbon--mystery">type advantage?</span>
+          <span class="battle-ribbon battle-ribbon--tape battle-ribbon--mystery"
+            >type advantage?</span
+          >
           <h2 id="victor-heading" class="battle-result-heading">the victor 🏆</h2>
         </header>
         <app-pokemon-details [pokemonDetails]="pokemonVictor"></app-pokemon-details>

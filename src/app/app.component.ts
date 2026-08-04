@@ -14,40 +14,40 @@ const ARENA_DURATION = '520ms';
 const ARENA_STAGGER = 95;
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: true,
-    imports: [
-      AsyncPipe,
-      BattleRecentMatchupsComponent,
-      PokemonBattleResultComponent,
-      PokemonDetailsComponent,
-      PokemonSelectorComponent,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [
-        trigger('arenaOpponentEnter', [
-            transition(':enter', [
-                query(
-                    'header .battle-micro-label, header .battle-section-heading',
-                    [
-                        style({
-                            opacity: 0,
-                            transform: 'translateX(-2.25rem) scale(0.96)',
-                        }),
-                        stagger(ARENA_STAGGER, [
-                            animate(
-                                `${ARENA_DURATION} ${ARENA_EASE}`,
-                                style({ opacity: 1, transform: 'translateX(0) scale(1)' }),
-                            ),
-                        ]),
-                    ],
-                    { optional: true },
-                ),
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    BattleRecentMatchupsComponent,
+    PokemonBattleResultComponent,
+    PokemonDetailsComponent,
+    PokemonSelectorComponent,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('arenaOpponentEnter', [
+      transition(':enter', [
+        query(
+          'header .battle-micro-label, header .battle-section-heading',
+          [
+            style({
+              opacity: 0,
+              transform: 'translateX(-2.25rem) scale(0.96)',
+            }),
+            stagger(ARENA_STAGGER, [
+              animate(
+                `${ARENA_DURATION} ${ARENA_EASE}`,
+                style({ opacity: 1, transform: 'translateX(0) scale(1)' }),
+              ),
             ]),
-        ]),
-    ],
+          ],
+          { optional: true },
+        ),
+      ]),
+    ]),
+  ],
 })
 export class AppComponent {
   title = 'gotta-catch-em-all';

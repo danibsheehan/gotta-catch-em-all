@@ -1,14 +1,14 @@
-@use "./styles/tokens";
-@use "./styles/arena-type-wash";
-@use "./styles/battle-chrome";
-@use "./styles/battle-panel-frames";
+@use './styles/tokens';
+@use './styles/arena-type-wash';
+@use './styles/battle-chrome';
+@use './styles/battle-panel-frames';
 
 /* Global app surface — order matches previous single-file cascade */
-@use "./styles/global-base";
-@use "./styles/layout-shell";
-@use "./styles/sound-cabinet";
-@use "./styles/hero-and-shell";
-@use "./styles/skip-links";
-@use "./styles/sticker-notice";
-@use "./styles/focus-and-cta-buttons";
-@use "./styles/site-footer";
+@use './styles/global-base';
+@use './styles/layout-shell';
+@use './styles/sound-cabinet';
+@use './styles/hero-and-shell';
+@use './styles/skip-links';
+@use './styles/sticker-notice';
+@use './styles/focus-and-cta-buttons';
+@use './styles/site-footer';

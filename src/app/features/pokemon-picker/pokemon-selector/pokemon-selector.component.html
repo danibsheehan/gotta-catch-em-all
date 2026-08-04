@@ -1,29 +1,29 @@
 <section class="pokemon-selector-section" aria-labelledby="selector-heading">
-<h2 id="selector-heading" class="pokemon-cta">choose your pokémon! 💛</h2>
+  <h2 id="selector-heading" class="pokemon-cta">choose your pokémon! 💛</h2>
 
-<div class="pokemon-selector-status" aria-live="polite">
-  @if (isLoadingTypes) {
-    <div class="pokemon-selector-loading" role="status" aria-busy="true">
-      <span class="loading-label">🌈 loading types…</span>
-    </div>
-  }
+  <div class="pokemon-selector-status" aria-live="polite">
+    @if (isLoadingTypes) {
+      <div class="pokemon-selector-loading" role="status" aria-busy="true">
+        <span class="loading-label">🌈 loading types…</span>
+      </div>
+    }
 
-  @if (pokemonTypesError) {
-    <div class="pokemon-selector-error sticker-notice sticker-notice--danger" role="alert">
-      <p class="sticker-notice-text pokemon-selector-error-text">{{ pokemonTypesError }}</p>
-    </div>
-  }
-</div>
-
-<div class="pokemon-search-container">
-  <div class="pokemon-type-container">
-    @if (pokemonTypes$ | async; as pokemonTypes) {
-      @for (pokemonType of pokemonTypes; track pokemonType) {
-        <div class="pokemon-type-item">
-          <app-pokemon-type [pokemonType]="pokemonType"></app-pokemon-type>
-        </div>
-      }
+    @if (pokemonTypesError) {
+      <div class="pokemon-selector-error sticker-notice sticker-notice--danger" role="alert">
+        <p class="sticker-notice-text pokemon-selector-error-text">{{ pokemonTypesError }}</p>
+      </div>
     }
   </div>
-</div>
+
+  <div class="pokemon-search-container">
+    <div class="pokemon-type-container">
+      @if (pokemonTypes$ | async; as pokemonTypes) {
+        @for (pokemonType of pokemonTypes; track pokemonType) {
+          <div class="pokemon-type-item">
+            <app-pokemon-type [pokemonType]="pokemonType"></app-pokemon-type>
+          </div>
+        }
+      }
+    </div>
+  </div>
 </section>

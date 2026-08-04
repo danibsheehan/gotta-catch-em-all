@@ -3,15 +3,13 @@
     <section class="recent-matchups" aria-labelledby="recent-matchups-heading">
       <div class="recent-matchups-header">
         <span class="recent-matchups-stamp" aria-hidden="true">session</span>
-        <h2 id="recent-matchups-heading" class="recent-matchups-title">last {{ entries.length }} scraps · tape to the fridge</h2>
+        <h2 id="recent-matchups-heading" class="recent-matchups-title">
+          last {{ entries.length }} scraps · tape to the fridge
+        </h2>
       </div>
       <div class="recent-matchups-scrapbook" role="list">
         @for (entry of entries; track entry.at; let i = $index) {
-          <article
-            class="polaroid-card"
-            role="listitem"
-            [attr.aria-label]="formatLine(entry)"
-          >
+          <article class="polaroid-card" role="listitem" [attr.aria-label]="formatLine(entry)">
             <span class="polaroid-tape polaroid-tape--tl" aria-hidden="true"></span>
             <span class="polaroid-tape polaroid-tape--tr" aria-hidden="true"></span>
             <div class="polaroid-frame">

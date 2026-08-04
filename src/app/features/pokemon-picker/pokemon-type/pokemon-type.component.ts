@@ -9,7 +9,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PokemonType } from 'src/app/shared/models/pokemon-type';
@@ -40,11 +40,11 @@ const TYPE_GLYPHS: Record<string, string> = {
 };
 
 @Component({
-    selector: 'app-pokemon-type',
-    templateUrl: './pokemon-type.component.html',
-    styleUrls: ['./pokemon-type.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
+  selector: 'app-pokemon-type',
+  templateUrl: './pokemon-type.component.html',
+  styleUrls: ['./pokemon-type.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() pokemonType: PokemonType;
@@ -56,7 +56,7 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
 
   get typeGlyph(): string {
     const name = this.pokemonType?.name;
-    return name ? TYPE_GLYPHS[name] ?? '◆' : '◆';
+    return name ? (TYPE_GLYPHS[name] ?? '◆') : '◆';
   }
 
   @ViewChild('typeButton') typeButton?: ElementRef<HTMLButtonElement>;
@@ -78,8 +78,8 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
     private pokemonCatalog: PokemonCatalogService,
     private battle: PokemonBattleService,
     private audio: AudioService,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   @HostListener('document:keydown', ['$event'])
   onDocumentKeydown(event: KeyboardEvent): void {
@@ -102,7 +102,12 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
       return;
     }
     this.isOpen = !this.isOpen;
-    if (this.isOpen && !this.pokemonNames.length && !this.isLoadingPokemonNames && !this.pokemonLoadError) {
+    if (
+      this.isOpen &&
+      !this.pokemonNames.length &&
+      !this.isLoadingPokemonNames &&
+      !this.pokemonLoadError
+    ) {
       this.loadPokemonNames();
     } else if (this.isOpen && this.pokemonNames.length) {
       this.cdr.markForCheck();
@@ -173,24 +178,26 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   private loadPokemonNames() {
     this.isLoadingPokemonNames = true;
     this.loadPokemonNamesSub?.unsubscribe();
-    this.loadPokemonNamesSub = this.pokemonCatalog.getPokemonByType(this.pokemonType.name).subscribe(
-      (pokemon) => {
-        this.pokemonNames = pokemon.map((pokemonEntry) => pokemonEntry.name);
-        this.typeHasNoPokemon = this.pokemonNames.length === 0;
-        this.pokemonLoadError = this.pokemonNames.length
-          ? ''
-          : `👀 no ${this.pokemonType.name} crew in the dex rn`;
-        this.isLoadingPokemonNames = false;
-        this.cdr.markForCheck();
-        this.queueFocusPokemonSelect();
-      },
-      () => {
-        this.pokemonNames = [];
-        this.pokemonLoadError = `😵 couldn't fetch ${this.pokemonType.name} — tap refresh?`;
-        this.isLoadingPokemonNames = false;
-        this.cdr.markForCheck();
-      }
-    );
+    this.loadPokemonNamesSub = this.pokemonCatalog
+      .getPokemonByType(this.pokemonType.name)
+      .subscribe(
+        (pokemon) => {
+          this.pokemonNames = pokemon.map((pokemonEntry) => pokemonEntry.name);
+          this.typeHasNoPokemon = this.pokemonNames.length === 0;
+          this.pokemonLoadError = this.pokemonNames.length
+            ? ''
+            : `👀 no ${this.pokemonType.name} crew in the dex rn`;
+          this.isLoadingPokemonNames = false;
+          this.cdr.markForCheck();
+          this.queueFocusPokemonSelect();
+        },
+        () => {
+          this.pokemonNames = [];
+          this.pokemonLoadError = `😵 couldn't fetch ${this.pokemonType.name} — tap refresh?`;
+          this.isLoadingPokemonNames = false;
+          this.cdr.markForCheck();
+        },
+      );
   }
 
   private queueFocusPokemonSelect(): void {
@@ -199,5 +206,4 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
     }
     setTimeout(() => this.pokemonSelect?.nativeElement?.focus());
   }
-
 }

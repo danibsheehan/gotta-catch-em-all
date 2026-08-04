@@ -42,23 +42,23 @@
 
 ## ★ BATTLE BRIEF — **what this is, fast**
 
-> **Angular ~22** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.  
->  
+> **Angular ~22** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.
+>
 > You draft from a **per-type** menu; the app rolls an opponent and runs **`resolveSpecialAttackBattle()`** so the UI never reinvents win/loss rules. **Recent matchups** (session, **last 3**) remember the drama. **HTTP** hits PokeAPI **only** through **`PokeApiClient`**.
 
 <details>
 <summary><strong>▼ Extra palette rows → same <code>_tokens.scss</code> as the UI ▼</strong></summary>
 
-| CSS variable | Hex | Where it shows up |
-| :--- | :--- | :--- |
-| `--border-outline` | `#141414` | Panel rims, sticker outlines, high-contrast strokes |
-| `--text-secondary` | `#4a3566` | Softer body / hints on pastel surfaces |
-| `--accent-lilac` | `#b388ff` | Mid lavender, gradients, secondary fills |
-| `--surface-wash-mint` | `#bfffec` | Arena wash / mint-tinted surfaces |
-| `--surface-elevated` | `#ffffff` | Cards and elevated strips (see SVG runway) |
-| `--border-subtle` | `#c9a8ff` | Soft dividers, chip rails |
-| `--semantic-danger` | `#ff2d6b` | Errors / destructive emphasis |
-| `--chip-border` | `#b898f0` | Type chips and selector chrome |
+| CSS variable          | Hex       | Where it shows up                                   |
+| :-------------------- | :-------- | :-------------------------------------------------- |
+| `--border-outline`    | `#141414` | Panel rims, sticker outlines, high-contrast strokes |
+| `--text-secondary`    | `#4a3566` | Softer body / hints on pastel surfaces              |
+| `--accent-lilac`      | `#b388ff` | Mid lavender, gradients, secondary fills            |
+| `--surface-wash-mint` | `#bfffec` | Arena wash / mint-tinted surfaces                   |
+| `--surface-elevated`  | `#ffffff` | Cards and elevated strips (see SVG runway)          |
+| `--border-subtle`     | `#c9a8ff` | Soft dividers, chip rails                           |
+| `--semantic-danger`   | `#ff2d6b` | Errors / destructive emphasis                       |
+| `--chip-border`       | `#b898f0` | Type chips and selector chrome                      |
 
 Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg) whenever you change `:root` values so the README stays honest.
 
@@ -70,16 +70,16 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 ## ★ SOURCE MAP — **where each folder points**
 
-| ZONE | PATH |
-| :--- | :--- |
-| **SHELL** | `src/app/app.component.*`, `app.config.ts` |
-| **GLOBAL LOOK** | `src/styles.scss` pulls `_tokens.scss`, `_arena-type-wash.scss`, `_battle-chrome.scss`, `_battle-panel-frames.scss`; type chips → `_pokemon-type-chips.scss` |
-| **CORE · HTTP** | `src/app/core/api/` — **PokeAPI only** via `PokeApiClient` |
-| **CORE · AUDIO** | `src/app/core/audio/` — `AudioService` (ticks + battle stings, autoplay-safe) |
-| **MODELS** | `src/app/shared/models/` (`Pokemon`, types, type list) |
-| **BATTLE** | `src/app/features/battle/` — `PokemonBattleService`, player/opponent services, `battle-history.service`, `special-attack-battle.ts`, `type-matchup-flavor.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
-| **PICKER** | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/` |
-| **DISPLAY** | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`) |
+| ZONE             | PATH                                                                                                                                                                                                               |
+| :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SHELL**        | `src/app/app.component.*`, `app.config.ts`                                                                                                                                                                         |
+| **GLOBAL LOOK**  | `src/styles.scss` pulls `_tokens.scss`, `_arena-type-wash.scss`, `_battle-chrome.scss`, `_battle-panel-frames.scss`; type chips → `_pokemon-type-chips.scss`                                                       |
+| **CORE · HTTP**  | `src/app/core/api/` — **PokeAPI only** via `PokeApiClient`                                                                                                                                                         |
+| **CORE · AUDIO** | `src/app/core/audio/` — `AudioService` (ticks + battle stings, autoplay-safe)                                                                                                                                      |
+| **MODELS**       | `src/app/shared/models/` (`Pokemon`, types, type list)                                                                                                                                                             |
+| **BATTLE**       | `src/app/features/battle/` — `PokemonBattleService`, player/opponent services, `battle-history.service`, `special-attack-battle.ts`, `type-matchup-flavor.ts`, `pokemon-battle-result/`, `battle-recent-matchups/` |
+| **PICKER**       | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/`                                                                                                               |
+| **DISPLAY**      | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`)                                                                                                                          |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -87,17 +87,17 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 ## ★ FEATURE ROLL CALL — **what ships in the box**
 
-| TAG | WHAT HAPPENS |
-| :---: | :--- |
-| **`@DEFER`** | Type-picker region loads with **`@defer`** (viewport + idle prefetch) so the **battle shell paints first**. |
-| **MENUS** | Type index from PokeAPI → **one collapsible menu per type**; names hydrate on **first open**. |
-| **FULL CARD** | **`pokemon`** record fetch on **confirm**. |
-| **RIVAL RNG** | Random opponent id **`1…maxPokemonSpeciesId`** (upper bound from env; often **964**), sprite **preload**, **try again** if opponent fetch fails. |
-| **VERDICT** | **`resolveSpecialAttackBattle()`** + `PokemonBattleResultComponent` timing/UI + **`BattleHistoryService.recordMatch`**. Optional **type-pair flavor** (not damage math). |
-| **SFX BUS** | **Sound off by default** — arcade tick on pick, sting on result; header toggle; `localStorage` **`gcea-sound-effects`**. |
-| **MEMORY LANE** | Up to **three** **Recent matchups** per tab — `sessionStorage`, in-memory fallback if storage is blocked. |
-| **`shareReplay(1)`** | Cached **type index** + **per-type lists** — don't blast duplicate HTTP. |
-| **SAFE URLS** | Path segments encoded for PokeAPI (weird names survive). |
+|         TAG          | WHAT HAPPENS                                                                                                                                                             |
+| :------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     **`@DEFER`**     | Type-picker region loads with **`@defer`** (viewport + idle prefetch) so the **battle shell paints first**.                                                              |
+|      **MENUS**       | Type index from PokeAPI → **one collapsible menu per type**; names hydrate on **first open**.                                                                            |
+|    **FULL CARD**     | **`pokemon`** record fetch on **confirm**.                                                                                                                               |
+|    **RIVAL RNG**     | Random opponent id **`1…maxPokemonSpeciesId`** (upper bound from env; often **964**), sprite **preload**, **try again** if opponent fetch fails.                         |
+|     **VERDICT**      | **`resolveSpecialAttackBattle()`** + `PokemonBattleResultComponent` timing/UI + **`BattleHistoryService.recordMatch`**. Optional **type-pair flavor** (not damage math). |
+|     **SFX BUS**      | **Sound off by default** — arcade tick on pick, sting on result; header toggle; `localStorage` **`gcea-sound-effects`**.                                                 |
+|   **MEMORY LANE**    | Up to **three** **Recent matchups** per tab — `sessionStorage`, in-memory fallback if storage is blocked.                                                                |
+| **`shareReplay(1)`** | Cached **type index** + **per-type lists** — don't blast duplicate HTTP.                                                                                                 |
+|    **SAFE URLS**     | Path segments encoded for PokeAPI (weird names survive).                                                                                                                 |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -105,10 +105,10 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 ## ★ PREREQS — **install first**
 
-| REQUIREMENT | NOTES |
-| :--- | :--- |
+| REQUIREMENT              | NOTES                                                                    |
+| :----------------------- | :----------------------------------------------------------------------- |
 | **Node.js `>= 22.22.3`** | Matches `package.json` `engines`, `.nvmrc`, and CI (Angular 22 minimum). |
-| **nvm** *(optional)* | Run **`nvm use`** — `.nvmrc` pins **`22.22.3`**. |
+| **nvm** _(optional)_     | Run **`nvm use`** — `.nvmrc` pins **`22.22.3`**.                         |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -153,26 +153,26 @@ npm run build:github-pages
 <details>
 <summary><strong>▼ Who owns what — services + HTTP ▼</strong></summary>
 
-| SYMBOL / AREA | RESPONSIBILITY |
-| :--- | :--- |
-| `PokeApiClient` | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`). |
-| `AudioService` | Optional Web Audio SFX (`src/app/core/audio/`): `soundEnabled$`, `playUiTick()`, `playBattleResult()`; unlock/resume follows autoplay rules. |
-| `PokemonCatalogService` | Cached type index and per-type lists (`shareReplay`) in `features/pokemon-picker/`. |
-| `PokemonPlayerService` | Player selection (`features/battle/`): `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError`. |
-| `PokemonOpponentService` | Random opponent id, `getPokemonById`, sprite URL (`features/battle/`). |
-| `PokemonBattleService` | Unified battle state: `vm$` (`PokemonBattleVm`), `loadOpponent()`, `selectPlayerPokemon()`, `playAgain()`, split streams (`playerDetails$`, `opponent$`, …). |
-| `BattleHistoryService` | `entries$`, `recordMatch()`; newest three in `sessionStorage` (`gcea-battle-history-v1`). |
-| `BattleRecentMatchupsComponent` | Reads `entries$`, formats recent lines. |
-| `getPokemonTypes()` | `GET /type/` — paginated type list. |
-| `getPokemonByType(typeName)` | `GET /type/{typeName}` — Pokémon in that type. |
-| `getPokemonDetails(name)` | `GET /pokemon/{name}` — full details or error stream. |
-| `getPokemonById(id)` | `GET /pokemon/{id}` — opponent path. |
-| `pickRandomOpponentId()` | Random int `1…environment.maxPokemonSpeciesId`. |
-| `PokemonSelectorComponent` | Type index after first render (`afterNextRender`); `@defer` in `AppComponent`. |
-| `PokemonTypeComponent` | Dropdown; names on first open; `selectPlayerPokemon` on battle service. |
-| `resolveSpecialAttackBattle()` | Pure helper — **special-attack** compare, messages, victor; **UI must not reimplement rules**. |
-| `PokemonBattleResultComponent` | Presentation + delay; `recordMatch` when winner known. |
-| `AppComponent` | Battle shell from `vm$`; sound toggle; deferred selector; recent matchups below fold. |
+| SYMBOL / AREA                   | RESPONSIBILITY                                                                                                                                               |
+| :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PokeApiClient`                 | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`).                                                                                                       |
+| `AudioService`                  | Optional Web Audio SFX (`src/app/core/audio/`): `soundEnabled$`, `playUiTick()`, `playBattleResult()`; unlock/resume follows autoplay rules.                 |
+| `PokemonCatalogService`         | Cached type index and per-type lists (`shareReplay`) in `features/pokemon-picker/`.                                                                          |
+| `PokemonPlayerService`          | Player selection (`features/battle/`): `getPokemonDetails`, `pokemonDetails` / `pokemonDetailsError`.                                                        |
+| `PokemonOpponentService`        | Random opponent id, `getPokemonById`, sprite URL (`features/battle/`).                                                                                       |
+| `PokemonBattleService`          | Unified battle state: `vm$` (`PokemonBattleVm`), `loadOpponent()`, `selectPlayerPokemon()`, `playAgain()`, split streams (`playerDetails$`, `opponent$`, …). |
+| `BattleHistoryService`          | `entries$`, `recordMatch()`; newest three in `sessionStorage` (`gcea-battle-history-v1`).                                                                    |
+| `BattleRecentMatchupsComponent` | Reads `entries$`, formats recent lines.                                                                                                                      |
+| `getPokemonTypes()`             | `GET /type/` — paginated type list.                                                                                                                          |
+| `getPokemonByType(typeName)`    | `GET /type/{typeName}` — Pokémon in that type.                                                                                                               |
+| `getPokemonDetails(name)`       | `GET /pokemon/{name}` — full details or error stream.                                                                                                        |
+| `getPokemonById(id)`            | `GET /pokemon/{id}` — opponent path.                                                                                                                         |
+| `pickRandomOpponentId()`        | Random int `1…environment.maxPokemonSpeciesId`.                                                                                                              |
+| `PokemonSelectorComponent`      | Type index after first render (`afterNextRender`); `@defer` in `AppComponent`.                                                                               |
+| `PokemonTypeComponent`          | Dropdown; names on first open; `selectPlayerPokemon` on battle service.                                                                                      |
+| `resolveSpecialAttackBattle()`  | Pure helper — **special-attack** compare, messages, victor; **UI must not reimplement rules**.                                                               |
+| `PokemonBattleResultComponent`  | Presentation + delay; `recordMatch` when winner known.                                                                                                       |
+| `AppComponent`                  | Battle shell from `vm$`; sound toggle; deferred selector; recent matchups below fold.                                                                        |
 
 </details>
 
@@ -182,11 +182,11 @@ npm run build:github-pages
 
 ## ★ CONFIGURATION — **API + rival ID cap**
 
-| FIELD | WHERE | DESCRIPTION |
-| :--- | :--- | :--- |
-| `pokeApi.baseUrl` | `environment*.ts` | PokeAPI v2 root (**no** trailing slash). |
+| FIELD                        | WHERE             | DESCRIPTION                                                 |
+| :--------------------------- | :---------------- | :---------------------------------------------------------- |
+| `pokeApi.baseUrl`            | `environment*.ts` | PokeAPI v2 root (**no** trailing slash).                    |
 | `pokeApi.frontSpriteBaseUrl` | `environment*.ts` | Base URL for opponent **front** sprites by national dex id. |
-| `maxPokemonSpeciesId` | `environment*.ts` | **Inclusive** upper bound when rolling random opponent id. |
+| `maxPokemonSpeciesId`        | `environment*.ts` | **Inclusive** upper bound when rolling random opponent id.  |
 
 `PokeApiClient` assembles HTTP from these values. Point at a mock or mirror, **rebuild**. Production swaps in `environment.prod.ts` via `angular.json` file replacement.
 
@@ -196,16 +196,18 @@ npm run build:github-pages
 
 ## ★ SCRIPTS — **npm, decoded**
 
-| SCRIPT | WHAT IT DOES |
-| :--- | :--- |
-| `npm start` | Dev server (`ng serve`). |
-| `npm run build` | Production build → `dist/gotta-catch-em-all/browser/`. |
-| `npm run build:dev` | Dev build (no prod env replacement). |
+| SCRIPT                       | WHAT IT DOES                                                    |
+| :--------------------------- | :-------------------------------------------------------------- |
+| `npm start`                  | Dev server (`ng serve`).                                        |
+| `npm run build`              | Production build → `dist/gotta-catch-em-all/browser/`.          |
+| `npm run build:dev`          | Dev build (no prod env replacement).                            |
 | `npm run build:github-pages` | Prod build + GitHub Pages base href **`/gotta-catch-em-all/`**. |
-| `npm run serve:dist` | Serves prod output on port **8080** (after `npm run build`). |
-| `npm run lint` | ESLint (Angular ESLint). |
-| `npm test` | Vitest via Angular unit-test builder (**watch**). |
-| `npm run test:ci` | Single Vitest run with coverage thresholds. |
+| `npm run serve:dist`         | Serves prod output on port **8080** (after `npm run build`).    |
+| `npm run lint`               | ESLint (Angular ESLint).                                        |
+| `npm run format`             | Format the repo with Prettier.                                  |
+| `npm run format:check`       | Check Prettier formatting (CI).                                 |
+| `npm test`                   | Vitest via Angular unit-test builder (**watch**).               |
+| `npm run test:ci`            | Single Vitest run with coverage thresholds.                     |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -213,10 +215,10 @@ npm run build:github-pages
 
 ## ★ CURSOR — **optional <code>.cursor</code> helpers**
 
-| PATH | PURPOSE |
-| :--- | :--- |
-| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles). |
-| `.cursor/skills/*/` | Skills: definition-of-done, GitHub Pages, PokeAPI/RxJS, Vitest tests, doc writer. |
+| PATH                                               | PURPOSE                                                                           |
+| :------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles).              |
+| `.cursor/skills/*/`                                | Skills: definition-of-done, GitHub Pages, PokeAPI/RxJS, Vitest tests, doc writer. |
 
 ```
 ██████████████████████████████████████████████████████████████████████████████

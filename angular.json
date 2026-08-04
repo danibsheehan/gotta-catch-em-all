@@ -30,13 +30,8 @@
             "index": "src/index.html",
             "polyfills": [],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.svg",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.svg", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
@@ -83,9 +78,7 @@
             },
             "testing": {
               "aot": false,
-              "polyfills": [
-                "zone.js"
-              ]
+              "polyfills": ["zone.js"]
             }
           },
           "defaultConfiguration": "production"
@@ -117,18 +110,10 @@
             "tsConfig": "tsconfig.spec.json",
             "runner": "vitest",
             "buildTarget": ":build:testing",
-            "setupFiles": [
-              "src/test-setup.ts"
-            ],
-            "reporters": [
-              "default"
-            ],
+            "setupFiles": ["src/test-setup.ts"],
+            "reporters": ["default"],
             "coverage": true,
-            "coverageReporters": [
-              "html",
-              "lcovonly",
-              "text-summary"
-            ],
+            "coverageReporters": ["html", "lcovonly", "text-summary"],
             "coverageThresholds": {
               "statements": 82,
               "branches": 67,
@@ -141,10 +126,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -177,8 +159,6 @@
     }
   },
   "cli": {
-    "schematicCollections": [
-      "angular-eslint"
-    ]
+    "schematicCollections": ["angular-eslint"]
   }
 }

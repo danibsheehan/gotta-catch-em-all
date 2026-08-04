@@ -11,12 +11,12 @@ Produces clear, consistent documentation for JS/TS and Go. Covers **README files
 
 ## Step 1: Classify the request
 
-| Request | Doc type |
-| --- | --- |
-| "Write a README", "document this repo" | README |
-| "Document this function/class", "add JSDoc/GoDoc" | API docs |
-| "Add comments", "explain this inline" | Inline comments |
-| Mixed / ambiguous | Ask, or default to README + API docs |
+| Request                                           | Doc type                             |
+| ------------------------------------------------- | ------------------------------------ |
+| "Write a README", "document this repo"            | README                               |
+| "Document this function/class", "add JSDoc/GoDoc" | API docs                             |
+| "Add comments", "explain this inline"             | Inline comments                      |
+| Mixed / ambiguous                                 | Ask, or default to README + API docs |
 
 ---
 

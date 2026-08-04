@@ -14,7 +14,9 @@ describe('PokemonBattleService', () => {
   let scrollIntoViewSpy: Mock;
 
   beforeEach(() => {
-    scrollIntoViewSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView').mockImplementation(() => undefined);
+    scrollIntoViewSpy = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => undefined);
     const arena = document.createElement('div');
     arena.id = 'battle-arena';
     document.body.appendChild(arena);
@@ -95,7 +97,9 @@ describe('PokemonBattleService', () => {
       ),
     );
 
-    const opponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'));
+    const opponentReq = httpMock.expectOne(
+      (r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'),
+    );
     opponentReq.flush({ name: 'foe', sprites: {}, stats: [] });
 
     const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
@@ -113,7 +117,9 @@ describe('PokemonBattleService', () => {
   it('should clear player and request a new opponent on playAgain', async () => {
     service.selectPlayerPokemon('pikachu');
 
-    const initialOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'));
+    const initialOpponentReq = httpMock.expectOne(
+      (r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'),
+    );
     initialOpponentReq.flush({ name: 'foe', sprites: {}, stats: [] });
 
     const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
@@ -121,7 +127,9 @@ describe('PokemonBattleService', () => {
 
     service.playAgain();
 
-    const nextOpponentReq = httpMock.expectOne((r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'));
+    const nextOpponentReq = httpMock.expectOne(
+      (r) => r.url.includes('/pokemon/') && !r.url.endsWith('/pikachu'),
+    );
     nextOpponentReq.flush({ name: 'newfoe', sprites: {}, stats: [] });
 
     const vm = await firstValueFrom(

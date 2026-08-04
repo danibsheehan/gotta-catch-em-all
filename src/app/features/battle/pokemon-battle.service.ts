@@ -19,7 +19,7 @@ export interface PokemonBattleVm {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonBattleService {
   readonly playerDetails$: Observable<Partial<Pokemon>>;

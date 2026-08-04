@@ -1,5 +1,13 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { PokemonDetailsComponent } from 'src/app/features/pokemon-display/pokemon-details/pokemon-details.component';
 import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
 
@@ -15,43 +23,45 @@ const REVEAL_DURATION = '480ms';
 const REVEAL_STAGGER = 72;
 
 @Component({
-    selector: 'app-pokemon-battle-result',
-    templateUrl: './pokemon-battle-result.component.html',
-    styleUrls: ['./pokemon-battle-result.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [PokemonDetailsComponent],
-    animations: [
-        trigger('battleResolving', [
-            transition(':enter', [
-                style({ opacity: 0, transform: 'translateY(1.25rem) scale(0.96)' }),
-                animate(`420ms ${EASE_OUT_BACK}`, style({ opacity: 1, transform: 'translateY(0) scale(1)' })),
+  selector: 'app-pokemon-battle-result',
+  templateUrl: './pokemon-battle-result.component.html',
+  styleUrls: ['./pokemon-battle-result.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [PokemonDetailsComponent],
+  animations: [
+    trigger('battleResolving', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(1.25rem) scale(0.96)' }),
+        animate(
+          `420ms ${EASE_OUT_BACK}`,
+          style({ opacity: 1, transform: 'translateY(0) scale(1)' }),
+        ),
+      ]),
+      transition(':leave', [
+        animate('240ms ease-in', style({ opacity: 0, transform: 'translateY(-1rem) scale(0.98)' })),
+      ]),
+    ]),
+    trigger('resultReveal', [
+      transition(':enter', [
+        query(
+          'header.battle-result-heading-block, app-pokemon-details, .battle-result-announce, .battle-flavor-strip, .battle-stats-row, .play-again',
+          [
+            style({ opacity: 0, transform: 'translateY(1.75rem) scale(0.94)' }),
+            stagger(REVEAL_STAGGER, [
+              animate(
+                `${REVEAL_DURATION} ${EASE_SPRING}`,
+                style({ opacity: 1, transform: 'translateY(0) scale(1)' }),
+              ),
             ]),
-            transition(':leave', [
-                animate('240ms ease-in', style({ opacity: 0, transform: 'translateY(-1rem) scale(0.98)' })),
-            ]),
-        ]),
-        trigger('resultReveal', [
-            transition(':enter', [
-                query(
-                    'header.battle-result-heading-block, app-pokemon-details, .battle-result-announce, .battle-flavor-strip, .battle-stats-row, .play-again',
-                    [
-                        style({ opacity: 0, transform: 'translateY(1.75rem) scale(0.94)' }),
-                        stagger(REVEAL_STAGGER, [
-                            animate(
-                                `${REVEAL_DURATION} ${EASE_SPRING}`,
-                                style({ opacity: 1, transform: 'translateY(0) scale(1)' }),
-                            ),
-                        ]),
-                    ],
-                    { optional: true },
-                ),
-            ]),
-        ]),
-    ],
+          ],
+          { optional: true },
+        ),
+      ]),
+    ]),
+  ],
 })
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
-
   @Input() pokemonChoice: Partial<Pokemon>;
   @Input() pokemonOpponent: Partial<Pokemon>;
 
@@ -88,8 +98,8 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
     private battle: PokemonBattleService,
     private battleHistory: BattleHistoryService,
     private audio: AudioService,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   playAgain(): void {
     this.battle.playAgain();
@@ -164,5 +174,4 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
     }
     return [...slots].sort((a, b) => a.slot - b.slot)[0]?.type?.name;
   }
-
 }

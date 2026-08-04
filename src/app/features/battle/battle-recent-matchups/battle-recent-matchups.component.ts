@@ -4,12 +4,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BattleHistoryEntry, BattleHistoryService } from '../battle-history.service';
 
 @Component({
-    selector: 'app-battle-recent-matchups',
-    templateUrl: './battle-recent-matchups.component.html',
-    styleUrls: ['./battle-recent-matchups.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [AsyncPipe],
+  selector: 'app-battle-recent-matchups',
+  templateUrl: './battle-recent-matchups.component.html',
+  styleUrls: ['./battle-recent-matchups.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe],
 })
 export class BattleRecentMatchupsComponent {
   readonly history$ = this.battleHistory.entries$;

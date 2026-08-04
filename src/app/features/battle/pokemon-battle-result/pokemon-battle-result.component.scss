@@ -1,350 +1,365 @@
 :host {
-    align-items: center;
-    contain: layout;
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
-    width: 100%;
+  align-items: center;
+  contain: layout;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  width: 100%;
 }
 
 .battle-result-section {
-    box-sizing: border-box;
-    max-width: 100%;
-    width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
 }
 
 .battle-flourish {
-    border-radius: var(--radius-md);
-    isolation: isolate;
-    overflow: visible;
-    position: relative;
-    width: 100%;
+  border-radius: var(--radius-md);
+  isolation: isolate;
+  overflow: visible;
+  position: relative;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .battle-flourish--win.battle-flourish--impact {
-        animation: battle-result-shake 0.58s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-    }
+  .battle-flourish--win.battle-flourish--impact {
+    animation: battle-result-shake 0.58s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
 }
 
 @keyframes battle-result-shake {
-    0% {
-        transform: translate(0, 0);
-    }
+  0% {
+    transform: translate(0, 0);
+  }
 
-    20% {
-        transform: translate(-3px, 1px) rotate(-0.25deg);
-    }
+  20% {
+    transform: translate(-3px, 1px) rotate(-0.25deg);
+  }
 
-    40% {
-        transform: translate(4px, -2px) rotate(0.3deg);
-    }
+  40% {
+    transform: translate(4px, -2px) rotate(0.3deg);
+  }
 
-    60% {
-        transform: translate(-2px, 2px) rotate(-0.2deg);
-    }
+  60% {
+    transform: translate(-2px, 2px) rotate(-0.2deg);
+  }
 
-    80% {
-        transform: translate(2px, -1px);
-    }
+  80% {
+    transform: translate(2px, -1px);
+  }
 
-    100% {
-        transform: translate(0, 0);
-    }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .battle-sparks {
-    inset: -12% -8% auto;
-    height: 55%;
-    min-height: 5.5rem;
-    pointer-events: none;
-    position: absolute;
-    z-index: 3;
+  inset: -12% -8% auto;
+  height: 55%;
+  min-height: 5.5rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 3;
 }
 
 .battle-sparks-svg {
-    display: block;
-    height: 100%;
-    width: 100%;
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .battle-sparks-burst .battle-spark {
-        animation: battle-spark-pop 0.85s ease-out forwards;
-        opacity: 0;
-        transform-origin: center;
-    }
+  .battle-sparks-burst .battle-spark {
+    animation: battle-spark-pop 0.85s ease-out forwards;
+    opacity: 0;
+    transform-origin: center;
+  }
 
-    .battle-spark--a {
-        animation-delay: 0.05s;
-    }
+  .battle-spark--a {
+    animation-delay: 0.05s;
+  }
 
-    .battle-spark--b {
-        animation-delay: 0.12s;
-    }
+  .battle-spark--b {
+    animation-delay: 0.12s;
+  }
 
-    .battle-spark--c {
-        animation-delay: 0.08s;
-    }
+  .battle-spark--c {
+    animation-delay: 0.08s;
+  }
 
-    .battle-spark--d {
-        animation-delay: 0.18s;
-    }
+  .battle-spark--d {
+    animation-delay: 0.18s;
+  }
 
-    .battle-spark--e {
-        animation-delay: 0.02s;
-    }
+  .battle-spark--e {
+    animation-delay: 0.02s;
+  }
 
-    .battle-spark--f {
-        animation-delay: 0.22s;
-    }
+  .battle-spark--f {
+    animation-delay: 0.22s;
+  }
 }
 
 @keyframes battle-spark-pop {
-    0% {
-        opacity: 0;
-        transform: scale(0.15) rotate(-18deg);
-    }
+  0% {
+    opacity: 0;
+    transform: scale(0.15) rotate(-18deg);
+  }
 
-    35% {
-        opacity: 1;
-    }
+  35% {
+    opacity: 1;
+  }
 
-    100% {
-        opacity: 0;
-        transform: scale(1.15) rotate(6deg);
-    }
+  100% {
+    opacity: 0;
+    transform: scale(1.15) rotate(6deg);
+  }
 }
 
 .battle-flourish::before {
-    content: "";
-    inset: -45%;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    z-index: 0;
+  content: '';
+  inset: -45%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .battle-flourish--win::before {
-        animation: battle-flourish-win 1.05s ease-out forwards;
-        background:
-            radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--accent-primary) 55%, transparent) 0%, transparent 52%),
-            radial-gradient(circle at 22% 78%, color-mix(in srgb, var(--accent-mint) 45%, transparent) 0%, transparent 48%),
-            radial-gradient(circle at 82% 72%, color-mix(in srgb, var(--accent-pink) 35%, transparent) 0%, transparent 45%);
-    }
+  .battle-flourish--win::before {
+    animation: battle-flourish-win 1.05s ease-out forwards;
+    background:
+      radial-gradient(
+        circle at 50% 18%,
+        color-mix(in srgb, var(--accent-primary) 55%, transparent) 0%,
+        transparent 52%
+      ),
+      radial-gradient(
+        circle at 22% 78%,
+        color-mix(in srgb, var(--accent-mint) 45%, transparent) 0%,
+        transparent 48%
+      ),
+      radial-gradient(
+        circle at 82% 72%,
+        color-mix(in srgb, var(--accent-pink) 35%, transparent) 0%,
+        transparent 45%
+      );
+  }
 
-    .battle-flourish--lose::before {
-        animation: battle-flourish-lose 0.88s ease-out forwards;
-        background: radial-gradient(
-            circle at 50% 42%,
-            color-mix(in srgb, var(--accent-lilac-deep) 18%, transparent) 0%,
-            transparent 58%
-        );
-    }
+  .battle-flourish--lose::before {
+    animation: battle-flourish-lose 0.88s ease-out forwards;
+    background: radial-gradient(
+      circle at 50% 42%,
+      color-mix(in srgb, var(--accent-lilac-deep) 18%, transparent) 0%,
+      transparent 58%
+    );
+  }
 }
 
 @keyframes battle-flourish-win {
-    0% {
-        opacity: 0;
-        transform: scale(0.82);
-    }
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
 
-    40% {
-        opacity: 1;
-    }
+  40% {
+    opacity: 1;
+  }
 
-    100% {
-        opacity: 0;
-        transform: scale(1);
-    }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 
 @keyframes battle-flourish-lose {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    35% {
-        opacity: 1;
-    }
+  35% {
+    opacity: 1;
+  }
 
-    100% {
-        opacity: 0;
-    }
+  100% {
+    opacity: 0;
+  }
 }
 
 .battle-result-body {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
-    z-index: 1;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  z-index: 1;
 }
 
 .battle-result-heading {
-    color: var(--text-battle-heading);
-    font-family: var(--font-display);
-    font-size: var(--text-title);
-    font-weight: 700;
-    margin: 0;
-    text-shadow: var(--battle-heading-sticker-shadow);
+  color: var(--text-battle-heading);
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 700;
+  margin: 0;
+  text-shadow: var(--battle-heading-sticker-shadow);
 }
 
 .battle-resolving {
-    color: var(--text-battle-heading);
-    font-style: normal;
-    font-weight: 600;
-    margin: var(--space-2) 0 0;
+  color: var(--text-battle-heading);
+  font-style: normal;
+  font-weight: 600;
+  margin: var(--space-2) 0 0;
 }
 
 .battle-stats {
-    background: linear-gradient(145deg, var(--surface-muted) 0%, var(--surface-wash-mint) 100%);
-    border: 2px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    box-sizing: border-box;
-    display: grid;
-    gap: var(--space-3);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: var(--space-4) auto 0;
-    max-width: 100%;
-    padding: var(--space-4);
-    text-align: left;
-    width: 100%;
+  background: linear-gradient(145deg, var(--surface-muted) 0%, var(--surface-wash-mint) 100%);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: var(--space-4) auto 0;
+  max-width: 100%;
+  padding: var(--space-4);
+  text-align: left;
+  width: 100%;
 }
 
 .battle-stats-row {
-    border-radius: var(--radius-sm);
-    margin: 0;
-    min-width: 0;
-    padding: var(--space-2);
-    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  min-width: 0;
+  padding: var(--space-2);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .battle-stats-row--winner {
-        animation: battle-stat-win-pop 0.72s cubic-bezier(0.34, 1.45, 0.64, 1) 0.15s both;
-        background: color-mix(in srgb, var(--accent-primary) 22%, var(--surface-elevated));
-        box-shadow:
-            0 0 0 2px color-mix(in srgb, var(--arcade-neon) 55%, transparent),
-            0 6px 14px rgba(111, 60, 255, 0.12);
-    }
+  .battle-stats-row--winner {
+    animation: battle-stat-win-pop 0.72s cubic-bezier(0.34, 1.45, 0.64, 1) 0.15s both;
+    background: color-mix(in srgb, var(--accent-primary) 22%, var(--surface-elevated));
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--arcade-neon) 55%, transparent),
+      0 6px 14px rgba(111, 60, 255, 0.12);
+  }
 }
 
 @keyframes battle-stat-win-pop {
-    0% {
-        filter: brightness(1);
-        transform: scale(1);
-    }
+  0% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
 
-    45% {
-        filter: brightness(1.12);
-        transform: scale(1.06);
-    }
+  45% {
+    filter: brightness(1.12);
+    transform: scale(1.06);
+  }
 
-    100% {
-        filter: brightness(1);
-        transform: scale(1);
-    }
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
 }
 
 .battle-stats dt {
-    margin: 0;
+  margin: 0;
 }
 
 .battle-stats-label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin: 0 0 var(--space-2);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
 }
 
 .battle-stats dd {
-    color: var(--text-primary);
-    font-size: var(--text-stat);
-    font-weight: 700;
-    margin: 0;
+  color: var(--text-primary);
+  font-size: var(--text-stat);
+  font-weight: 700;
+  margin: 0;
 }
 
 .battle-result-announce {
-    margin: var(--space-4) 0 0;
+  margin: var(--space-4) 0 0;
 }
 
 .battle-result-message {
-    border-left: 5px solid var(--accent-pink);
-    color: var(--text-primary);
-    font-size: var(--text-stat);
-    font-style: italic;
-    font-weight: 600;
-    line-height: 1.4;
-    margin: 0;
-    padding-left: var(--space-4);
-    text-align: left;
+  border-left: 5px solid var(--accent-pink);
+  color: var(--text-primary);
+  font-size: var(--text-stat);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  padding-left: var(--space-4);
+  text-align: left;
 }
 
 .battle-flavor-strip {
-    box-sizing: border-box;
-    margin: var(--space-4) 0 0;
-    max-width: 100%;
-    padding: 0 var(--space-1);
-    position: relative;
-    text-align: left;
-    width: 100%;
+  box-sizing: border-box;
+  margin: var(--space-4) 0 0;
+  max-width: 100%;
+  padding: 0 var(--space-1);
+  position: relative;
+  text-align: left;
+  width: 100%;
 }
 
 .battle-flavor-strip::before {
-    background: repeating-linear-gradient(
-        -88deg,
-        transparent,
-        transparent 3px,
-        rgba(40, 30, 60, 0.06) 3px,
-        rgba(40, 30, 60, 0.06) 4px
-    );
-    border-left: 3px solid color-mix(in srgb, var(--accent-lilac-deep) 35%, var(--border-outline));
-    border-radius: 2px;
-    content: "";
-    height: calc(100% + 6px);
-    left: -2px;
-    opacity: 0.85;
-    pointer-events: none;
-    position: absolute;
-    top: -3px;
-    width: 14px;
-    z-index: 0;
+  background: repeating-linear-gradient(
+    -88deg,
+    transparent,
+    transparent 3px,
+    rgba(40, 30, 60, 0.06) 3px,
+    rgba(40, 30, 60, 0.06) 4px
+  );
+  border-left: 3px solid color-mix(in srgb, var(--accent-lilac-deep) 35%, var(--border-outline));
+  border-radius: 2px;
+  content: '';
+  height: calc(100% + 6px);
+  left: -2px;
+  opacity: 0.85;
+  pointer-events: none;
+  position: absolute;
+  top: -3px;
+  width: 14px;
+  z-index: 0;
 }
 
 .battle-type-hint-tape,
 .battle-session-quip {
-    margin: 0;
-    padding-left: var(--space-5);
-    position: relative;
-    z-index: 1;
+  margin: 0;
+  padding-left: var(--space-5);
+  position: relative;
+  z-index: 1;
 }
 
 .battle-type-hint-tape {
-    background: color-mix(in srgb, var(--accent-primary) 18%, var(--surface-elevated));
-    border: 2px dashed color-mix(in srgb, var(--border-subtle) 70%, var(--border-outline));
-    border-radius: var(--radius-sm);
-    box-shadow: 2px 3px 0 rgba(20, 20, 20, 0.08);
-    color: var(--text-secondary);
-    font-size: 0.82rem;
-    font-weight: 600;
-    line-height: 1.45;
-    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-    transform: rotate(-0.4deg);
+  background: color-mix(in srgb, var(--accent-primary) 18%, var(--surface-elevated));
+  border: 2px dashed color-mix(in srgb, var(--border-subtle) 70%, var(--border-outline));
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 3px 0 rgba(20, 20, 20, 0.08);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  transform: rotate(-0.4deg);
 }
 
 .battle-session-quip {
-    color: color-mix(in srgb, var(--accent-lilac-deep) 75%, var(--text-secondary));
-    font-family: var(--font-chrome);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    line-height: 1.35;
-    margin-top: var(--space-3);
-    text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent-lilac-deep) 75%, var(--text-secondary));
+  font-family: var(--font-chrome);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  margin-top: var(--space-3);
+  text-transform: uppercase;
 }
 
 .play-again {
-    margin-top: var(--space-5);
+  margin-top: var(--space-5);
 }
