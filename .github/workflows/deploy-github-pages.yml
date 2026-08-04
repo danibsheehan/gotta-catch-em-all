@@ -24,47 +24,58 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
+  # Trust boundary: only consume the Test artifact from the triggering main run.
+  # Extract under runner.temp so artifact contents cannot overwrite the workspace.
+  publish-from-test:
     if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.event == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Download Pages site from Test
-        if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: github-pages-site
-          path: site
+          path: ${{ runner.temp }}/github-pages-site
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Checkout (manual deploy)
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: ${{ runner.temp }}/github-pages-site
 
-      - name: Setup Node (manual deploy)
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
+
+  # Separate job: manual rebuild never mixes with downloaded artifacts.
+  publish-manual:
+    if: github.event_name == 'workflow_dispatch'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Install and build (manual deploy)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Install and build
         run: |
           npm ci
           npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
           touch dist/gotta-catch-em-all/browser/.nojekyll
-          mkdir -p site
-          cp -R dist/gotta-catch-em-all/browser/. site/
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
-          path: site
+          path: dist/gotta-catch-em-all/browser
 
       - id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
