@@ -1,5 +1,6 @@
-# Runs unit tests with coverage on pushes to main and on pull requests.
-# On pull requests from the same repository, posts an updated coverage comment.
+# Quality gates on pushes to main and on pull requests: format, lint, unit tests
+# with coverage, and production build. On pull requests from the same repository,
+# posts an updated coverage comment.
 
 name: Test
 
@@ -31,6 +32,21 @@ jobs:
 
       - name: Check Prettier formatting
         run: npm run format:check
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: ESLint
+        run: npm run lint
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -65,3 +81,18 @@ jobs:
           lcov-file: coverage/gotta-catch-em-all/lcov.info
           delete-old-comments: true
           title: '## Test coverage'
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Production build
+        run: npm run build
