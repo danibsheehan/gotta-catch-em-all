@@ -43,11 +43,13 @@ describe('AppComponent', () => {
     };
     pokemonOpponentSpy.pickRandomOpponentId.mockReturnValue(25);
     pokemonOpponentSpy.defaultFrontSpriteUrl.mockReturnValue('https://sprites.example/25.png');
-    pokemonOpponentSpy.getPokemonById.mockReturnValue(of({
-      name: 'pikachu',
-      sprites: { front_default: 'image' },
-      stats: [],
-    } as any));
+    pokemonOpponentSpy.getPokemonById.mockReturnValue(
+      of({
+        name: 'pikachu',
+        sprites: { front_default: 'image' },
+        stats: [],
+      } as any),
+    );
 
     TestBed.configureTestingModule({
       imports: [AppComponent],

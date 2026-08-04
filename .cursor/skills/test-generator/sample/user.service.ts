@@ -16,9 +16,9 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl).pipe(
-      catchError(err => throwError(() => new Error('Failed to load users')))
-    );
+    return this.http
+      .get<User[]>(this.apiUrl)
+      .pipe(catchError((err) => throwError(() => new Error('Failed to load users'))));
   }
 
   getUserById(id: number): Observable<User> {

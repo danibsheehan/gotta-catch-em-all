@@ -18,6 +18,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check Prettier formatting
+        run: npm run format:check
+
   unit-tests:
     runs-on: ubuntu-latest
     steps:
@@ -47,4 +62,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: coverage/gotta-catch-em-all/lcov.info
           delete-old-comments: true
-          title: "## Test coverage"
+          title: '## Test coverage'

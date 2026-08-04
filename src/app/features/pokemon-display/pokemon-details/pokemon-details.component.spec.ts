@@ -9,14 +9,13 @@ describe('PokemonDetailsComponent', () => {
   const pokemonStub: Pokemon = {
     name: 'pikachu',
     sprites: { front_default: 'https://example.com/pikachu.png' },
-    stats: []
+    stats: [],
   };
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [PokemonDetailsComponent],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -55,7 +54,7 @@ describe('PokemonDetailsComponent', () => {
     fixture.componentRef.setInput('pokemonDetails', {
       name: 'ditto',
       sprites: {} as any,
-      stats: []
+      stats: [],
     });
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;

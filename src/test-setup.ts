@@ -9,10 +9,7 @@ class IntersectionObserverStub {
   readonly rootMargin = '';
   readonly thresholds: ReadonlyArray<number> = [];
 
-  constructor(
-    _callback: IntersectionObserverCallback,
-    _options?: IntersectionObserverInit,
-  ) {}
+  constructor(_callback: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
 
   observe(): void {}
   unobserve(): void {}
@@ -23,7 +20,8 @@ class IntersectionObserverStub {
 }
 
 if (typeof globalThis.IntersectionObserver === 'undefined') {
-  globalThis.IntersectionObserver = IntersectionObserverStub as unknown as typeof IntersectionObserver;
+  globalThis.IntersectionObserver =
+    IntersectionObserverStub as unknown as typeof IntersectionObserver;
 }
 
 if (typeof HTMLElement !== 'undefined' && !HTMLElement.prototype.scrollIntoView) {

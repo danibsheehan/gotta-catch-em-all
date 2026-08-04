@@ -8,11 +8,10 @@ export const environment = {
     /** PokeAPI v2 root (no trailing slash). */
     baseUrl: 'https://pokeapi.co/api/v2',
     /** Front sprite PNGs by national dex id: `{baseUrl}/{id}.png` */
-    frontSpriteBaseUrl:
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon'
+    frontSpriteBaseUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon',
   },
   /** Upper bound for `GET /pokemon/{id}` when picking a random opponent (PokeAPI dex size). */
-  maxPokemonSpeciesId: 964
+  maxPokemonSpeciesId: 964,
 };
 
 /*

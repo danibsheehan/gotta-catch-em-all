@@ -7,7 +7,7 @@ import { PokemonBrief } from 'src/app/shared/models/pokemon';
 import { PokemonTypeList } from 'src/app/shared/models/pokemon-type-list';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonCatalogService {
   private pokemonTypesRequest$?: Observable<PokemonTypeList>;
@@ -26,7 +26,7 @@ export class PokemonCatalogService {
     if (!this.pokemonByTypeRequests[typeName]) {
       this.pokemonByTypeRequests[typeName] = this.pokeApi.getTypeDetail(typeName).pipe(
         map((typeDetails) => typeDetails.pokemon.map((entry) => entry.pokemon)),
-        shareReplay(1)
+        shareReplay(1),
       );
     }
     return this.pokemonByTypeRequests[typeName];

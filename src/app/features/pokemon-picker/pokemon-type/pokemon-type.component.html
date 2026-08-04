@@ -8,7 +8,8 @@
   [attr.aria-expanded]="isOpen"
   [attr.aria-controls]="'type-panel-' + pokemonType.name"
   [attr.title]="typeHasNoPokemon ? 'no pokémon of this type in the dex' : null"
-  (click)="toggleTypeDropdown()">
+  (click)="toggleTypeDropdown()"
+>
   <span class="pokemon-type-button-inner">
     <span class="pokemon-type-icon" aria-hidden="true">{{ typeGlyph }}</span>
     <span class="pokemon-type-label">{{ pokemonType.name }}</span>
@@ -20,7 +21,8 @@
     class="pokemon-type-dropdown-container"
     [id]="'type-panel-' + pokemonType.name"
     role="region"
-    [attr.aria-labelledby]="'type-btn-' + pokemonType.name">
+    [attr.aria-labelledby]="'type-btn-' + pokemonType.name"
+  >
     @if (isLoadingPokemonNames) {
       <span class="pokemon-type-loading" role="status" aria-busy="true">✨ loading names…</span>
     }
@@ -32,7 +34,8 @@
         #pokemonSelect
         class="pokemon-type-dropdown"
         [attr.aria-label]="'choose a ' + pokemonType.name + ' pokémon'"
-        (change)="selectPokemon($any($event.target).value)">
+        (change)="selectPokemon($any($event.target).value)"
+      >
         <option value="">choose a pokémon</option>
         @for (pokemonName of pokemonNames; track pokemonName) {
           <option [value]="pokemonName">{{ pokemonName }}</option>

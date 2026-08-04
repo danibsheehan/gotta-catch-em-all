@@ -11,12 +11,12 @@ Produces clear, consistent documentation for JS/TS and Go. Covers **README files
 
 ## Step 1: Classify the request
 
-| Request | Doc type |
-| --- | --- |
-| "Write a README", "document this repo" | README |
-| "Document this function/class", "add JSDoc/GoDoc" | API docs |
-| "Add comments", "explain this inline" | Inline comments |
-| Mixed / ambiguous | Ask, or default to README + API docs |
+| Request                                           | Doc type                             |
+| ------------------------------------------------- | ------------------------------------ |
+| "Write a README", "document this repo"            | README                               |
+| "Document this function/class", "add JSDoc/GoDoc" | API docs                             |
+| "Add comments", "explain this inline"             | Inline comments                      |
+| Mixed / ambiguous                                 | Ask, or default to README + API docs |
 
 ---
 
@@ -53,3 +53,4 @@ Follow those guides for structure and tone.
 
 - Root **`README.md`** is the stylized **source map** for folders, services, scripts, and deploy — prefer aligning new prose with its tables/sections when documenting the app.
 - Changing **`:root`** values in **`src/styles/_tokens.scss`**: also update the README palette table (see “Extra palette rows”) and **`docs/readme-ui-palette.svg`** so badges, docs, and UI stay consistent.
+- Run **`npm run format`** (or `format:check`) on edited Markdown/docs so Prettier stays green — CI enforces it.

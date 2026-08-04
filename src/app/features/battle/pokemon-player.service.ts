@@ -5,8 +5,7 @@ import { catchError, finalize, map, switchMap } from 'rxjs/operators';
 import { PokeApiClient } from 'src/app/core/api/poke-api.client';
 import { Pokemon } from 'src/app/shared/models/pokemon';
 
-const PLAYER_DETAILS_ERROR =
-  "couldn't load that pokémon — try another? 🔄";
+const PLAYER_DETAILS_ERROR = "couldn't load that pokémon — try another? 🔄";
 
 interface PlayerFetchSnapshot {
   details: Partial<Pokemon>;
@@ -14,7 +13,7 @@ interface PlayerFetchSnapshot {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonPlayerService {
   /** Latest successful or failed fetch; mirrors the streams below for imperative reads/tests. */
@@ -43,9 +42,7 @@ export class PokemonPlayerService {
 
   private bindSelectionToState(): void {
     this.selectedPokemonName$
-      .pipe(
-        switchMap((name) => this.snapshotForSelection(name)),
-      )
+      .pipe(switchMap((name) => this.snapshotForSelection(name)))
       .subscribe(({ details, error }) => {
         this.playerDetailsLoading.next(false);
         this.pokemonDetails.next(details);

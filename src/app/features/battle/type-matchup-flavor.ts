@@ -68,7 +68,10 @@ const SESSION_QUIPS = [
 ] as const;
 
 /** Deterministic quip from names so it doesn’t flicker on re-render. */
-export function sessionBattleQuip(playerName: string | undefined, opponentName: string | undefined): string {
+export function sessionBattleQuip(
+  playerName: string | undefined,
+  opponentName: string | undefined,
+): string {
   const s = `${playerName ?? ''}:${opponentName ?? ''}`;
   let h = 0;
   for (let i = 0; i < s.length; i++) {

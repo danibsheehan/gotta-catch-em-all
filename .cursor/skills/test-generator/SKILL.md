@@ -34,13 +34,14 @@ Generate thorough, idiomatic Vitest unit tests for Angular and plain TypeScript 
 ## Spec File Conventions
 
 ### Naming
-| Source file | Spec file |
-|---|---|
+
+| Source file        | Spec file               |
+| ------------------ | ----------------------- |
 | `foo.component.ts` | `foo.component.spec.ts` |
-| `foo.service.ts` | `foo.service.spec.ts` |
-| `foo.pipe.ts` | `foo.pipe.spec.ts` |
+| `foo.service.ts`   | `foo.service.spec.ts`   |
+| `foo.pipe.ts`      | `foo.pipe.spec.ts`      |
 | `foo.directive.ts` | `foo.directive.spec.ts` |
-| `foo.ts` | `foo.spec.ts` |
+| `foo.ts`           | `foo.spec.ts`           |
 
 Place the spec file **next to** the source file unless the user specifies otherwise.
 
@@ -87,6 +88,7 @@ describe('ClassName', () => {
 ### Angular-Specific Patterns
 
 **Component with template:**
+
 ```typescript
 fixture = TestBed.createComponent(MyComponent);
 component = fixture.componentInstance;
@@ -94,15 +96,17 @@ fixture.detectChanges(); // triggers ngOnInit
 ```
 
 **Mocking a service:**
+
 ```typescript
 const myServiceSpy = {
   getData: vi.fn(),
   save: vi.fn(),
 };
-providers: [{ provide: MyService, useValue: myServiceSpy }]
+providers: [{ provide: MyService, useValue: myServiceSpy }];
 ```
 
 **Testing Observables:**
+
 ```typescript
 it('should emit value', async () => {
   const result = await firstValueFrom(component.value$);
@@ -111,14 +115,16 @@ it('should emit value', async () => {
 ```
 
 **Testing @Input / @Output:**
+
 ```typescript
 component.myInput = 'test';
 fixture.detectChanges();
-component.myOutput.subscribe(val => expect(val).toBe('expected'));
+component.myOutput.subscribe((val) => expect(val).toBe('expected'));
 component.triggerAction();
 ```
 
 **Testing Router navigation:**
+
 ```typescript
 const router = TestBed.inject(Router);
 const spy = vi.spyOn(router, 'navigate');
@@ -127,9 +133,10 @@ expect(spy).toHaveBeenCalledWith(['/expected-path']);
 ```
 
 **HTTP service tests:**
+
 ```typescript
 it('should GET data', () => {
-  service.fetchData().subscribe(data => expect(data).toEqual(mockData));
+  service.fetchData().subscribe((data) => expect(data).toEqual(mockData));
   const req = httpMock.expectOne('/api/data');
   expect(req.request.method).toBe('GET');
   req.flush(mockData);
@@ -141,6 +148,7 @@ it('should GET data', () => {
 ## Test Coverage Checklist
 
 Make sure to cover:
+
 - [ ] Creation / instantiation
 - [ ] Each public method — happy path
 - [ ] Each public method — edge cases (null, empty, boundary)
@@ -179,3 +187,4 @@ Make sure to cover:
 ## This repo (`gotta-catch-em-all`)
 
 - Run **`npm run test:ci`** for a single Vitest pass with coverage (CI parity); **`npm test`** is watch mode.
+- Format new/edited specs with Prettier (match **`.prettierrc.json`**; `npm run format` / `format:check`) before finishing.

@@ -12,7 +12,7 @@ export interface PokeApiTypeDetailResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokeApiClient {
   constructor(private http: HttpClient) {}
@@ -28,13 +28,13 @@ export class PokeApiClient {
 
   getTypeDetail(typeName: string): Observable<PokeApiTypeDetailResponse> {
     return this.http.get<PokeApiTypeDetailResponse>(
-      `${environment.pokeApi.baseUrl}/type/${PokeApiClient.encodePathSegment(typeName)}`
+      `${environment.pokeApi.baseUrl}/type/${PokeApiClient.encodePathSegment(typeName)}`,
     );
   }
 
   getPokemon(nameOrId: string | number): Observable<Pokemon> {
     return this.http.get<Pokemon>(
-      `${environment.pokeApi.baseUrl}/pokemon/${PokeApiClient.encodePathSegment(nameOrId)}`
+      `${environment.pokeApi.baseUrl}/pokemon/${PokeApiClient.encodePathSegment(nameOrId)}`,
     );
   }
 }
