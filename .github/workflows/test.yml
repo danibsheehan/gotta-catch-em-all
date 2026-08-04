@@ -1,6 +1,6 @@
-# Quality gates on pushes to main and on pull requests: format, lint, unit tests
-# with coverage, and production build. On pull requests from the same repository,
-# posts an updated coverage comment.
+# Quality gates on pushes to main and on pull requests: format, lint, npm audit,
+# unit tests with coverage, and production build. On pull requests from the same
+# repository, posts an updated coverage comment.
 
 name: Test
 
@@ -47,6 +47,21 @@ jobs:
 
       - name: ESLint
         run: npm run lint
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: npm audit (high+)
+        run: npm audit --audit-level=high
 
   unit-tests:
     runs-on: ubuntu-latest
