@@ -1,7 +1,7 @@
 # Quality gates on pushes to main and on pull requests: format, lint, npm audit,
 # and a Pages-ready production build in one job (single npm ci); unit tests stay separate for
-# Chrome. On pull requests from the same repository, posts an updated coverage
-# comment.
+# Chrome. Skips draft pull requests. On same-repository PRs, posts an updated
+# coverage comment.
 
 name: Test
 
@@ -22,6 +22,7 @@ concurrency:
 jobs:
   quality:
     name: quality
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -59,6 +60,7 @@ jobs:
           retention-days: 2
 
   unit-tests:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
