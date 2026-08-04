@@ -194,6 +194,24 @@ npm run build:github-pages
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
+## ★ CI · SHIP GATE — **what GitHub Actions runs**
+
+Pushes to **`main`** and pull requests run the **Test** workflow:
+
+| JOB              | COMMAND / CHECK                                         |
+| :--------------- | :------------------------------------------------------ |
+| **`format`**     | `npm run format:check`                                  |
+| **`lint`**       | `npm run lint`                                          |
+| **`audit`**      | `npm audit --audit-level=high`                          |
+| **`unit-tests`** | `npm run test:ci` (+ coverage comment on same-repo PRs) |
+| **`build`**      | `npm run build`                                         |
+
+**GitHub Pages** (`.github/workflows/deploy-github-pages.yml`) deploys only after **Test** succeeds on `main` (`workflow_run`), or via manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
+
+```
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
 ## ★ SCRIPTS — **npm, decoded**
 
 | SCRIPT                       | WHAT IT DOES                                                    |
