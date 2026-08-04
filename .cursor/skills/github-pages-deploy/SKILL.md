@@ -13,21 +13,20 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 ## Local vs CI
 
 - **package.json** script: `build:github-pages` uses `--base-href /gotta-catch-em-all/` (matches this repo name).
-- **CI** (`.github/workflows/deploy-github-pages.yml`) builds with:
+- **Test** (`.github/workflows/test.yml` → `quality`) builds with:
   `npx ng build --configuration production --base-href /${{ github.event.repository.name }}/`
   so the segment stays correct if the repo is renamed—then update the **npm script** to match.
+- On **`push` to `main`**, Test uploads artifact **`github-pages-site`** (`dist/.../browser` + `.nojekyll`).
 
 ## Workflow responsibilities
 
-- **Trigger:** runs after the **Test** workflow completes successfully on `main` (`workflow_run`), or via manual **`workflow_dispatch`**. Do not deploy on bare `push` to `main` — wait for green quality gates.
-- On `workflow_run`, check out **`github.event.workflow_run.head_sha`** so the Pages build matches the commit Test validated.
-- **Build output:** `dist/gotta-catch-em-all/browser` (application builder output).
-- After build: **`touch dist/gotta-catch-em-all/browser/.nojekyll`** so GitHub Pages does not run Jekyll on static assets.
-- **Artifact path** for `upload-pages-artifact` is that `browser` folder.
-- **Deploy** uses `deploy-pages` after the build job; requires repo **Settings → Pages → Source: GitHub Actions**.
+- **Deploy** (`.github/workflows/deploy-github-pages.yml`) runs after **Test** succeeds on `main` (`workflow_run`), or via manual **`workflow_dispatch`**.
+- On `workflow_run`, **download** `github-pages-site` from the Test run (`run-id`) and publish—**do not rebuild** the SPA.
+- On **`workflow_dispatch`**, Deploy may rebuild with the same base-href (no Test artifact).
+- **`upload-pages-artifact`** path is the downloaded/built `site` folder; **`deploy-pages`** follows. Requires repo **Settings → Pages → Source: GitHub Actions**.
 
 ## When to edit the workflow
 
 - Change Node version, install steps, or base-href strategy.
-- Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch` and `upload-pages-artifact`.
-- Change when deploy is allowed (Test gate / manual dispatch).
+- Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch`, artifact upload, and Deploy.
+- Change when deploy is allowed (Test gate / manual dispatch) or artifact name/retention.
