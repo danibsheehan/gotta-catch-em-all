@@ -53,3 +53,4 @@ Follow those guides for structure and tone.
 
 - Root **`README.md`** is the stylized **source map** for folders, services, scripts, and deploy — prefer aligning new prose with its tables/sections when documenting the app.
 - Changing **`:root`** values in **`src/styles/_tokens.scss`**: also update the README palette table (see “Extra palette rows”) and **`docs/readme-ui-palette.svg`** so badges, docs, and UI stay consistent.
+- Run **`npm run format`** (or `format:check`) on edited Markdown/docs so Prettier stays green — CI enforces it.

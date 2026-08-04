@@ -1,6 +1,6 @@
 ---
 name: definition-of-done
-description: Verifies gotta-catch-em-all changes by running lint, tests, and production build. Use after substantive edits to TypeScript, templates, styles, or config, or when the user asks to validate or finish a task.
+description: Verifies gotta-catch-em-all changes by running Prettier check, lint, tests, and production build. Use after substantive edits to TypeScript, templates, styles, or config, or when the user asks to validate or finish a task.
 ---
 
 # Definition of done (gotta-catch-em-all)
@@ -9,11 +9,12 @@ description: Verifies gotta-catch-em-all changes by running lint, tests, and pro
 
 After **substantive** edits (features, services, components, tests, `angular.json`, environments, workflows), run these from the repo root in order:
 
-1. `npm run lint`
-2. `npm run test:ci`
-3. `npm run build`
+1. `npm run format:check` — if it fails, run `npm run format`, then re-check
+2. `npm run lint`
+3. `npm run test:ci`
+4. `npm run build`
 
-Fix failures before considering the task complete.
+Fix failures before considering the task complete. Formatting must match **`.prettierrc.json`** (see project conventions).
 
 ## When to also run GitHub Pages build
 

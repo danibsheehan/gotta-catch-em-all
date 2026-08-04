@@ -187,3 +187,4 @@ Make sure to cover:
 ## This repo (`gotta-catch-em-all`)
 
 - Run **`npm run test:ci`** for a single Vitest pass with coverage (CI parity); **`npm test`** is watch mode.
+- Format new/edited specs with Prettier (match **`.prettierrc.json`**; `npm run format` / `format:check`) before finishing.

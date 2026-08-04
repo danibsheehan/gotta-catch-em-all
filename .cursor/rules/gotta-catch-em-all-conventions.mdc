@@ -1,5 +1,5 @@
 ---
-description: Angular app layout, API boundaries, battle rules, audio, history, and styling tokens for gotta-catch-em-all
+description: Angular app layout, API boundaries, battle rules, audio, history, styling tokens, and Prettier formatting for gotta-catch-em-all
 alwaysApply: true
 ---
 
@@ -11,6 +11,13 @@ alwaysApply: true
 - **`@angular/platform-browser/animations`**: `provideAnimations()` vs `provideNoopAnimations()` based on **`prefers-reduced-motion`** (reduced motion → noop).
 - New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
 - Type-picker region: **`@defer`** in the app shell so battle chrome can paint first (viewport + idle prefetch) — preserve that pattern when changing `AppComponent`.
+
+## Formatting (Prettier)
+
+- **Prettier is required.** Match **`.prettierrc.json`** — do not hand-format against a different style, and do not reintroduce formatting rules that fight Prettier in ESLint.
+- Defaults that matter for this repo: **single quotes**, **trailing commas (`all`)**, **`printWidth` 100**, **2-space** indent, **LF** endings (aligned with `.editorconfig`).
+- After editing TS / HTML / SCSS / JSON / Markdown / YAML (or when finishing a substantive change), run **`npm run format`** on touched files or the repo, then confirm with **`npm run format:check`**. CI enforces `format:check`.
+- Respect **`.prettierignore`** (`dist`, `coverage`, `node_modules`, `package-lock.json`, `.angular`, generated SVG docs). Do not format ignored paths into the tree.
 
 ## Where code belongs
 

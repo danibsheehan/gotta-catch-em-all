@@ -215,10 +215,11 @@ npm run build:github-pages
 
 ## ★ CURSOR — **optional <code>.cursor</code> helpers**
 
-| PATH                                               | PURPOSE                                                                           |
-| :------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles).              |
-| `.cursor/skills/*/`                                | Skills: definition-of-done, GitHub Pages, PokeAPI/RxJS, Vitest tests, doc writer. |
+| PATH                                               | PURPOSE                                                                                               |
+| :------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
+| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles, **Prettier**).                    |
+| `.cursor/skills/*/`                                | Skills: definition-of-done (includes `format:check`), GitHub Pages, PokeAPI/RxJS, Vitest, doc writer. |
+| `.prettierrc.json` / `.prettierignore`             | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.     |
 
 ```
 ██████████████████████████████████████████████████████████████████████████████
