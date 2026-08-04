@@ -1,6 +1,7 @@
 # Quality gates on pushes to main and on pull requests: format, lint, npm audit,
-# unit tests with coverage, and production build. On pull requests from the same
-# repository, posts an updated coverage comment.
+# and production build in one job (single npm ci); unit tests stay separate for
+# Chrome. On pull requests from the same repository, posts an updated coverage
+# comment.
 
 name: Test
 
@@ -19,7 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
+  quality:
+    name: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -34,35 +36,14 @@ jobs:
       - name: Check Prettier formatting
         run: npm run format:check
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - run: npm ci
-
       - name: ESLint
         run: npm run lint
 
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - run: npm ci
-
       - name: npm audit (high+)
         run: npm audit --audit-level=high
+
+      - name: Production build
+        run: npm run build
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -97,18 +78,3 @@ jobs:
           lcov-file: coverage/gotta-catch-em-all/lcov.info
           delete-old-comments: true
           title: '## Test coverage'
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - run: npm ci
-
-      - name: Production build
-        run: npm run build
