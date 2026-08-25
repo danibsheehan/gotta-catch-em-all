@@ -211,6 +211,33 @@ Docs / `.cursor` / README-only PRs keep a light format path so required checks s
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
+## ★ AUTOMATION — **what runs on its own**
+
+**In plain English:** nothing in this repo merges or opens a PR by itself. CodeQL scans on its
+own schedule, but every Dependabot bump still gets a human review before it merges.
+
+- **CodeQL** ([`codeql.yml`](.github/workflows/codeql.yml)) — scans the Angular/TypeScript app on
+  push to `main`, on every PR, and weekly (Monday), flagging known vulnerability patterns. No
+  auto-merge, no LLM — plain GitHub code scanning.
+- **Dependabot auto-merge** — not configured here yet. `.github/dependabot.yml` groups npm
+  minor/patch bumps and opens ungrouped GitHub Actions bumps weekly; all of them are reviewed and
+  merged by hand.
+- **`dependabot-triage` skill** — not ported to this repo yet either; the Dependabot backlog here
+  is small enough to review directly.
+- **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
+  [`danibsheehan/portfolio-automation`](https://github.com/danibsheehan/portfolio-automation)'s
+  [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.cursor/skills/weekly-project-update/SKILL.md)
+  skill, reads this repo once a week (never writes to it) and — only when there's something
+  people-relevant to report — opens a PR against
+  [danibsheehan.github.io](https://github.com/danibsheehan/danibsheehan.github.io) updating this
+  project's page. See
+  [`portfolio-automation`'s README](https://github.com/danibsheehan/portfolio-automation#autonomy-boundary)
+  for the full autonomy boundary (it opens, never merges).
+
+```
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
 ## ★ SCRIPTS — **npm, decoded**
 
 | SCRIPT                       | WHAT IT DOES                                                    |
