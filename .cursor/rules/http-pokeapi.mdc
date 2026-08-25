@@ -1,0 +1,18 @@
+---
+description: PokeAPI HTTP client boundary, caching, and URL/path-segment conventions
+globs:
+  - src/app/core/api/**
+  - src/app/features/pokemon-picker/**
+alwaysApply: false
+---
+
+# HTTP + PokeAPI
+
+## HTTP caching
+
+- **`PokemonCatalogService`** (`features/pokemon-picker/`) caches the type index and per-type lists with **`shareReplay(1)`** on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
+
+## PokeAPI URLs
+
+- Path segments for names/ids go through **`PokeApiClient`**’s `encodePathSegment` (via `getTypeDetail` / `getPokemon`). Preserve that for any new endpoints on the client.
+- Random opponent ids are **`1…environment.maxPokemonSpeciesId`** (inclusive upper bound from env).
