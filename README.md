@@ -36,11 +36,37 @@
   <sub>Powered by <a href="https://pokeapi.co/">pokeapi.co</a> · loading / errors / retry stay on-screen · no silent dead-ends</sub>
 </p>
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ BATTLE BRIEF — **what this is, fast**
+## Contents
+
+- [Overview](#overview--what-this-is-fast)
+- [Source Map](#source-map--where-each-folder-points)
+- [Features](#features--what-ships-in-the-box)
+- [Prerequisites](#prerequisites--install-first)
+- [Install, Run, Ship](#install-run-ship--clone-dev-build)
+- [Configuration](#configuration--api--rival-id-cap)
+- [CI](#ci--what-github-actions-runs)
+- [Automation](#automation--what-runs-on-its-own)
+- [Scripts](#scripts--npm-decoded)
+- [Cursor](#cursor--optional-cursor-helpers)
+
+---
+
+## Start here
+
+| I want to…                          | Go here                                                                                                      |
+| :---------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| **Play it right now**               | [danibsheehan.github.io/gotta-catch-em-all](https://danibsheehan.github.io/gotta-catch-em-all/) — no install |
+| **Run it on my machine**            | [Prerequisites](#prerequisites--install-first) → [Install, Run, Ship](#install-run-ship--clone-dev-build)    |
+| **Understand what it does**         | [Overview](#overview--what-this-is-fast) → [Features](#features--what-ships-in-the-box)                      |
+| **Find where code lives**           | [Source Map](#source-map--where-each-folder-points)                                                          |
+| **Change the API or opponent pool** | [Configuration](#configuration--api--rival-id-cap)                                                           |
+| **See what CI and automation do**   | [CI](#ci--what-github-actions-runs) → [Automation](#automation--what-runs-on-its-own)                        |
+
+---
+
+## Overview — what this is, fast
 
 > **Angular ~22** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.
 >
@@ -64,13 +90,13 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 
 </details>
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ SOURCE MAP — **where each folder points**
+## Source Map — where each folder points
 
-| ZONE             | PATH                                                                                                                                                                                                               |
+**In plain English:** each folder below owns one piece of the app — pick the row that matches what you're touching.
+
+| Zone             | Path                                                                                                                                                                                                               |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SHELL**        | `src/app/app.component.*`, `app.config.ts`                                                                                                                                                                         |
 | **GLOBAL LOOK**  | `src/styles.scss` pulls `_tokens.scss`, `_arena-type-wash.scss`, `_battle-chrome.scss`, `_battle-panel-frames.scss`; type chips → `_pokemon-type-chips.scss`                                                       |
@@ -81,40 +107,36 @@ Update this table and [`docs/readme-ui-palette.svg`](docs/readme-ui-palette.svg)
 | **PICKER**       | `src/app/features/pokemon-picker/` — `pokemon-catalog.service`, `pokemon-selector/`, `pokemon-type/`                                                                                                               |
 | **DISPLAY**      | `src/app/features/pokemon-display/` — `pokemon-details/`, `pokemon-card/` (`app-pokemon`)                                                                                                                          |
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ FEATURE ROLL CALL — **what ships in the box**
+## Features — what ships in the box
 
-|         TAG          | WHAT HAPPENS                                                                                                                                                             |
-| :------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|     **`@DEFER`**     | Type-picker region loads with **`@defer`** (viewport + idle prefetch) so the **battle shell paints first**.                                                              |
-|      **MENUS**       | Type index from PokeAPI → **one collapsible menu per type**; names hydrate on **first open**.                                                                            |
-|    **FULL CARD**     | **`pokemon`** record fetch on **confirm**.                                                                                                                               |
-|    **RIVAL RNG**     | Random opponent id **`1…maxPokemonSpeciesId`** (upper bound from env; often **964**), sprite **preload**, **try again** if opponent fetch fails.                         |
-|     **VERDICT**      | **`resolveSpecialAttackBattle()`** + `PokemonBattleResultComponent` timing/UI + **`BattleHistoryService.recordMatch`**. Optional **type-pair flavor** (not damage math). |
-|     **SFX BUS**      | **Sound off by default** — arcade tick on pick, sting on result; header toggle; `localStorage` **`gcea-sound-effects`**.                                                 |
-|   **MEMORY LANE**    | Up to **three** **Recent matchups** per tab — `sessionStorage`, in-memory fallback if storage is blocked.                                                                |
-| **`shareReplay(1)`** | Cached **type index** + **per-type lists** — don't blast duplicate HTTP.                                                                                                 |
-|    **SAFE URLS**     | Path segments encoded for PokeAPI (weird names survive).                                                                                                                 |
+**In plain English:** here's what happens, in order, from opening the app to seeing a winner.
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+|        Feature        | What happens                                                                                                                                                             |
+| :-------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Deferred loading**  | Type-picker region loads with **`@defer`** (viewport + idle prefetch) so the **battle shell paints first**.                                                              |
+|    **Type menus**     | Type index from PokeAPI → **one collapsible menu per type**; names hydrate on **first open**.                                                                            |
+| **Full Pokémon card** | **`pokemon`** record fetch on **confirm**.                                                                                                                               |
+|  **Random opponent**  | Random opponent id **`1…maxPokemonSpeciesId`** (upper bound from env; often **964**), sprite **preload**, **try again** if opponent fetch fails.                         |
+|  **Battle verdict**   | **`resolveSpecialAttackBattle()`** + `PokemonBattleResultComponent` timing/UI + **`BattleHistoryService.recordMatch`**. Optional **type-pair flavor** (not damage math). |
+|   **Sound effects**   | **Sound off by default** — arcade tick on pick, sting on result; header toggle; `localStorage` **`gcea-sound-effects`**.                                                 |
+|  **Recent matchups**  | Up to **three** per tab — `sessionStorage`, in-memory fallback if storage is blocked.                                                                                    |
+|  **Cached lookups**   | `shareReplay(1)` on the **type index** + **per-type lists** — don't blast duplicate HTTP.                                                                                |
+|     **Safe URLs**     | Path segments encoded for PokeAPI (weird names survive).                                                                                                                 |
 
-## ★ PREREQS — **install first**
+---
 
-| REQUIREMENT              | NOTES                                                                    |
+## Prerequisites — install first
+
+| Requirement              | Notes                                                                    |
 | :----------------------- | :----------------------------------------------------------------------- |
 | **Node.js `>= 22.22.3`** | Matches `package.json` `engines`, `.nvmrc`, and CI (Angular 22 minimum). |
 | **nvm** _(optional)_     | Run **`nvm use`** — `.nvmrc` pins **`22.22.3`**.                         |
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ INSTALL · RUN · SHIP — **clone, dev, build**
+## Install, Run, Ship — clone, dev, build
 
 ```bash
 # ═══ GRAB THE REPO ═══
@@ -146,14 +168,12 @@ Use whatever URL **`serve:dist`** prints (often **`http://localhost:8080/`**).
 npm run build:github-pages
 ```
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
 <details>
 <summary><strong>▼ Who owns what — services + HTTP ▼</strong></summary>
 
-| SYMBOL / AREA                   | RESPONSIBILITY                                                                                                                                               |
+| Symbol / area                   | Responsibility                                                                                                                                               |
 | :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `PokeApiClient`                 | Thin HTTP client for PokeAPI v2 (`src/app/core/api/`).                                                                                                       |
 | `AudioService`                  | Optional Web Audio SFX (`src/app/core/audio/`): `soundEnabled$`, `playUiTick()`, `playBattleResult()`; unlock/resume follows autoplay rules.                 |
@@ -176,13 +196,13 @@ npm run build:github-pages
 
 </details>
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ CONFIGURATION — **API + rival ID cap**
+## Configuration — API + rival ID cap
 
-| FIELD                        | WHERE             | DESCRIPTION                                                 |
+**In plain English:** these three values live in `environment*.ts` and control which API `PokeApiClient` talks to and how big the opponent roster is.
+
+| Field                        | Where             | Description                                                 |
 | :--------------------------- | :---------------- | :---------------------------------------------------------- |
 | `pokeApi.baseUrl`            | `environment*.ts` | PokeAPI v2 root (**no** trailing slash).                    |
 | `pokeApi.frontSpriteBaseUrl` | `environment*.ts` | Base URL for opponent **front** sprites by national dex id. |
@@ -190,15 +210,15 @@ npm run build:github-pages
 
 `PokeApiClient` assembles HTTP from these values. Point at a mock or mirror, **rebuild**. Production swaps in `environment.prod.ts` via `angular.json` file replacement.
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ CI · SHIP GATE — **what GitHub Actions runs**
+## CI — what GitHub Actions runs
+
+**In plain English:** every push and pull request runs formatting checks; app changes also get linting, a security audit, and a full production build.
 
 Pushes to **`main`** and pull requests run the **Test** workflow:
 
-| JOB              | COMMAND / CHECK                                                                                              |
+| Job              | Command / check                                                                                              |
 | :--------------- | :----------------------------------------------------------------------------------------------------------- |
 | **`quality`**    | One `npm ci` + `format:check`; on app changes (or `main`) also `lint` → audit → Pages-ready `ng build`       |
 | **`unit-tests`** | Chrome + `test:ci` on app changes (or `main`); docs/skills-only PRs skip the suite (job still reports green) |
@@ -207,21 +227,21 @@ Docs / `.cursor` / README-only PRs keep a light format path so required checks s
 
 **GitHub Pages:** Test’s **`quality`** job builds with the Pages **base href** and, on `main`, uploads artifact **`github-pages-site`**. Deploy downloads that artifact after Test succeeds (`workflow_run`)—no second `ng build`—or rebuilds on manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ AUTOMATION — **what runs on its own**
+## Automation — what runs on its own
 
-**In plain English:** nothing in this repo merges or opens a PR by itself. CodeQL scans on its
-own schedule, but every Dependabot bump still gets a human review before it merges.
+**In plain English:** CodeQL scans on its own schedule, and grouped npm minor/patch Dependabot
+PRs auto-merge once required checks pass — everything else (npm majors, GitHub Actions bumps)
+still gets a human review before it merges.
 
 - **CodeQL** ([`codeql.yml`](.github/workflows/codeql.yml)) — scans the Angular/TypeScript app on
   push to `main`, on every PR, and weekly (Monday), flagging known vulnerability patterns. No
   auto-merge, no LLM — plain GitHub code scanning.
-- **Dependabot auto-merge** — not configured here yet. `.github/dependabot.yml` groups npm
-  minor/patch bumps and opens ungrouped GitHub Actions bumps weekly; all of them are reviewed and
-  merged by hand.
+- **Dependabot auto-merge** ([`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml))
+  — auto-merges (squash) only the grouped `npm-minor-and-patch` Dependabot PRs once required
+  checks pass. Ungrouped npm majors and GitHub Actions bumps from `.github/dependabot.yml` stay
+  manual — reviewed and merged by hand.
 - **`dependabot-triage` skill** — not ported to this repo yet either; the Dependabot backlog here
   is small enough to review directly.
 - **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
@@ -234,13 +254,13 @@ own schedule, but every Dependabot bump still gets a human review before it merg
   [`portfolio-automation`'s README](https://github.com/danibsheehan/portfolio-automation#autonomy-boundary)
   for the full autonomy boundary (it opens, never merges).
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ SCRIPTS — **npm, decoded**
+## Scripts — npm, decoded
 
-| SCRIPT                       | WHAT IT DOES                                                    |
+**In plain English:** these are the npm commands you'll actually type day to day.
+
+| Script                       | What it does                                                    |
 | :--------------------------- | :-------------------------------------------------------------- |
 | `npm start`                  | Dev server (`ng serve`).                                        |
 | `npm run build`              | Production build → `dist/gotta-catch-em-all/browser/`.          |
@@ -253,13 +273,11 @@ own schedule, but every Dependabot bump still gets a human review before it merg
 | `npm test`                   | Vitest via Angular unit-test builder (**watch**).               |
 | `npm run test:ci`            | Single Vitest run with coverage thresholds.                     |
 
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
+---
 
-## ★ CURSOR — **optional <code>.cursor</code> helpers**
+## Cursor — optional <code>.cursor</code> helpers
 
-| PATH                                               | PURPOSE                                                                                               |
+| Path                                               | Purpose                                                                                               |
 | :------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles, **Prettier**).                    |
 | `.cursor/skills/*/`                                | Skills: definition-of-done (includes `format:check`), GitHub Pages, PokeAPI/RxJS, Vitest, doc writer. |

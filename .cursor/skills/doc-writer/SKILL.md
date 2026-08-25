@@ -51,6 +51,7 @@ Follow those guides for structure and tone.
 
 ## This repo (`gotta-catch-em-all`)
 
-- Root **`README.md`** is the stylized **source map** for folders, services, scripts, and deploy — prefer aligning new prose with its tables/sections when documenting the app.
+- Root **`README.md`** keeps its arcade banner, badges, and closing sign-off as personality/branding, but body sections use plain-case headers and an **In plain English:** lead-in sentence before jargon-heavy tables — align new prose with that pattern, not ALL-CAPS/★ headline style.
+- **Tone for this repo:** normal-case section headers (no ALL-CAPS, no ★ icons); one **In plain English:** sentence before any jargon-heavy table; plain `---` rules between body sections, not ASCII block-character dividers. Reserve decorative flourish for the top banner, badges, and closing sign-off only.
 - Changing **`:root`** values in **`src/styles/_tokens.scss`**: also update the README palette table (see “Extra palette rows”) and **`docs/readme-ui-palette.svg`** so badges, docs, and UI stay consistent.
 - Run **`npm run format`** (or `format:check`) on edited Markdown/docs so Prettier stays green — CI enforces it.
