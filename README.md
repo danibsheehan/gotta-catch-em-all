@@ -38,6 +38,34 @@
 
 ---
 
+## Contents
+
+- [Overview](#overview--what-this-is-fast)
+- [Source Map](#source-map--where-each-folder-points)
+- [Features](#features--what-ships-in-the-box)
+- [Prerequisites](#prerequisites--install-first)
+- [Install, Run, Ship](#install-run-ship--clone-dev-build)
+- [Configuration](#configuration--api--rival-id-cap)
+- [CI](#ci--what-github-actions-runs)
+- [Automation](#automation--what-runs-on-its-own)
+- [Scripts](#scripts--npm-decoded)
+- [Cursor](#cursor--optional-cursor-helpers)
+
+---
+
+## Start here
+
+| I want to…                          | Go here                                                                                                      |
+| :---------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| **Play it right now**               | [danibsheehan.github.io/gotta-catch-em-all](https://danibsheehan.github.io/gotta-catch-em-all/) — no install |
+| **Run it on my machine**            | [Prerequisites](#prerequisites--install-first) → [Install, Run, Ship](#install-run-ship--clone-dev-build)    |
+| **Understand what it does**         | [Overview](#overview--what-this-is-fast) → [Features](#features--what-ships-in-the-box)                      |
+| **Find where code lives**           | [Source Map](#source-map--where-each-folder-points)                                                          |
+| **Change the API or opponent pool** | [Configuration](#configuration--api--rival-id-cap)                                                           |
+| **See what CI and automation do**   | [CI](#ci--what-github-actions-runs) → [Automation](#automation--what-runs-on-its-own)                        |
+
+---
+
 ## Overview — what this is, fast
 
 > **Angular ~22** playground: **standalone** everything, `bootstrapApplication` + `app.config.ts`, **`@angular/animations`** (respects `prefers-reduced-motion: reduce` → noop). **RxJS 7** + **SCSS** global tokens under `src/styles/` — **colors, radii, sticker shadows, and grain** all flow from [`_tokens.scss`](src/styles/_tokens.scss) (`:root`); battle chrome partials **consume** those variables rather than inventing a second palette.
