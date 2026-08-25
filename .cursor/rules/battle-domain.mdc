@@ -1,0 +1,11 @@
+---
+description: Battle resolution rules and match history persistence
+globs:
+  - src/app/features/battle/**
+alwaysApply: false
+---
+
+# Battle resolution
+
+- Pure comparison logic stays in **`resolveSpecialAttackBattle()`** in `src/app/features/battle/special-attack-battle.ts` (stat name **`special-attack`**, tie → **opponent wins**, missing stat → `null`). UI components must not reimplement win/loss rules.
+- **`BattleHistoryService`** persists the **newest three** matchups in **`sessionStorage`** under **`gcea-battle-history-v1`** (in-memory fallback if storage is blocked).
