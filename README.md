@@ -246,7 +246,7 @@ still gets a human review before it merges.
   is small enough to review directly.
 - **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
   [`danibsheehan/portfolio-automation`](https://github.com/danibsheehan/portfolio-automation)'s
-  [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.cursor/skills/weekly-project-update/SKILL.md)
+  [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.claude/skills/weekly-project-update/SKILL.md)
   skill, reads this repo once a week (never writes to it) and — only when there's something
   people-relevant to report — opens a PR against
   [danibsheehan.github.io](https://github.com/danibsheehan/danibsheehan.github.io) updating this
