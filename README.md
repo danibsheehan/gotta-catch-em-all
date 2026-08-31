@@ -49,7 +49,7 @@
 - [CI](#ci--what-github-actions-runs)
 - [Automation](#automation--what-runs-on-its-own)
 - [Scripts](#scripts--npm-decoded)
-- [Cursor](#cursor--optional-cursor-helpers)
+- [Cursor](#cursor--legacy-compatibility-only)
 
 ---
 
@@ -275,13 +275,17 @@ still gets a human review before it merges.
 
 ---
 
-## Cursor — optional <code>.cursor</code> helpers
+## Cursor — legacy compatibility only
 
-| Path                                               | Purpose                                                                                               |
-| :------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
-| `.cursor/rules/gotta-catch-em-all-conventions.mdc` | Project conventions (layout, API boundaries, battle helper, styles, **Prettier**).                    |
-| `.cursor/skills/*/`                                | Skills: definition-of-done (includes `format:check`), GitHub Pages, PokeAPI/RxJS, Vitest, doc writer. |
-| `.prettierrc.json` / `.prettierignore`             | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.     |
+This project is developed with Claude Code. Conventions live directly in
+[`AGENTS.md`](AGENTS.md) / [`CLAUDE.md`](CLAUDE.md) — there are no separate
+`.cursor/rules/*.mdc` files. `.cursor/skills` is kept only as a symlink to the canonical
+`.claude/skills/` directory, for compatibility if this repo is opened in Cursor.
+
+| Path                                   | Purpose                                                                                                                                          |
+| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.claude/skills/*/`                    | Canonical skills: definition-of-done (includes `format:check`), GitHub Pages, PokeAPI/RxJS, Vitest, doc writer — `.cursor/skills` symlinks here. |
+| `.prettierrc.json` / `.prettierignore` | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.                                                |
 
 ```
 ██████████████████████████████████████████████████████████████████████████████

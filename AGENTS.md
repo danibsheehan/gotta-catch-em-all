@@ -44,19 +44,48 @@ GitHub Pages build check is also required.
 
 ## Conventions
 
-Detailed, path-scoped conventions live in `.cursor/rules/*.mdc` and are read automatically by
-Claude Code via [`CLAUDE.md`](CLAUDE.md); Cursor reads them natively. Do not restate them here
-— this section is the map, not the content:
+### Stack and shell
 
-| Area                                                                          | Rule                              |
-| ----------------------------------------------------------------------------- | --------------------------------- |
-| Angular shell, standalone conventions, Prettier, folder layout (always-apply) | `.cursor/rules/project-stack.mdc` |
-| PokeAPI HTTP client boundary, caching, URL/path-segment rules                 | `.cursor/rules/http-pokeapi.mdc`  |
-| Battle resolution logic and match history                                     | `.cursor/rules/battle-domain.mdc` |
-| Global SCSS design tokens and style composition                               | `.cursor/rules/styles-tokens.mdc` |
+- Angular ~22, **standalone** components/directives/pipes (`standalone: true`), `bootstrapApplication` + `app.config.ts`.
+- **`@angular/platform-browser/animations`**: `provideAnimations()` vs `provideNoopAnimations()` based on **`prefers-reduced-motion`** (reduced motion → noop).
+- New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
+- Type-picker region: **`@defer`** in the app shell so battle chrome can paint first (viewport + idle prefetch) — preserve that pattern when changing `AppComponent`.
 
-Step-by-step playbooks (both `.cursor/skills/*/SKILL.md` and `.claude/skills/` — same files,
-symlinked, auto-invoked by either tool based on the task):
+### Formatting (Prettier)
+
+- **Prettier is required.** Match **`.prettierrc.json`** — do not hand-format against a different style, and do not reintroduce formatting rules that fight Prettier in ESLint.
+- Defaults that matter for this repo: **single quotes**, **trailing commas (`all`)**, **`printWidth` 100**, **2-space** indent, **LF** endings (aligned with `.editorconfig`).
+- After editing TS / HTML / SCSS / JSON / Markdown / YAML (or when finishing a substantive change), run **`npm run format`** on touched files or the repo, then confirm with **`npm run format:check`**. CI enforces `format:check`.
+- Respect **`.prettierignore`** (`dist`, `coverage`, `node_modules`, `package-lock.json`, `.angular`, generated SVG docs). Do not format ignored paths into the tree.
+
+### Where code belongs
+
+- **`src/app/core/api/`** — HTTP to PokeAPI **only** via **`PokeApiClient`**. Do not scatter raw `HttpClient` URLs in features.
+- **`src/app/core/audio/`** — **`AudioService`**: optional Web Audio SFX (ticks, battle stings), autoplay-safe unlock; **sound off by default**; preference in **`localStorage`** key **`gcea-sound-effects`**.
+- **`src/app/features/battle/`** — battle orchestration: **`PokemonBattleService`**, **`PokemonPlayerService`**, **`PokemonOpponentService`**, **`BattleHistoryService`** (`recordMatch`, recent entries), **`resolveSpecialAttackBattle()`** in `special-attack-battle.ts`, flavor/helpers, result and recent-matchups UI.
+- **`src/app/features/pokemon-picker/`** — **`PokemonCatalogService`**, type index + menus (`pokemon-selector/`, `pokemon-type/`).
+- **`src/app/features/pokemon-display/`** — read-only presentation (`pokemon-details/`, `pokemon-card/`).
+- **`src/app/shared/models/`** — shared TypeScript models (`Pokemon`, types, etc.).
+
+### PokeAPI HTTP client
+
+- **`PokemonCatalogService`** (`features/pokemon-picker/`) caches the type index and per-type lists with **`shareReplay(1)`** on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
+- Path segments for names/ids go through **`PokeApiClient`**'s `encodePathSegment` (via `getTypeDetail` / `getPokemon`). Preserve that for any new endpoints on the client.
+- Random opponent ids are **`1…environment.maxPokemonSpeciesId`** (inclusive upper bound from env).
+
+### Battle resolution
+
+- Pure comparison logic stays in **`resolveSpecialAttackBattle()`** in `src/app/features/battle/special-attack-battle.ts` (stat name **`special-attack`**, tie → **opponent wins**, missing stat → `null`). UI components must not reimplement win/loss rules.
+- **`BattleHistoryService`** persists the **newest three** matchups in **`sessionStorage`** under **`gcea-battle-history-v1`** (in-memory fallback if storage is blocked).
+
+### Styles / design tokens
+
+- Global design tokens: **`src/styles/_tokens.scss`** (`:root` CSS variables). Prefer **`var(--…)`** for colors, radius, shadows. Battle chrome partials **consume** those variables — do not introduce a second ad-hoc palette in global SCSS.
+- **`src/styles.scss`** composes global modules from **`src/styles/`** (including **`_tokens.scss`**, **`_arena-type-wash.scss`**, **`_battle-chrome.scss`**, **`_battle-panel-frames.scss`**, plus shell/layout/focus partials). Type chip styling is centralized in **`_pokemon-type-chips.scss`** (shared with picker features).
+- If you change **`:root`** token values, keep **`README.md`** (palette table) and **`docs/readme-ui-palette.svg`** in sync so docs stay honest.
+
+Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add new skills here;
+`.cursor/skills` is a symlink to it), auto-invoked by task:
 
 - `definition-of-done` — runs Prettier check, lint, tests, and production build after
   substantive edits; flags when a GitHub Pages build check is also needed.
