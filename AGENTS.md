@@ -93,8 +93,11 @@ Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add ne
 - `pokeapi-rxjs` — `PokeApiClient`, caching, and RxJS/error-handling conventions for PokeAPI
   calls.
 - `test-generator` — generates Vitest unit tests for Angular components/services/pipes.
-- `doc-writer` — README, JSDoc, and inline documentation, including keeping the README
-  palette table and `docs/readme-ui-palette.svg` in sync with `_tokens.scss`.
+
+This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
+(see `.claude/settings.json`), providing `doc-writer` (namespaced `foundations:doc-writer`)
+— its design-token/palette-sync pattern and style defaults cover the README/palette/SVG
+sync and tone conventions this repo previously kept in a local copy; no local copy needed.
 
 ## Constraints — do not
 
@@ -107,7 +110,7 @@ Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add ne
 - **Introduce a second color palette in global SCSS.** Use the `:root` tokens in
   `src/styles/_tokens.scss` via `var(--…)`.
 - **Change `:root` token values without updating `README.md`'s palette table and
-  `docs/readme-ui-palette.svg`** in the same change — see the `doc-writer` skill.
+  `docs/readme-ui-palette.svg`** in the same change — see the `foundations:doc-writer` skill.
 - **Commit secrets** or amend/force-push/skip hooks (`--no-verify`) without being explicitly
   asked.
 - **Open, push, or merge a PR unless the user asks.** (Agents never do this autonomously here.
