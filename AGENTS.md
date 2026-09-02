@@ -87,17 +87,15 @@ GitHub Pages build check is also required.
 Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add new skills here;
 `.cursor/skills` is a symlink to it), auto-invoked by task:
 
-- `definition-of-done` — runs Prettier check, lint, tests, and production build after
-  substantive edits; flags when a GitHub Pages build check is also needed.
 - `github-pages-deploy` — base-href, workflow, and dist layout for GitHub Pages deploys.
 - `pokeapi-rxjs` — `PokeApiClient`, caching, and RxJS/error-handling conventions for PokeAPI
   calls.
 - `test-generator` — generates Vitest unit tests for Angular components/services/pipes.
 
 This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
-(see `.claude/settings.json`), providing `doc-writer` (namespaced `foundations:doc-writer`)
-— its design-token/palette-sync pattern and style defaults cover the README/palette/SVG
-sync and tone conventions this repo previously kept in a local copy; no local copy needed.
+(see `.claude/settings.json`), providing `doc-writer` and `definition-of-done` (namespaced
+`foundations:*`) — no local copies needed; both verified generic enough on their own
+(the GitHub-Pages-build trigger conditions are already in Definition of done below).
 
 ## Constraints — do not
 
@@ -125,6 +123,7 @@ sync and tone conventions this repo previously kept in a local copy; no local co
 - **Task done**: follow the scoped rule/skill for files touched; run the smallest relevant
   check (`npm run format:check`, `npm run lint`, `npm run test:ci` for touched suites). Run
   `npm run build:github-pages` when the change touches routing, base `href`, deploy scripts,
-  or `.github/workflows/deploy-github-pages.yml` — see the `definition-of-done` skill.
+  or `.github/workflows/deploy-github-pages.yml` — see the `foundations:definition-of-done`
+  skill.
 - **PR done**: full sequence under Test / CI parity above, green. Commit, push, or open a PR
   only when the user asks.
