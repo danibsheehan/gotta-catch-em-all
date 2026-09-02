@@ -90,12 +90,14 @@ Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add ne
 - `github-pages-deploy` — base-href, workflow, and dist layout for GitHub Pages deploys.
 - `pokeapi-rxjs` — `PokeApiClient`, caching, and RxJS/error-handling conventions for PokeAPI
   calls.
-- `test-generator` — generates Vitest unit tests for Angular components/services/pipes.
 
 This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
-(see `.claude/settings.json`), providing `doc-writer` and `definition-of-done` (namespaced
-`foundations:*`) — no local copies needed; both verified generic enough on their own
-(the GitHub-Pages-build trigger conditions are already in Definition of done below).
+(see `.claude/settings.json`), providing `doc-writer`, `definition-of-done`, and
+`angular-vitest-testing` (namespaced `foundations:*`) — no local copies needed; each
+verified generic enough on its own (the GitHub-Pages-build trigger conditions are already in
+Definition of done below; the local `test-generator` skill's Angular patterns are now in
+`foundations:angular-vitest-testing`, and its only repo-specific content — `test:ci`,
+Prettier formatting — was already documented in Test/CI parity and Definition of done).
 
 ## Constraints — do not
 
