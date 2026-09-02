@@ -125,7 +125,7 @@ Prettier formatting — was already documented in Test/CI parity and Definition 
 - **Task done**: follow the scoped rule/skill for files touched; run the smallest relevant
   check (`npm run format:check`, `npm run lint`, `npm run test:ci` for touched suites). Run
   `npm run build:github-pages` when the change touches routing, base `href`, deploy scripts,
-  or `.github/workflows/deploy-github-pages.yml` — see the `foundations:definition-of-done`
+  or the `deploy` job in `.github/workflows/test.yml` — see the `foundations:definition-of-done`
   skill.
 - **PR done**: full sequence under Test / CI parity above, green. Commit, push, or open a PR
   only when the user asks.

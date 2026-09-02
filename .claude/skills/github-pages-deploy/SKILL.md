@@ -5,6 +5,10 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 
 # GitHub Pages deploy guardrails
 
+For the general shared-workflow mechanism (build+deploy in one run, no artifact hand-off),
+see the **`foundations:github-pages-deploy`** skill. This file is gotta-catch-em-all's own
+build-command/path reference.
+
 ## URLs
 
 - Live site shape: `https://<user>.github.io/<repository-name>/`
@@ -13,21 +17,22 @@ description: Documents GitHub Pages deploy for gotta-catch-em-all—base href, w
 ## Local vs CI
 
 - **package.json** script: `build:github-pages` uses `--base-href /gotta-catch-em-all/` (matches this repo name).
-- **Test** (`.github/workflows/test.yml` → `quality`) builds with:
+- **`.github/workflows/test.yml`**'s `quality` job builds with the same command as a compile
+  check only (not used for the deployed artifact):
   `npx ng build --configuration production --base-href /${{ github.event.repository.name }}/`
   so the segment stays correct if the repo is renamed—then update the **npm script** to match.
-- On **`push` to `main`**, Test uploads artifact **`github-pages-site`** (`dist/.../browser` + `.nojekyll`).
 
 ## Workflow responsibilities
 
-- **Deploy** (`.github/workflows/deploy-github-pages.yml`) has two jobs with separate trust paths:
-  - **`publish-from-test`** (`workflow_run` after Test on `main` **push**): download `github-pages-site` into **`${{ runner.temp }}/github-pages-site`** (never the workspace root), then `upload-pages-artifact` + `deploy-pages`. Do not rebuild.
-  - **`publish-manual`** (`workflow_dispatch`): checkout, build with the same base-href, upload + deploy. Never downloads Test artifacts.
+- **`deploy`** job in `test.yml` (`needs: [quality, unit-tests]`, only on push to `main`) calls
+  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml@v2` with this repo's actual
+  build command (including the `.nojekyll` touch) and `dist-path: dist/gotta-catch-em-all/browser`.
+  No artifact hand-off between jobs — the shared workflow does its own build in the same run.
 - Requires repo **Settings → Pages → Source: GitHub Actions**.
 
-## When to edit the workflow
+## When to edit the deploy job
 
 - Change Node version, install steps, or base-href strategy.
-- Change **output path** if `angular.json` `outputPath` changes—keep dist subpaths in sync with `touch`, artifact upload, and Deploy.
-- Change when deploy is allowed (Test gate / manual dispatch) or artifact name/retention.
-- Keep artifact downloads under **`runner.temp`** and do not mix download + checkout in one job (CodeQL `actions/artifact-poisoning`).
+- Change **output path** if `angular.json` `outputPath` changes — keep `dist-path` in the
+  `deploy` job's `with:` block in sync.
+- Change the required-check names in `needs:` if `quality`/`unit-tests` are ever renamed or restructured.
