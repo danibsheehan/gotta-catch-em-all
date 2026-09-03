@@ -238,6 +238,12 @@ still gets a human review before it merges.
 - **CodeQL** ([`codeql.yml`](.github/workflows/codeql.yml)) — scans the Angular/TypeScript app on
   push to `main`, on every PR, and weekly (Monday), flagging known vulnerability patterns. No
   auto-merge, no LLM — plain GitHub code scanning.
+- **Dependency review** ([`dependency-review.yml`](.github/workflows/dependency-review.yml)) —
+  flags newly-introduced vulnerable or license-incompatible dependencies in a PR's diff, before
+  merge.
+- **PR guide** ([`pr-guide.yml`](.github/workflows/pr-guide.yml)) — scaffolds an empty PR
+  description, posts a sticky checklist/reviewer-focus comment, and applies path-based `area:*`
+  labels (same-repo PRs only).
 - **Dependabot auto-merge** ([`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml))
   — auto-merges (squash) only the grouped `npm-minor-and-patch` Dependabot PRs once required
   checks pass. Ungrouped npm majors and GitHub Actions bumps from `.github/dependabot.yml` stay
