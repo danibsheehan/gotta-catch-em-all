@@ -1,8 +1,6 @@
-# Quality gates on pushes to main and on pull requests: format, lint, npm audit,
-# and a Pages-ready production build in one job (single npm ci); unit tests stay
-# separate for Chrome. Skips draft pull requests. Docs/skills-only PRs run a light
-# format check and skip heavy gates. On same-repository PRs, posts coverage when
-# unit tests run.
+# Single shared quality gate (format/lint/audit/test/build) via dani-actions'
+# npm-quality-gate.yml, matching musing/baseball-collection. Skips draft pull requests;
+# docs/skills-only PRs skip lint/audit/test/build via app-paths (format:check always runs).
 
 name: Test
 
@@ -22,133 +20,37 @@ concurrency:
 
 jobs:
   quality:
-    name: quality
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - name: Detect app vs docs-only changes
-        if: github.event_name == 'pull_request'
-        id: filter
-        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
-        with:
-          filters: |
-            app:
-              - 'src/**'
-              - 'public/**'
-              - 'package.json'
-              - 'package-lock.json'
-              - 'angular.json'
-              - 'tsconfig*.json'
-              - 'eslint.config.*'
-              - '.prettierrc*'
-              - '.prettierignore'
-              - '.nvmrc'
-              - 'index.html'
-              - '.github/workflows/**'
-              - '.github/dependabot.yml'
-              - '.github/labeler.yml'
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - run: npm ci
-
-      - name: Check Prettier formatting
-        run: npm run format:check
-
-      - name: ESLint
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        run: npm run lint
-
-      - name: npm audit (high+)
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        run: npm audit --audit-level=high
-
-      # Same production config Deploy uses to rebuild; base href matches repo Pages path.
-      # Just a compile check here -- the deploy job below does its own build for the
-      # actual deployable artifact.
-      - name: Production build (GitHub Pages base href)
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        run: npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
-
-  unit-tests:
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
     permissions:
       contents: read
       pull-requests: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    uses: danibsheehan/dani-actions/.github/workflows/npm-quality-gate.yml@v5
+    with:
+      test-command: npm run test:ci
+      build-command: >-
+        npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
+      setup-chrome: true
+      coverage-file: coverage/gotta-catch-em-all/cobertura-coverage.xml
+      app-paths: |
+        app:
+          - 'src/**'
+          - 'public/**'
+          - 'package.json'
+          - 'package-lock.json'
+          - 'angular.json'
+          - 'tsconfig*.json'
+          - 'eslint.config.*'
+          - '.prettierrc*'
+          - '.prettierignore'
+          - '.nvmrc'
+          - 'index.html'
+          - '.github/workflows/**'
+          - '.github/dependabot.yml'
+          - '.github/labeler.yml'
 
-      - name: Detect app vs docs-only changes
-        if: github.event_name == 'pull_request'
-        id: filter
-        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
-        with:
-          filters: |
-            app:
-              - 'src/**'
-              - 'public/**'
-              - 'package.json'
-              - 'package-lock.json'
-              - 'angular.json'
-              - 'tsconfig*.json'
-              - 'eslint.config.*'
-              - '.prettierrc*'
-              - '.prettierignore'
-              - '.nvmrc'
-              - 'index.html'
-              - '.github/workflows/**'
-              - '.github/dependabot.yml'
-              - '.github/labeler.yml'
-
-      - name: Skip unit tests (docs/skills-only PR)
-        if: github.event_name == 'pull_request' && steps.filter.outputs.app != 'true'
-        run: echo 'No app-path changes; skipping unit tests.'
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4 # v2
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        id: setup-chrome
-
-      - if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        run: npm ci
-
-      - name: Unit tests with coverage
-        if: github.event_name != 'pull_request' || steps.filter.outputs.app == 'true'
-        run: npm run test:ci
-        env:
-          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
-
-      - name: Post coverage comment
-        if: >
-          github.event_name == 'pull_request' &&
-          github.event.pull_request.head.repo.full_name == github.repository &&
-          steps.filter.outputs.app == 'true'
-        uses: romeovs/lcov-reporter-action@87a815f34ec27a5826abba44ce09bbc688da58fd # v0.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: coverage/gotta-catch-em-all/lcov.info
-          delete-old-comments: true
-          title: '## Test coverage'
-
-  # Gated on both quality and unit-tests passing -- previously this repo's Pages deploy
-  # only depended on quality succeeding via a workflow_run trigger, and used a separate
-  # artifact-upload/download hand-off requiring runner.temp discipline against
-  # actions/artifact-poisoning. This does its own build in the same run instead.
+  # Previously gated on both quality and unit-tests -- now just the single quality job.
   deploy:
-    needs: [quality, unit-tests]
+    needs: quality
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: read
