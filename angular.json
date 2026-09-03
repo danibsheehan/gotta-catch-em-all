@@ -113,7 +113,7 @@
             "setupFiles": ["src/test-setup.ts"],
             "reporters": ["default"],
             "coverage": true,
-            "coverageReporters": ["html", "lcovonly", "text-summary"],
+            "coverageReporters": ["html", "cobertura", "text-summary"],
             "coverageThresholds": {
               "statements": 82,
               "branches": 67,
