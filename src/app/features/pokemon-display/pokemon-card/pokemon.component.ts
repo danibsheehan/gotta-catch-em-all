@@ -9,5 +9,5 @@ import { PokemonBrief } from 'src/app/shared/models/pokemon';
   standalone: true,
 })
 export class PokemonComponent {
-  @Input() pokemonBrief: PokemonBrief;
+  @Input({ required: true }) pokemonBrief!: PokemonBrief;
 }
