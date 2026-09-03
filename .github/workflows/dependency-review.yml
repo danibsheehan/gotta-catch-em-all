@@ -8,4 +8,4 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    uses: danibsheehan/dani-actions/.github/workflows/dependency-review.yml@feat/codeql-and-dependency-review
+    uses: danibsheehan/dani-actions/.github/workflows/dependency-review.yml@v8
