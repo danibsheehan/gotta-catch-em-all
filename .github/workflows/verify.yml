@@ -2,7 +2,7 @@
 # shared npm-verify.yml. Deploy lives in its own file (deploy-pages.yml) since it has a
 # different trigger (push to main only) and different risk profile (side effects).
 
-name: verify
+name: CI
 
 on:
   push:
