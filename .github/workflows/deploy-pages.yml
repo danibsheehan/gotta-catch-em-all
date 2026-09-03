@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   deploy:
-    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v12
+    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v15
     with:
       build-command: >-
         npx ng build --configuration production --base-href /${{ github.event.repository.name }}/ &&
