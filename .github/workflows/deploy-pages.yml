@@ -1,0 +1,27 @@
+# GitHub Pages deploy. Separate from verify.yml: different trigger (push to main only, not
+# every PR) and different risk profile (has side effects). Relies on the branch ruleset
+# having already required verify.yml's checks to pass before this push landed on main --
+# not on an in-workflow `needs:` dependency, since that would require a cross-file
+# workflow_run hand-off (and the artifact-poisoning caution that comes with it) that isn't
+# worth it here.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v2
+    with:
+      build-command: >-
+        npx ng build --configuration production --base-href /${{ github.event.repository.name }}/ &&
+        touch dist/gotta-catch-em-all/browser/.nojekyll
+      dist-path: dist/gotta-catch-em-all/browser
+    secrets: inherit
