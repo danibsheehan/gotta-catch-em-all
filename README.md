@@ -245,6 +245,9 @@ still gets a human review before it merges.
 - **PR guide** ([`pr-guide.yml`](.github/workflows/pr-guide.yml)) — scaffolds an empty PR
   description, posts a sticky checklist/reviewer-focus comment, and applies path-based `area:*`
   labels (same-repo PRs only).
+- **Lighthouse CI** ([`lighthouse.yml`](.github/workflows/lighthouse.yml)) — audits a local
+  production build on every PR and posts a sticky comment with warn-level performance/
+  accessibility/best-practices/SEO scores.
 - **Dependabot auto-merge** ([`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml))
   — auto-merges (squash) only the grouped `npm-minor-and-patch` Dependabot PRs once required
   checks pass. Ungrouped npm majors and GitHub Actions bumps from `.github/dependabot.yml` stay
