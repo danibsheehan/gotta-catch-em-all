@@ -37,10 +37,12 @@ npm run test:ci         # Vitest (via @angular/build:unit-test) with coverage
 npm run build            # production build, same config CI/Deploy rebuild from
 ```
 
-This is the same sequence `.github/workflows/test.yml` runs (`quality` + `unit-tests` jobs)
-on push to `main` and on pull requests. `npm test` runs tests in watch mode; use that while
-iterating on a single suite. See the **`definition-of-done`** skill for exactly when a
-GitHub Pages build check is also required.
+This is the same set of checks `.github/workflows/verify.yml` runs (via dani-actions'
+`npm-verify.yml`) as separate parallel jobs on push to `main` and on pull requests — one
+required check per concern (e.g. `verify / lint (app)`, `verify / test (app)`); Angular's
+AOT build already type-checks, so there's no separate typecheck job. `npm test` runs tests
+in watch mode; use that while iterating on a single suite. See the **`definition-of-done`**
+skill for exactly when a GitHub Pages build check is also required.
 
 ## Conventions
 
@@ -125,7 +127,6 @@ Prettier formatting — was already documented in Test/CI parity and Definition 
 - **Task done**: follow the scoped rule/skill for files touched; run the smallest relevant
   check (`npm run format:check`, `npm run lint`, `npm run test:ci` for touched suites). Run
   `npm run build:github-pages` when the change touches routing, base `href`, deploy scripts,
-  or the `deploy` job in `.github/workflows/test.yml` — see the `foundations:definition-of-done`
-  skill.
+  or `.github/workflows/deploy-pages.yml` — see the `foundations:definition-of-done` skill.
 - **PR done**: full sequence under Test / CI parity above, green. Commit, push, or open a PR
   only when the user asks.

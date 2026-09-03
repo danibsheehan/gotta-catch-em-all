@@ -214,18 +214,19 @@ npm run build:github-pages
 
 ## CI — what GitHub Actions runs
 
-**In plain English:** every push and pull request runs formatting checks; app changes also get linting, a security audit, and a full production build.
+**In plain English:** every push and pull request runs formatting checks; app changes also get linting, a security audit, type-checked build, and tests — each as its own separate required check.
 
-Pushes to **`main`** and pull requests run the **Test** workflow:
+Pushes to **`main`** and pull requests run **`verify.yml`** (via dani-actions' shared `npm-verify.yml`), as separate parallel jobs — one required check per concern:
 
-| Job              | Command / check                                                                                              |
-| :--------------- | :----------------------------------------------------------------------------------------------------------- |
-| **`quality`**    | One `npm ci` + `format:check`; on app changes (or `main`) also `lint` → audit → Pages-ready `ng build`       |
-| **`unit-tests`** | Chrome + `test:ci` on app changes (or `main`); docs/skills-only PRs skip the suite (job still reports green) |
+| Check                       | Command / check                                                                                                                              |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`verify / format (app)`** | `npm run format:check` — always runs, even on docs-only PRs                                                                                  |
+| **`verify / lint (app)`**   | `npm run lint` — skipped on docs/skills-only PRs (still reports green)                                                                       |
+| **`verify / audit (app)`**  | `npm audit --audit-level=high` — skipped on docs/skills-only PRs                                                                             |
+| **`verify / test (app)`**   | Chrome + `npm run test:ci` with coverage — skipped on docs/skills-only PRs                                                                   |
+| **`verify / build (app)`**  | Pages-ready `ng build` (Angular's AOT compile already type-checks, so there's no separate typecheck check) — skipped on docs/skills-only PRs |
 
-Docs / `.cursor` / README-only PRs keep a light format path so required checks stay satisfied. **Push to `main` always runs the full gates** (Pages artifact).
-
-**GitHub Pages:** Test’s **`quality`** job builds with the Pages **base href** and, on `main`, uploads artifact **`github-pages-site`**. Deploy downloads that artifact after Test succeeds (`workflow_run`)—no second `ng build`—or rebuilds on manual **Run workflow**. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
+**GitHub Pages:** deploy lives in its own **`deploy-pages.yml`**, triggered directly on push to `main` — it does its own `ng build` rather than reusing an artifact from `verify.yml`, since the two are separate files with separate triggers. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
 
 ---
 
