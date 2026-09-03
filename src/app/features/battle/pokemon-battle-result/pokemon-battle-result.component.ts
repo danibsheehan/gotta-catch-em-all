@@ -62,14 +62,14 @@ const REVEAL_STAGGER = 72;
   ],
 })
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
-  @Input() pokemonChoice: Partial<Pokemon>;
-  @Input() pokemonOpponent: Partial<Pokemon>;
+  @Input({ required: true }) pokemonChoice!: Partial<Pokemon>;
+  @Input({ required: true }) pokemonOpponent!: Partial<Pokemon>;
 
   public choiceAttack: Stat | undefined;
   public opponentAttack: Stat | undefined;
-  private battleTimer: ReturnType<typeof setTimeout>;
+  private battleTimer?: ReturnType<typeof setTimeout>;
 
-  public battleResult: string;
+  public battleResult = '';
   public pokemonVictor: Partial<Pokemon> | undefined;
   /** Set when `battleResult` is shown — drives win/lose flourish (ties count as lose). */
   public playerWon: boolean | undefined;

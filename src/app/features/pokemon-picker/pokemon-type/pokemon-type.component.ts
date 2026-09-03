@@ -47,7 +47,7 @@ const TYPE_GLYPHS: Record<string, string> = {
   standalone: true,
 })
 export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() pokemonType: PokemonType;
+  @Input({ required: true }) pokemonType!: PokemonType;
 
   @HostBinding('attr.data-type')
   get dataTypeAttr(): string {

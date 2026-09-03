@@ -11,7 +11,7 @@ import { Pokemon } from 'src/app/shared/models/pokemon';
   imports: [NgClass],
 })
 export class PokemonDetailsComponent {
-  @Input() pokemonDetails: Partial<Pokemon>;
+  @Input({ required: true }) pokemonDetails!: Partial<Pokemon>;
   /** When true, image loads eagerly with high fetch priority (use for above-the-fold LCP candidates). */
   @Input() prioritizeLcp = false;
   /** Sequential name → stat → sprite entrance (CSS; disabled when `prefers-reduced-motion: reduce`). */
