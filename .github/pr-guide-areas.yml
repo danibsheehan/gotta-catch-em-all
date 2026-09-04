@@ -3,125 +3,125 @@
 # to be .github/scripts/pr_guide_lib.py + generate_pr_guide.py -- verified against a real PR
 # to produce byte-identical output before those scripts were removed.
 
-meta_start: "<!-- pr-guide-meta:start -->"
-meta_end: "<!-- pr-guide-meta:end -->"
-summary_prompt: "<!-- What changed and why? -->"
-verify_prompt: "<!-- Commands run, manual checks, or N/A with rationale. -->"
-legacy_template_markers: ["## Checklist", "No unintended secrets"]
+meta_start: '<!-- pr-guide-meta:start -->'
+meta_end: '<!-- pr-guide-meta:end -->'
+summary_prompt: '<!-- What changed and why? -->'
+verify_prompt: '<!-- Commands run, manual checks, or N/A with rationale. -->'
+legacy_template_markers: ['## Checklist', 'No unintended secrets']
 meta_block_template: |-
   **Touches:** {touches}
 
   Checklist and reviewer focus: see the **PR guide** comment on this PR (updated on each push).
 
-guide_intro: "_Auto-generated from changed paths. Fill in **Summary** and **How to verify** in the PR description above._"
+guide_intro: '_Auto-generated from changed paths. Fill in **Summary** and **How to verify** in the PR description above._'
 required_checks_description: >-
   Required checks: [verify]({ci_href}) runs format/lint/audit/test/build as separate
   per-concern checks for every PR (Angular's AOT build already type-checks, so there's no
   separate typecheck check). Coverage tables are posted separately.
 
 always_checklist_items:
-  - "No unintended secrets or local-only config committed"
+  - 'No unintended secrets or local-only config committed'
 
 fallback:
-  verify: "N/A - docs/tooling only; confirm locally if anything user-facing changed"
-  reviewer_focus: "Scope looks docs- or tooling-only; confirm there is no hidden runtime impact"
+  verify: 'N/A - docs/tooling only; confirm locally if anything user-facing changed'
+  reviewer_focus: 'Scope looks docs- or tooling-only; confirm there is no hidden runtime impact'
 
 tests_missing_rule:
   tests_area_id: tests
   trigger_areas: [battle, picker, display, core, app]
-  note: "Tests added or updated for changed behavior, or noted why not"
+  note: 'Tests added or updated for changed behavior, or noted why not'
 
 test_file_rule:
-  substrings: [".spec."]
-  note: "Test assertions cover the behavior under review rather than only implementation details"
+  substrings: ['.spec.']
+  note: 'Test assertions cover the behavior under review rather than only implementation details'
 
 verify_groups:
   full_suite:
-    - "`npm run lint`"
-    - "`npm run format:check`"
-    - "`npm run test:ci` or targeted Karma/Vitest specs for the changed area"
-    - "`npm run build`"
+    - '`npm run lint`'
+    - '`npm run format:check`'
+    - '`npm run test:ci` or targeted Karma/Vitest specs for the changed area'
+    - '`npm run build`'
   tests_only:
-    - "`npm run test:ci` or targeted specs"
+    - '`npm run test:ci` or targeted specs'
 
 areas:
   - id: battle
-    display: "battle simulation"
-    prefixes: ["src/app/features/battle/"]
+    display: 'battle simulation'
+    prefixes: ['src/app/features/battle/']
     verify_group: full_suite
     checklist:
-      - "Battle simulation results (damage, type effectiveness, special attacks) still match expected outcomes"
+      - 'Battle simulation results (damage, type effectiveness, special attacks) still match expected outcomes'
     reviewer_focus:
-      - "Battle math (type matchups, special attacks) and turn-order/state handling"
+      - 'Battle math (type matchups, special attacks) and turn-order/state handling'
 
   - id: picker
-    display: "Pokemon picker"
-    prefixes: ["src/app/features/pokemon-picker/"]
+    display: 'Pokemon picker'
+    prefixes: ['src/app/features/pokemon-picker/']
     verify_group: full_suite
     checklist:
-      - "Pokemon selection and type filtering behave correctly"
+      - 'Pokemon selection and type filtering behave correctly'
     reviewer_focus:
-      - "Pokemon selection/filtering UX and type-list correctness"
+      - 'Pokemon selection/filtering UX and type-list correctness'
 
   - id: display
-    display: "Pokemon display"
-    prefixes: ["src/app/features/pokemon-display/"]
+    display: 'Pokemon display'
+    prefixes: ['src/app/features/pokemon-display/']
     verify_group: full_suite
     checklist:
-      - "Pokemon card/details rendering still matches PokeAPI response shapes"
+      - 'Pokemon card/details rendering still matches PokeAPI response shapes'
     reviewer_focus:
-      - "Card/details rendering and PokeAPI data mapping"
+      - 'Card/details rendering and PokeAPI data mapping'
 
   - id: core
-    display: "core services / shared models"
-    prefixes: ["src/app/core/", "src/app/shared/"]
+    display: 'core services / shared models'
+    prefixes: ['src/app/core/', 'src/app/shared/']
     verify_group: full_suite
     checklist:
-      - "PokeAPI client and shared models still match the real API response shapes"
+      - 'PokeAPI client and shared models still match the real API response shapes'
     reviewer_focus:
-      - "PokeAPI client error handling and shared model shapes used across features"
+      - 'PokeAPI client error handling and shared model shapes used across features'
 
   - id: app
-    display: "app shell"
-    prefixes: ["src/app/app.component", "src/app/app.config", "src/main.ts"]
+    display: 'app shell'
+    prefixes: ['src/app/app.component', 'src/app/app.config', 'src/main.ts']
     verify_group: full_suite
     checklist:
-      - "App shell renders and routes correctly under the GitHub Pages base href"
+      - 'App shell renders and routes correctly under the GitHub Pages base href'
     reviewer_focus:
-      - "Routing and GitHub Pages base-href handling"
+      - 'Routing and GitHub Pages base-href handling'
 
   - id: styles
-    display: "styles"
-    prefixes: ["src/styles/", "src/styles.scss"]
+    display: 'styles'
+    prefixes: ['src/styles/', 'src/styles.scss']
     verify_group: full_suite
 
   - id: tests
-    display: "tests"
-    prefixes: [".spec."]
+    display: 'tests'
+    prefixes: ['.spec.']
     verify_group: tests_only
 
   - id: ci
-    display: "CI / GitHub"
-    prefixes: [".github/"]
+    display: 'CI / GitHub'
+    prefixes: ['.github/']
     verify_extra:
-      - "Review workflow syntax and required permissions in GitHub Actions"
+      - 'Review workflow syntax and required permissions in GitHub Actions'
     reviewer_focus:
-      - "Workflow event triggers, token permissions, and required-check names"
+      - 'Workflow event triggers, token permissions, and required-check names'
 
   - id: docs
-    display: "docs / agent guidance"
-    prefixes: ["README.md", "docs/", ".claude/skills/"]
+    display: 'docs / agent guidance'
+    prefixes: ['README.md', 'docs/', '.claude/skills/']
 
   - id: config
-    display: "tooling config"
+    display: 'tooling config'
     prefixes:
-      - "package.json"
-      - "package-lock.json"
-      - "angular.json"
-      - "tsconfig"
-      - "eslint.config"
-      - ".prettierrc"
-      - ".nvmrc"
+      - 'package.json'
+      - 'package-lock.json'
+      - 'angular.json'
+      - 'tsconfig'
+      - 'eslint.config'
+      - '.prettierrc'
+      - '.nvmrc'
     verify_group: full_suite
     reviewer_focus:
-      - "Dependency, Angular, TypeScript, ESLint, and Prettier changes that can affect local and CI runs"
+      - 'Dependency, Angular, TypeScript, ESLint, and Prettier changes that can affect local and CI runs'
