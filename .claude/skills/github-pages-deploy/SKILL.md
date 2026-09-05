@@ -25,7 +25,7 @@ build-command/path reference.
 ## Workflow responsibilities
 
 - **`deploy`** job in `test.yml` (`needs: [quality, unit-tests]`, only on push to `main`) calls
-  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml@v2` with this repo's actual
+  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml@v20` with this repo's actual
   build command (including the `.nojekyll` touch) and `dist-path: dist/gotta-catch-em-all/browser`.
   No artifact hand-off between jobs — the shared workflow does its own build in the same run.
 - Requires repo **Settings → Pages → Source: GitHub Actions**.
