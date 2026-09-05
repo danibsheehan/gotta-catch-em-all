@@ -24,10 +24,12 @@ jobs:
       checks: write
     uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v20
     with:
+      coverage-thresholds: '67 82'
       packages: |
         [{"name": "app", "path": ".",
           "test-command": "npm run test:ci",
           "build-command": "npx ng build --configuration production --base-href /${{ github.event.repository.name }}/",
           "coverage-file": "coverage/gotta-catch-em-all/cobertura-coverage.xml",
+          "coverage-minimum": 67,
           "setup-chrome": true,
           "paths": "app:\n  - 'src/**'\n  - 'public/**'\n  - 'package.json'\n  - 'package-lock.json'\n  - 'angular.json'\n  - 'tsconfig*.json'\n  - 'eslint.config.*'\n  - '.prettierrc*'\n  - '.prettierignore'\n  - '.nvmrc'\n  - 'index.html'\n  - '.github/workflows/**'\n  - '.github/dependabot.yml'\n  - '.github/labeler.yml'"}]

@@ -119,7 +119,7 @@
               "branches": 67,
               "functions": 88,
               "lines": 82,
-              "perFile": false
+              "perFile": true
             }
           }
         },
