@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { PokemonDetailsComponent } from 'src/app/features/pokemon-display/pokemon-details/pokemon-details.component';
 import { Pokemon, Stat } from 'src/app/shared/models/pokemon';
@@ -64,6 +66,8 @@ const REVEAL_STAGGER = 72;
 export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) pokemonChoice!: Partial<Pokemon>;
   @Input({ required: true }) pokemonOpponent!: Partial<Pokemon>;
+
+  @ViewChild('victorHeading') private victorHeading?: ElementRef<HTMLElement>;
 
   public choiceAttack: Stat | undefined;
   public opponentAttack: Stat | undefined;
@@ -158,6 +162,9 @@ export class PokemonBattleResultComponent implements OnChanges, OnDestroy {
       }
       this.isResolvingBattle = false;
       this.cdr.markForCheck();
+      if (outcome) {
+        queueMicrotask(() => this.victorHeading?.nativeElement.focus());
+      }
     }, 2000);
   }
 
