@@ -35,4 +35,22 @@ describe('BattleRecentMatchupsComponent', () => {
     expect(el.querySelector('.polaroid-vs')?.textContent).toContain('Pikachu');
     expect(el.textContent).toContain('×');
   });
+
+  it('should render a loss row correctly', () => {
+    entries$$.next([{ playerName: 'pikachu', opponentName: 'onix', playerWon: false, at: 1 }]);
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain('their sp.atk edged · loss');
+  });
+
+  it('titleCase should return the name unchanged when it is empty', () => {
+    const versus = fixture.componentInstance.versusLine({
+      playerName: '',
+      opponentName: 'onix',
+      playerWon: true,
+      at: 1,
+    });
+    expect(versus).toBe(' × Onix');
+  });
 });
