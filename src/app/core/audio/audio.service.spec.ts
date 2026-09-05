@@ -121,4 +121,55 @@ describe('AudioService', () => {
     expect(ctx.createOscillator).toHaveBeenCalledTimes(2);
     expect(ctx.createGain).toHaveBeenCalledTimes(2);
   });
+
+  it('should not attach a second unlock listener when one is already attached', () => {
+    const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
+    service.setSoundEnabled(true, true);
+    addEventListenerSpy.mockClear();
+
+    service.setSoundEnabled(true);
+
+    expect(addEventListenerSpy).not.toHaveBeenCalled();
+  });
+
+  it('should resume the audio context on first gesture after enabling without a user gesture, then stop listening', () => {
+    service.setSoundEnabled(true);
+    expect(resumeSpy).not.toHaveBeenCalled();
+
+    document.dispatchEvent(new Event('pointerdown'));
+    expect(resumeSpy).toHaveBeenCalledTimes(1);
+
+    document.dispatchEvent(new Event('pointerdown'));
+    expect(resumeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should fall back to webkitAudioContext when AudioContext is unavailable', () => {
+    const webkitCtxStub = { resume: vi.fn().mockResolvedValue(undefined) };
+    const webkitCtor = vi.fn().mockImplementation(function WebkitAudioContextMock(this: any) {
+      Object.assign(this, webkitCtxStub);
+      return webkitCtxStub;
+    } as unknown as () => AudioContext);
+    vi.stubGlobal('AudioContext', undefined);
+    vi.stubGlobal('webkitAudioContext', webkitCtor);
+    try {
+      service.setSoundEnabled(true, true);
+      expect(webkitCtor).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('should no-op safely when neither AudioContext nor webkitAudioContext exist', async () => {
+    vi.stubGlobal('AudioContext', undefined);
+    vi.stubGlobal('webkitAudioContext', undefined);
+    try {
+      service.setSoundEnabled(true, true);
+      service.playUiTick();
+      await Promise.resolve();
+
+      expect(resumeSpy).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
