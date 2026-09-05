@@ -27,7 +27,7 @@
       <span class="pokemon-type-loading" role="status" aria-busy="true">✨ loading names…</span>
     }
     @if (pokemonLoadError) {
-      <span class="pokemon-type-error">{{ pokemonLoadError }}</span>
+      <span class="pokemon-type-error" role="alert">{{ pokemonLoadError }}</span>
     }
     @if (pokemonNames.length) {
       <select

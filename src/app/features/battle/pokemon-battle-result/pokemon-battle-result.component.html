@@ -65,7 +65,9 @@
           <span class="battle-ribbon battle-ribbon--tape battle-ribbon--mystery"
             >type advantage?</span
           >
-          <h2 id="victor-heading" class="battle-result-heading">the victor 🏆</h2>
+          <h2 id="victor-heading" class="battle-result-heading" tabindex="-1" #victorHeading>
+            the victor 🏆
+          </h2>
         </header>
         <app-pokemon-details [pokemonDetails]="pokemonVictor ?? {}"></app-pokemon-details>
         <div class="battle-result-announce" aria-live="polite" aria-atomic="true">
