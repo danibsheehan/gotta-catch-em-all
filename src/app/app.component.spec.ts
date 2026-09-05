@@ -103,6 +103,57 @@ describe('AppComponent', () => {
     expect(app.arenaAmbientType(vm)).toBe('fire');
   });
 
+  it('arenaAmbientType should fall back to opponent types when player has none', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const vm: PokemonBattleVm = {
+      opponentLoading: false,
+      opponent: {
+        types: [{ slot: 1, type: { name: 'water', url: '' } }],
+      } as any,
+      player: {
+        types: [],
+      } as any,
+      playerError: '',
+      playerLoading: false,
+    };
+    expect(app.arenaAmbientType(vm)).toBe('water');
+  });
+
+  it('arenaAmbientType should return null when neither player nor opponent has types', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const vm: PokemonBattleVm = {
+      opponentLoading: false,
+      opponent: { types: [] } as any,
+      player: { types: [] } as any,
+      playerError: '',
+      playerLoading: false,
+    };
+    expect(app.arenaAmbientType(vm)).toBe(null);
+  });
+
+  it('onSoundSettingsChange should do nothing when event.target is not an input', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const setSoundEnabledSpy = vi.spyOn(app.audio, 'setSoundEnabled');
+
+    app.onSoundSettingsChange({ target: null } as unknown as Event);
+
+    expect(setSoundEnabledSpy).not.toHaveBeenCalled();
+  });
+
+  it('onSoundSettingsChange should enable sound from the checked input', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const setSoundEnabledSpy = vi.spyOn(app.audio, 'setSoundEnabled');
+    const fakeEvent = { target: { checked: true } } as unknown as Event;
+
+    app.onSoundSettingsChange(fakeEvent);
+
+    expect(setSoundEnabledSpy).toHaveBeenCalledWith(true, true);
+  });
+
   it('should expose player details and errors on the battle view model', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const battle = fixture.componentInstance.battle;
