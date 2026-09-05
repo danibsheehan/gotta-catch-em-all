@@ -17,17 +17,21 @@ build-command/path reference.
 ## Local vs CI
 
 - **package.json** script: `build:github-pages` uses `--base-href /gotta-catch-em-all/` (matches this repo name).
-- **`.github/workflows/test.yml`**'s `quality` job builds with the same command as a compile
-  check only (not used for the deployed artifact):
-  `npx ng build --configuration production --base-href /${{ github.event.repository.name }}/`
-  so the segment stays correct if the repo is renamed—then update the **npm script** to match.
+- **`.github/workflows/verify.yml`**'s build step (inside the shared `npm-verify.yml` job — see that
+  file's `uses:` line for the version pin) runs the same templated build command as a compile check
+  only (not used for the deployed artifact) — see that file for the exact command. If the repo is
+  renamed, update the **npm script** to match the templated segment.
 
 ## Workflow responsibilities
 
-- **`deploy`** job in `test.yml` (`needs: [quality, unit-tests]`, only on push to `main`) calls
-  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml@v20` with this repo's actual
-  build command (including the `.nojekyll` touch) and `dist-path: dist/gotta-catch-em-all/browser`.
-  No artifact hand-off between jobs — the shared workflow does its own build in the same run.
+- **`deploy`** job in **`.github/workflows/deploy-pages.yml`** (push to `main` only) calls
+  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml` (see `deploy-pages.yml`'s `uses:`
+  line for the version pin) with this repo's actual build command (including the `.nojekyll` touch)
+  and `dist-path: dist/gotta-catch-em-all/browser`.
+  No artifact hand-off — the shared workflow does its own build in the same run.
+- Deploy is **not** gated by an in-workflow `needs:` on `verify.yml`. It relies on the branch
+  ruleset requiring `verify.yml`'s check to pass before a push lands on `main` — see the
+  rationale comment at the top of `deploy-pages.yml`.
 - Requires repo **Settings → Pages → Source: GitHub Actions**.
 
 ## When to edit the deploy job
@@ -35,4 +39,5 @@ build-command/path reference.
 - Change Node version, install steps, or base-href strategy.
 - Change **output path** if `angular.json` `outputPath` changes — keep `dist-path` in the
   `deploy` job's `with:` block in sync.
-- Change the required-check names in `needs:` if `quality`/`unit-tests` are ever renamed or restructured.
+- If `verify.yml`'s required check name changes, update the branch ruleset's required-status-check
+  setting (not this file) — gating is via ruleset, not an in-workflow `needs:`.
