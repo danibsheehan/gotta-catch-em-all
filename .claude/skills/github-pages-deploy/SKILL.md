@@ -17,16 +17,17 @@ build-command/path reference.
 ## Local vs CI
 
 - **package.json** script: `build:github-pages` uses `--base-href /gotta-catch-em-all/` (matches this repo name).
-- **`.github/workflows/verify.yml`**'s build step (inside the shared `npm-verify.yml@v20` job) runs the
-  same templated build command as a compile check only (not used for the deployed artifact) — see that
-  file for the exact command. If the repo is renamed, update the **npm script** to match the templated
-  segment.
+- **`.github/workflows/verify.yml`**'s build step (inside the shared `npm-verify.yml` job — see that
+  file's `uses:` line for the version pin) runs the same templated build command as a compile check
+  only (not used for the deployed artifact) — see that file for the exact command. If the repo is
+  renamed, update the **npm script** to match the templated segment.
 
 ## Workflow responsibilities
 
 - **`deploy`** job in **`.github/workflows/deploy-pages.yml`** (push to `main` only) calls
-  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml@v20` with this repo's actual
-  build command (including the `.nojekyll` touch) and `dist-path: dist/gotta-catch-em-all/browser`.
+  `danibsheehan/dani-actions`'s shared `deploy-github-pages.yml` (see `deploy-pages.yml`'s `uses:`
+  line for the version pin) with this repo's actual build command (including the `.nojekyll` touch)
+  and `dist-path: dist/gotta-catch-em-all/browser`.
   No artifact hand-off — the shared workflow does its own build in the same run.
 - Deploy is **not** gated by an in-workflow `needs:` on `verify.yml`. It relies on the branch
   ruleset requiring `verify.yml`'s check to pass before a push lands on `main` — see the
