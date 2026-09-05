@@ -17,6 +17,7 @@ describe('PokemonBattleService', () => {
     scrollIntoViewSpy = vi
       .spyOn(HTMLElement.prototype, 'scrollIntoView')
       .mockImplementation(() => undefined);
+    scrollIntoViewSpy.mockClear();
     const arena = document.createElement('div');
     arena.id = 'battle-arena';
     document.body.appendChild(arena);
@@ -227,6 +228,45 @@ describe('PokemonBattleService', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(scrollIntoViewSpy).toHaveBeenCalledWith(expect.objectContaining({ block: 'start' }));
+  });
+
+  it('should not scroll when battle arena element is not in the DOM', async () => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    document.getElementById('battle-arena')?.remove();
+
+    service.selectPlayerPokemon('pikachu');
+    const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+    playerReq.flush({
+      name: 'pikachu',
+      sprites: { front_default: 'x' },
+      stats: [],
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(scrollIntoViewSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not scroll when window is unavailable', async () => {
+    const initial = httpMock.expectOne((r) => r.url.includes('/pokemon/'));
+    initial.flush({ name: 'foe', sprites: {}, stats: [] });
+
+    vi.stubGlobal('window', undefined);
+    try {
+      service.selectPlayerPokemon('pikachu');
+      const playerReq = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/pikachu');
+      playerReq.flush({
+        name: 'pikachu',
+        sprites: { front_default: 'x' },
+        stats: [],
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(scrollIntoViewSpy).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it('should scroll battle arena into view on playAgain', async () => {
