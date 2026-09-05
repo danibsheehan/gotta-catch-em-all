@@ -27,7 +27,10 @@ describe('AudioService', () => {
     };
     mockCtx.createOscillator.mockReturnValue({
       type: 'sine',
-      frequency: { setValueAtTime: vi.fn().mockName('setValueAtTime') },
+      frequency: {
+        setValueAtTime: vi.fn().mockName('setValueAtTime'),
+        exponentialRampToValueAtTime: vi.fn().mockName('exponentialRampToValueAtTime'),
+      },
       connect: vi
         .fn()
         .mockName('connect')
@@ -81,5 +84,41 @@ describe('AudioService', () => {
     service.setSoundEnabled(false);
     service.playBattleResult(true);
     expect(resumeSpy).not.toHaveBeenCalled();
+  });
+
+  it('playUiTick should create one oscillator and one gain node and connect/start/stop them', async () => {
+    service.setSoundEnabled(true, true);
+    const ctx = (service as unknown as { ctx: any }).ctx;
+
+    service.playUiTick();
+    await Promise.resolve();
+
+    expect(ctx.createOscillator).toHaveBeenCalledTimes(1);
+    expect(ctx.createGain).toHaveBeenCalledTimes(1);
+    const osc = ctx.createOscillator.mock.results[0].value;
+    expect(osc.start).toHaveBeenCalledTimes(1);
+    expect(osc.stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('playBattleResult(true) should create three oscillator/gain pairs for the win jingle', async () => {
+    service.setSoundEnabled(true, true);
+    const ctx = (service as unknown as { ctx: any }).ctx;
+
+    service.playBattleResult(true);
+    await Promise.resolve();
+
+    expect(ctx.createOscillator).toHaveBeenCalledTimes(3);
+    expect(ctx.createGain).toHaveBeenCalledTimes(3);
+  });
+
+  it('playBattleResult(false) should create two oscillator/gain pairs for the loss jingle', async () => {
+    service.setSoundEnabled(true, true);
+    const ctx = (service as unknown as { ctx: any }).ctx;
+
+    service.playBattleResult(false);
+    await Promise.resolve();
+
+    expect(ctx.createOscillator).toHaveBeenCalledTimes(2);
+    expect(ctx.createGain).toHaveBeenCalledTimes(2);
   });
 });
