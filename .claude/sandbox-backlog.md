@@ -29,6 +29,16 @@ listed below.
   - Acceptance: confirm the README palette table and SVG still match the current `:root`
     token values; if they've drifted, update `README.md` and `docs/readme-ui-palette.svg` to
     match — no token value changes. If nothing has drifted, close the item with no PR.
+- [ ] **Coverage: `app.component.ts`** (currently 87.5% branch coverage)
+  - Target: `src/app/app.component.ts` and its `.spec.ts`
+  - Acceptance: add Vitest cases for the currently-uncovered branches only (e.g. the
+    `prefers-reduced-motion` animation-provider branch, `@defer` prefetch conditions); no
+    changes to component behavior.
+- [ ] **Coverage: `type-matchup-flavor.ts`** (currently 78.6% branch coverage)
+  - Target: `src/app/features/battle/type-matchup-flavor.ts` and its `.spec.ts`
+  - Acceptance: add Vitest cases for the currently-uncovered branches only; test-only change,
+    no changes to flavor-text logic. (Flavor/helper logic, not orchestration or
+    `resolveSpecialAttackBattle()` — see the narrowed Tier C boundary below.)
 
 ## Tier B — `sandbox-tier-b` (agent opens PR, human merges)
 
@@ -46,9 +56,16 @@ Criteria for this tier: small refactors in presentation-only feature areas (not 
 Not eligible for autonomous PR creation under any circumstance. Listed here only so the
 boundary is explicit:
 
-- Anything touching `src/app/features/battle/` (battle orchestration or
-  `resolveSpecialAttackBattle()` / `special-attack-battle.ts`).
+- The battle orchestration/resolution core: `special-attack-battle.ts`,
+  `pokemon-battle.service.ts`, `pokemon-player.service.ts`, `pokemon-opponent.service.ts`,
+  `battle-history.service.ts` (all in `src/app/features/battle/`) — matches the
+  `resolveSpecialAttackBattle()` invariant and the orchestration services `AGENTS.md` names
+  separately from flavor/helpers and result/recent-matchups UI.
 - Any new feature, however small.
+
+Everything else under `src/app/features/battle/` (presentational components, flavor/helper
+logic) is eligible for Tier A/B per the criteria above — the boundary is the specific files
+listed, not the whole directory.
 
 ## How an item is worked
 
