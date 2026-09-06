@@ -115,12 +115,21 @@ Prettier formatting — was already documented in Test/CI parity and Definition 
   `docs/readme-ui-palette.svg`** in the same change — see the `foundations:doc-writer` skill.
 - **Commit secrets** or amend/force-push/skip hooks (`--no-verify`) without being explicitly
   asked.
-- **Open, push, or merge a PR unless the user asks.** (Agents never do this autonomously here.
-  The one repo-level exception is CI itself:
-  [`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml) auto-merges grouped
-  npm minor/patch Dependabot PRs once checks pass — that's GitHub Actions, not an agent action. A
-  scheduled routine in `danibsheehan/portfolio-automation` reads this repo read-only and may open
-  a PR _in a different repo_, `danibsheehan.github.io`; it never touches this one.)
+- **Open, push, or merge a PR unless the user asks — outside the sandbox backlog.** Agents
+  never do this autonomously for any other work in this repo. The exceptions:
+  - CI itself: [`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml)
+    auto-merges grouped npm minor/patch Dependabot PRs once checks pass — that's GitHub
+    Actions, not an agent action.
+  - **Sandbox backlog** ([`.claude/sandbox-backlog.md`](.claude/sandbox-backlog.md)): a
+    scheduled routine may open a PR for a listed item, labeled `agent-sandbox`. If the item
+    is also labeled `sandbox-tier-a`,
+    [`sandbox-auto-merge.yml`](.github/workflows/sandbox-auto-merge.yml) merges it
+    automatically once `verify` and `battle-invariant-check` pass. If checks fail, the
+    routine gets one fix retry before demoting the PR to `sandbox-needs-review` and stopping
+    — it never force-merges or loops indefinitely. No other work in this repo qualifies for
+    autonomous merge.
+  - A scheduled routine in `danibsheehan/portfolio-automation` reads this repo read-only and
+    may open a PR _in a different repo_, `danibsheehan.github.io`; it never touches this one.
 
 ## Definition of done
 

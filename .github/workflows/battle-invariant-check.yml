@@ -1,0 +1,25 @@
+# Heuristic sensor for the AGENTS.md invariant: battle win/loss rules must stay in
+# resolveSpecialAttackBattle() (special-attack-battle.ts). See scripts/check-battle-invariant.mjs.
+# Add this job's check name ("battle-invariant-check") to main's required status checks.
+
+name: Battle invariant check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: battle-invariant-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  battle-invariant-check:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/check-battle-invariant.mjs
