@@ -67,6 +67,21 @@ Everything else under `src/app/features/battle/` (presentational components, fla
 logic) is eligible for Tier A/B per the criteria above — the boundary is the specific files
 listed, not the whole directory.
 
+## Planned future addition — internationalization (not yet backlog-ready)
+
+Offering translations (i18n/l10n) is a real feature under consideration, but it's Tier C for
+its initial setup: choosing a library (`@angular/localize` vs. a runtime option like
+`ngx-translate`, with real trade-offs around bundle size and the GitHub Pages deploy), locale
+config, and wiring the first feature area are architectural decisions that need a human, not
+the routine. No repo currently has any i18n set up (`angular.json`'s `extract-i18n` target is
+just the unused Angular CLI default).
+
+Once that foundation exists — library chosen, locale config in place, one feature area wired
+by hand — the remaining string-extraction work per feature area becomes legitimate Tier A/B
+material (narrow scope, no architectural judgment, easy to verify: translation key exists,
+template references it, nothing else changed). Write those items here at that point, with
+concrete targets and acceptance criteria, once the foundation decisions are actually made.
+
 ## How an item is worked
 
 1. Routine picks the next unchecked Tier A or Tier B item (top to bottom).
