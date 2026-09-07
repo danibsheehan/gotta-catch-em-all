@@ -13,13 +13,13 @@ improvised at execution time.
 Criteria for this tier: coverage/docs-only changes with no behavior change, confined to files
 listed below.
 
-- [ ] **Coverage: `pokemon-type.component.ts`** (currently 86.7%, threshold 67%/82%)
+- [x] **Coverage: `pokemon-type.component.ts`** (currently 86.7%, threshold 67%/82%)
   - Target: `src/app/features/pokemon-picker/pokemon-type/pokemon-type.component.ts` and its
     `.spec.ts`
   - Acceptance: add Vitest cases for the currently-uncovered branches/error paths only: no
     changes to the component's public behavior; `npm run test:ci` coverage for this file
     increases; `format:check`, `lint`, `build` stay green.
-- [ ] **Coverage: `pokemon-battle-result.component.ts`** (currently 94.2%)
+- [x] **Coverage: `pokemon-battle-result.component.ts`** (currently 94.2%)
   - Target: `src/app/features/battle/pokemon-battle-result/pokemon-battle-result.component.ts`
     and its `.spec.ts`
   - Acceptance: same as above — test-only change, no source behavior change.
