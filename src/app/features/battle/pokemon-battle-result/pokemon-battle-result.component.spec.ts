@@ -168,6 +168,49 @@ describe('PokemonBattleResultComponent', () => {
     expect(battle.playAgain).toHaveBeenCalled();
   });
 
+  it('should treat neither stat as higher before the battle has resolved', () => {
+    expect(component.theirStatHigher).toBe(false);
+    expect(component.yourStatHigher).toBe(false);
+  });
+
+  it('should be a no-op when ngOnChanges fires with no tracked input changes', () => {
+    component.ngOnChanges({
+      pokemonChoice: new SimpleChange(null, pokemonChoiceStub, true),
+      pokemonOpponent: new SimpleChange(null, pokemonOpponentStub, true),
+    });
+    component.isResolvingBattle = false;
+
+    component.ngOnChanges({});
+
+    expect(component.isResolvingBattle).toBe(false);
+  });
+
+  it('should skip recording the match when a name is missing', async () => {
+    const noName: Pokemon = { ...pokemonChoiceStub, name: '' };
+    component.pokemonChoice = noName;
+    component.pokemonOpponent = pokemonOpponentStub;
+
+    component.ngOnChanges({
+      pokemonChoice: new SimpleChange(pokemonChoiceStub, noName, false),
+    });
+    await vi.advanceTimersByTimeAsync(2000);
+
+    expect(component.battleResult).toBeTruthy();
+    expect(battleHistory.recordMatch).not.toHaveBeenCalled();
+  });
+
+  it('should pick the type with the lowest slot as the primary type', () => {
+    const withTypes: Pokemon = {
+      ...pokemonChoiceStub,
+      types: [
+        { slot: 2, type: { name: 'electric', url: '' } },
+        { slot: 1, type: { name: 'psychic', url: '' } },
+      ],
+    };
+
+    expect((component as any).primaryTypeName(withTypes)).toBe('psychic');
+  });
+
   it('should leave result empty when special-attack stat is missing from both', async () => {
     const noSpAtk: Pokemon = {
       name: 'a',
