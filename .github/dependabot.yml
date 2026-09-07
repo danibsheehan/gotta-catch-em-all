@@ -1,11 +1,11 @@
-# Weekly version updates for npm and GitHub Actions.
+# Daily version updates for npm and GitHub Actions.
 # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
     open-pull-requests-limit: 10
     groups:
       npm-minor-and-patch:
@@ -18,5 +18,5 @@ updates:
     # Action SHA/tag bumps stay reviewable one at a time.
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
     open-pull-requests-limit: 10
