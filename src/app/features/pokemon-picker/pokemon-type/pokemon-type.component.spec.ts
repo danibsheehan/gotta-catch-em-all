@@ -150,4 +150,107 @@ describe('PokemonTypeComponent', () => {
       expect(component.isLoadingPokemonNames).toBe(false);
     });
   });
+
+  describe('onDocumentKeydown()', () => {
+    it('should not close the dropdown for a non-Escape key while open', () => {
+      component.toggleTypeDropdown();
+      expect(component.isOpen).toBe(true);
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+
+      expect(component.isOpen).toBe(true);
+    });
+
+    it('should be a no-op for Escape when the dropdown is already closed', () => {
+      expect(component.isOpen).toBe(false);
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+
+      expect(component.isOpen).toBe(false);
+    });
+  });
+
+  describe('typeGlyph', () => {
+    it('should fall back to the default glyph when there is no pokemon type', () => {
+      component.pokemonType = undefined as unknown as PokemonType;
+      expect(component.typeGlyph).toBe('◆');
+    });
+
+    it('should fall back to the default glyph for a type without a mapped glyph', () => {
+      component.pokemonType = { name: 'unmapped-type', url: pokemonTypeStub.url };
+      expect(component.typeGlyph).toBe('◆');
+    });
+  });
+
+  describe('dataTypeAttr', () => {
+    it('should be empty when there is no pokemon type', () => {
+      component.pokemonType = undefined as unknown as PokemonType;
+      expect(component.dataTypeAttr).toBe('');
+    });
+  });
+
+  describe('prefetch with no type name', () => {
+    it('should skip the catalog call and stop checking when the pokemon type has no name', () => {
+      pokemonCatalogSpy.getPokemonByType.mockClear();
+      const noNameFixture = TestBed.createComponent(PokemonTypeComponent);
+      const noNameComp = noNameFixture.componentInstance;
+      noNameComp.pokemonType = { name: '', url: pokemonTypeStub.url };
+      noNameComp.ngOnChanges();
+      noNameFixture.detectChanges();
+
+      expect(noNameComp.isCheckingTypePokemon).toBe(false);
+      expect(pokemonCatalogSpy.getPokemonByType).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('loadPokemonNames() after a prefetch error', () => {
+    it('should populate pokemon and clear the error when the retried load succeeds', () => {
+      pokemonCatalogSpy.getPokemonByType.mockReturnValueOnce(throwError(() => new Error('failed')));
+      const retryFixture = TestBed.createComponent(PokemonTypeComponent);
+      const retryComp = retryFixture.componentInstance;
+      retryComp.pokemonType = pokemonTypeStub;
+      retryComp.ngOnChanges();
+      retryFixture.detectChanges();
+
+      expect(retryComp.pokemonNames).toEqual([]);
+      expect(retryComp.typeHasNoPokemon).toBe(false);
+
+      retryComp.toggleTypeDropdown();
+
+      expect(retryComp.pokemonNames).toEqual(['pikachu', 'raichu']);
+      expect(retryComp.pokemonLoadError).toBe('');
+      expect(retryComp.isLoadingPokemonNames).toBe(false);
+    });
+
+    it('should show a no-pokemon message when the retried load succeeds with an empty list', () => {
+      pokemonCatalogSpy.getPokemonByType.mockReturnValueOnce(throwError(() => new Error('failed')));
+      pokemonCatalogSpy.getPokemonByType.mockReturnValueOnce(of([]));
+      const retryFixture = TestBed.createComponent(PokemonTypeComponent);
+      const retryComp = retryFixture.componentInstance;
+      retryComp.pokemonType = pokemonTypeStub;
+      retryComp.ngOnChanges();
+      retryFixture.detectChanges();
+
+      retryComp.toggleTypeDropdown();
+
+      expect(retryComp.pokemonNames).toEqual([]);
+      expect(retryComp.pokemonLoadError).toBe('👀 no electric crew in the dex rn');
+    });
+  });
+
+  describe('private no-op guards', () => {
+    it('closeDropdown() should no-op when already closed', () => {
+      expect(component.isOpen).toBe(false);
+
+      expect(() => (component as any).closeDropdown()).not.toThrow();
+
+      expect(component.isOpen).toBe(false);
+    });
+
+    it('queueFocusPokemonSelect() should no-op when the dropdown is closed', () => {
+      expect(component.isOpen).toBe(false);
+
+      expect(() => (component as any).queueFocusPokemonSelect()).not.toThrow();
+    });
+  });
 });
