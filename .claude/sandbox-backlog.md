@@ -23,7 +23,7 @@ listed below.
   - Target: `src/app/features/battle/pokemon-battle-result/pokemon-battle-result.component.ts`
     and its `.spec.ts`
   - Acceptance: same as above — test-only change, no source behavior change.
-- [ ] **Docs drift check: palette table vs. `_tokens.scss`**
+- [x] **Docs drift check: palette table vs. `_tokens.scss`**
   - Target: `README.md` (palette table), `docs/readme-ui-palette.svg`,
     `src/styles/_tokens.scss` (read-only reference, not edited by this task)
   - Acceptance: confirm the README palette table and SVG still match the current `:root`
