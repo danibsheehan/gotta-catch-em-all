@@ -108,6 +108,15 @@ plugin, so a non-conforming `git checkout -b`/`git switch -c` is blocked automat
 bundles multiple distinct concerns, break it into an ordered sequence of small,
 independently reviewable chunks first; skip it for single-file or one-line fixes.
 
+One more from the same plugin covers the handoff from a finalized plan to a merged PR:
+**`foundations:pr-stack-ship`** — once a `pr-chunk-plan`'d checklist above is finalized,
+use it while executing that plan to branch, commit, and open a PR per chunk as each one is
+completed, retargeting/rebasing later PRs in the stack as earlier ones merge.
+**`foundations:pr-ready`** — before opening any PR (chunked or not), run this repo's local
+CI-parity checks and prepare the PR with it. **`foundations:pr-summary-draft`** — when
+writing or updating that PR's description, use it to draft the Summary and How-to-verify
+sections from the actual diff and commits, not just which paths changed.
+
 ## Constraints — do not
 
 - **Commit or push directly to `main`.** Always branch first, following
