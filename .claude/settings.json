@@ -2,6 +2,18 @@
   "enabledPlugins": {
     "foundations@dani-foundations": true
   },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  },
   "extraKnownMarketplaces": {
     "dani-foundations": {
       "source": {
@@ -23,13 +35,16 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git checkout -b *)",
+      "Bash(git checkout -B *)",
       "Bash(git switch -c *)",
       "Bash(git push origin *)",
       "Bash(git push -u origin *)",
-      "Bash(npm install)",
+      "Bash(npm install*)",
       "Bash(npm run *)",
       "Bash(npm audit*)",
       "Bash(npx prettier*)",
+      "Bash(npx knip*)",
+      "Bash(cat >> *)",
       "mcp__github__create_pull_request",
       "mcp__github__issue_write",
       "mcp__github__update_pull_request",
