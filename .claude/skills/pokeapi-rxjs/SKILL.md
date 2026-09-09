@@ -18,6 +18,7 @@ description: PokeAPI access and RxJS usage in gotta-catch-em-all—PokeApiClient
 ## Caching streams
 
 - **Type list** and **per-type Pokémon lists** are cached in **`PokemonCatalogService`** (`src/app/features/pokemon-picker/`) with `shareReplay(1)` behind private fields. Extending this service: keep one shared observable per resource; do not replace cached observables on every call.
+- For general caching/rate-limit principles beyond this repo's own conventions, see the **`foundations:caching-and-upstream-perf`** skill.
 
 ## Errors and retries (feature layer)
 

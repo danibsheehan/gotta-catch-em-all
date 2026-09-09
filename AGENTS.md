@@ -42,7 +42,9 @@ This is the same set of checks `.github/workflows/verify.yml` runs (via dani-act
 required check per concern (e.g. `verify / lint (app)`, `verify / test (app)`); Angular's
 AOT build already type-checks, so there's no separate typecheck job. `npm test` runs tests
 in watch mode; use that while iterating on a single suite. See the **`definition-of-done`**
-skill for exactly when a GitHub Pages build check is also required.
+skill for exactly when a GitHub Pages build check is also required, and the
+**`foundations:coverage-gap-diagnosis`** skill when `test:ci` coverage drops or sits near a
+threshold and you need the specific untested branches, not just the percentage.
 
 ## Conventions
 
@@ -52,6 +54,7 @@ skill for exactly when a GitHub Pages build check is also required.
 - **`@angular/platform-browser/animations`**: `provideAnimations()` vs `provideNoopAnimations()` based on **`prefers-reduced-motion`** (reduced motion → noop).
 - New UI lives under `src/app/features/<feature>/` with colocated `*.component.ts` / `*.html` / `*.scss` as existing features do.
 - Type-picker region: **`@defer`** in the app shell so battle chrome can paint first (viewport + idle prefetch) — preserve that pattern when changing `AppComponent`.
+- UI/UX changes (new components, ARIA, focus, keyboard, motion): see the **`foundations:accessibility-a11y`** skill. Bundle-size or load-perf changes (code splitting, lazy loading, the `@defer` pattern above, `lighthouse.yml`): see **`foundations:bundle-performance`**.
 
 ### Formatting (Prettier)
 
@@ -74,6 +77,7 @@ skill for exactly when a GitHub Pages build check is also required.
 - **`PokemonCatalogService`** (`features/pokemon-picker/`) caches the type index and per-type lists with **`shareReplay(1)`** on **singleton** observables (private fields). New subscribers must reuse those streams; avoid re-creating pipes that drop the cache.
 - Path segments for names/ids go through **`PokeApiClient`**'s `encodePathSegment` (via `getTypeDetail` / `getPokemon`). Preserve that for any new endpoints on the client.
 - Random opponent ids are **`1…environment.maxPokemonSpeciesId`** (inclusive upper bound from env).
+- Adding caching, retries, or rate-limit handling for PokeAPI calls: see **`foundations:caching-and-upstream-perf`** (general principles) alongside this repo's own caching conventions above.
 
 ### Battle resolution
 
@@ -138,7 +142,9 @@ sections from the actual diff and commits, not just which paths changed.
   never do this autonomously for any other work in this repo. The exceptions:
   - CI itself: [`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml)
     auto-merges grouped npm minor/patch Dependabot PRs once checks pass — that's GitHub
-    Actions, not an agent action.
+    Actions, not an agent action. For the Dependabot PRs this doesn't cover (majors,
+    ungrouped github-actions bumps), see the **`foundations:dependabot-triage`** skill
+    rather than merging them by hand.
   - **Sandbox backlog** ([`.claude/sandbox-backlog.md`](.claude/sandbox-backlog.md)): a
     scheduled routine may open a PR for a listed item, labeled `agent-sandbox`. If the item
     is also labeled `sandbox-tier-a`,
@@ -156,5 +162,8 @@ sections from the actual diff and commits, not just which paths changed.
   check (`npm run format:check`, `npm run lint`, `npm run test:ci` for touched suites). Run
   `npm run build:github-pages` when the change touches routing, base `href`, deploy scripts,
   or `.github/workflows/deploy-pages.yml` — see the `foundations:definition-of-done` skill.
+  After a dependency bump (Dependabot or manual) that changes a pinned version named in this
+  file (Angular, Node, or a workflow's `uses:` pin), see **`foundations:doc-sync-patch`** to
+  keep those version references in sync.
 - **PR done**: full sequence under Test / CI parity above, green. Commit, push, or open a PR
   only when the user asks.
