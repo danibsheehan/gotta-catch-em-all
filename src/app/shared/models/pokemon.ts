@@ -4,13 +4,13 @@ export interface PokemonBrief {
 }
 
 /** PokeAPI `NamedAPIResource` shape (subset). */
-export interface NamedApiResource {
+interface NamedApiResource {
   name: string;
   url: string;
 }
 
 /** Slot + type entry from `GET /pokemon/{id}` — first slot is primary. */
-export interface PokemonTypeSlot {
+interface PokemonTypeSlot {
   slot: number;
   type: NamedApiResource;
 }
@@ -23,7 +23,7 @@ export interface Pokemon {
   types?: PokemonTypeSlot[];
 }
 
-export interface SpritesObj {
+interface SpritesObj {
   front_default: string;
 }
 
@@ -32,6 +32,6 @@ export interface Stat {
   stat: StatObj;
 }
 
-export interface StatObj {
+interface StatObj {
   name: string;
 }
