@@ -99,10 +99,20 @@ This repo also installs the `foundations` plugin from the `dani-foundations` mar
 verified generic enough on its own (the GitHub-Pages-build trigger conditions are already in
 Definition of done below; the local `test-generator` skill's Angular patterns are now in
 `foundations:angular-vitest-testing`, and its only repo-specific content — `test:ci`,
-Prettier formatting — was already documented in Test/CI parity and Definition of done).
+Prettier formatting — was already documented in Test/CI parity and Definition of done). Two
+more from the same plugin apply to how any task here gets branched and scoped:
+**`foundations:branch-naming`** — every branch follows `<type>/<slug>`
+(Conventional-Commits-style type prefix); enforced by a `PreToolUse` hook shipped with the
+plugin, so a non-conforming `git checkout -b`/`git switch -c` is blocked automatically.
+**`foundations:pr-chunk-plan`** — before starting a task that touches 3 or more files, or
+bundles multiple distinct concerns, break it into an ordered sequence of small,
+independently reviewable chunks first; skip it for single-file or one-line fixes.
 
 ## Constraints — do not
 
+- **Commit or push directly to `main`.** Always branch first, following
+  `foundations:branch-naming`'s `<type>/<slug>` convention, then open a PR — even for small
+  or config-only changes.
 - **Scatter raw `HttpClient` calls in features.** All PokeAPI HTTP goes through
   **`PokeApiClient`** (`src/app/core/api/`).
 - **Reimplement battle win/loss rules outside `resolveSpecialAttackBattle()`**
