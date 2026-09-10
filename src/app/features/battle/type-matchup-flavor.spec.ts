@@ -16,6 +16,10 @@ describe('typeMatchupMicrocopy', () => {
     expect(typeMatchupMicrocopy(undefined, 'fire')).toBeNull();
     expect(typeMatchupMicrocopy('fire', undefined)).toBeNull();
   });
+
+  it('returns null for a known, non-mirror pair with no authored line', () => {
+    expect(typeMatchupMicrocopy('normal', 'fire')).toBeNull();
+  });
 });
 
 describe('sessionBattleQuip', () => {
@@ -25,5 +29,9 @@ describe('sessionBattleQuip', () => {
 
   it('returns a non-empty string', () => {
     expect(sessionBattleQuip('x', 'y').length).toBeGreaterThan(0);
+  });
+
+  it('falls back to empty strings when names are missing', () => {
+    expect(sessionBattleQuip(undefined, undefined).length).toBeGreaterThan(0);
   });
 });
