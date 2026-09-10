@@ -22,7 +22,7 @@ jobs:
       contents: read
       pull-requests: write
       checks: write
-    uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v27
+    uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v29
     with:
       coverage-thresholds: '67 82'
       packages: |
