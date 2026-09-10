@@ -44,6 +44,7 @@
       "Bash(npm audit*)",
       "Bash(npx prettier*)",
       "Bash(npx knip*)",
+      "Bash(npx eslint*)",
       "Bash(cat >> *)",
       "mcp__github__create_pull_request",
       "mcp__github__issue_write",
@@ -54,8 +55,10 @@
       "mcp__github__get_check_run",
       "mcp__github__get_job_logs",
       "mcp__github__get_me",
+      "mcp__github__actions_list",
       "mcp__github__subscribe_pr_activity",
-      "mcp__github__unsubscribe_pr_activity"
+      "mcp__github__unsubscribe_pr_activity",
+      "mcp__Claude_Code_Remote__subscribe_pr_activity"
     ],
     "deny": [
       "Bash(git push --force*)",
