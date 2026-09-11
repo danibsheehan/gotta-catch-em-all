@@ -145,7 +145,7 @@ sections from the actual diff and commits, not just which paths changed.
     Actions, not an agent action. For the Dependabot PRs this doesn't cover (majors,
     ungrouped github-actions bumps), see the **`foundations:dependabot-triage`** skill
     rather than merging them by hand.
-  - **Sandbox backlog** ([`.claude/sandbox-backlog.md`](.claude/sandbox-backlog.md)): a
+  - **Sandbox backlog** ([`sandbox/sandbox-backlog.md`](sandbox/sandbox-backlog.md)): a
     scheduled routine may open a PR for a listed item, labeled `agent-sandbox`. If the item
     is also labeled `sandbox-tier-a`,
     [`sandbox-auto-merge.yml`](.github/workflows/sandbox-auto-merge.yml) merges it
