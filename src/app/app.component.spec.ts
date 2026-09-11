@@ -133,6 +133,21 @@ describe('AppComponent', () => {
     expect(app.arenaAmbientType(vm)).toBe(null);
   });
 
+  it('arenaAmbientType should return null when the primary type has no name', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const vm: PokemonBattleVm = {
+      opponentLoading: false,
+      opponent: { types: [] } as any,
+      player: {
+        types: [{ slot: 1, type: { name: undefined, url: '' } }],
+      } as any,
+      playerError: '',
+      playerLoading: false,
+    };
+    expect(app.arenaAmbientType(vm)).toBe(null);
+  });
+
   it('onSoundSettingsChange should do nothing when event.target is not an input', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
