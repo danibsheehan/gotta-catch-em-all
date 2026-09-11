@@ -1,6 +1,6 @@
 # Auto-merges only sandbox-backlog PRs labeled both `agent-sandbox` and `sandbox-tier-a`,
 # once required checks (verify, battle-invariant-check) pass. See the sandbox exception in
-# AGENTS.md and .claude/sandbox-backlog.md. Gate is by label pair, not actor — the sandbox
+# AGENTS.md and sandbox/sandbox-backlog.md. Gate is by label pair, not actor — the sandbox
 # routine acts under a personal token, not a bot identity, so the label pair is the only
 # reliable signal that a PR came from the sandbox backlog. Both labels are applied by the
 # routine itself when it opens the PR; never apply them by hand.

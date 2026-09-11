@@ -8,6 +8,12 @@ low blast radius before considering any expansion beyond this repo.
 Each item lists its tier, target files, and acceptance criteria up front so nothing is
 improvised at execution time.
 
+This directory lives at the repo root, not under `.claude/`, on purpose: `.claude/` is a
+Claude Code protected path, so writes to it are never auto-approved (even with a matching
+`permissions.allow` rule) except in `bypassPermissions` mode — which cloud/scheduled sessions
+can't select. The routine needs unattended writes to `sandbox-log.md` every run, so these
+files must stay outside `.claude/`.
+
 ## Tier A — `sandbox-tier-a` (agent opens PR, auto-merges on green checks, no human review)
 
 Criteria for this tier: coverage/docs-only changes with no behavior change, confined to files
