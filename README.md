@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-22.0-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 22 — accent-lilac-deep on outline"></a>
+  <a href="https://angular.dev/"><img src="https://img.shields.io/badge/ANGULAR-22.1-6f3cff?style=for-the-badge&logo=angular&logoColor=ffee33&labelColor=141414" alt="Angular 22 — accent-lilac-deep on outline"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TYPESCRIPT-6.0-ffee33?style=for-the-badge&logo=typescript&logoColor=141414&labelColor=6f3cff" alt="TypeScript — accent-primary on lilac-deep"></a>
   <a href="https://rxjs.dev/"><img src="https://img.shields.io/badge/RxJS-7.8-b388ff?style=for-the-badge&logo=reactivex&logoColor=ffee33&labelColor=141414" alt="RxJS — accent-lilac on outline"></a>
   <br>
@@ -222,13 +222,14 @@ npm run build:github-pages
 
 Pushes to **`main`** and pull requests run **`verify.yml`** (via dani-actions' shared `npm-verify.yml`), as separate parallel jobs — one required check per concern:
 
-| Check                       | Command / check                                                                                                                              |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`verify / format (app)`** | `npm run format:check` — always runs, even on docs-only PRs                                                                                  |
-| **`verify / lint (app)`**   | `npm run lint` — skipped on docs/skills-only PRs (still reports green)                                                                       |
-| **`verify / audit (app)`**  | `npm audit --audit-level=high` — skipped on docs/skills-only PRs                                                                             |
-| **`verify / test (app)`**   | Chrome + `npm run test:ci` with coverage — skipped on docs/skills-only PRs                                                                   |
-| **`verify / build (app)`**  | Pages-ready `ng build` (Angular's AOT compile already type-checks, so there's no separate typecheck check) — skipped on docs/skills-only PRs |
+| Check                        | Command / check                                                                                                                                                                                                                                                                                                    |
+| :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`verify / format (app)`**  | `npm run format:check` — always runs, even on docs-only PRs                                                                                                                                                                                                                                                        |
+| **`verify / lint (app)`**    | `npm run lint` — skipped on docs/skills-only PRs (still reports green)                                                                                                                                                                                                                                             |
+| **`verify / audit (app)`**   | `npm audit --audit-level=high` — skipped on docs/skills-only PRs                                                                                                                                                                                                                                                   |
+| **`verify / test (app)`**    | Chrome + `npm run test:ci` with coverage — skipped on docs/skills-only PRs                                                                                                                                                                                                                                         |
+| **`verify / build (app)`**   | Pages-ready `ng build` (Angular's AOT compile already type-checks, so there's no separate typecheck check) — skipped on docs/skills-only PRs                                                                                                                                                                       |
+| **`battle-invariant-check`** | [`scripts/check-battle-invariant.mjs`](scripts/check-battle-invariant.mjs) via [`battle-invariant-check.yml`](.github/workflows/battle-invariant-check.yml) — guards that battle win/loss rules stay in `resolveSpecialAttackBattle()`; runs on **every** push to `main` and PR, not skipped on docs-only changes. |
 
 **GitHub Pages:** deploy lives in its own **`deploy-pages.yml`**, triggered directly on push to `main` — it does its own `ng build` rather than reusing an artifact from `verify.yml`, since the two are separate files with separate triggers. Local parity: `npm run format:check && npm run lint && npm run test:ci && npm run build` (and `npm audit --audit-level=high` when touching deps).
 
@@ -256,8 +257,13 @@ still gets a human review before it merges.
   — auto-merges (squash) only the grouped `npm-minor-and-patch` Dependabot PRs once required
   checks pass. Ungrouped npm majors and GitHub Actions bumps from `.github/dependabot.yml` stay
   manual — reviewed and merged by hand.
-- **`dependabot-triage` skill** — not ported to this repo yet either; the Dependabot backlog here
-  is small enough to review directly.
+- **`foundations:dependabot-triage` skill** — reviews the Dependabot PRs the auto-merge workflow
+  above doesn't cover (npm majors, ungrouped GitHub Actions bumps) and merges only the ones
+  explicitly named; see `AGENTS.md`.
+- **Sandbox auto-merge** ([`sandbox-auto-merge.yml`](.github/workflows/sandbox-auto-merge.yml))
+  — auto-merges (squash) sandbox-backlog PRs labeled both `agent-sandbox` and `sandbox-tier-a`
+  once `verify` and `battle-invariant-check` pass; see the sandbox exception in `AGENTS.md` and
+  [`sandbox/sandbox-backlog.md`](sandbox/sandbox-backlog.md).
 - **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
   [`danibsheehan/portfolio-automation`](https://github.com/danibsheehan/portfolio-automation)'s
   [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.claude/skills/weekly-project-update/SKILL.md)
@@ -296,10 +302,10 @@ This project is developed with Claude Code. Conventions live directly in
 `.cursor/rules/*.mdc` files. `.cursor/skills` is kept only as a symlink to the canonical
 `.claude/skills/` directory, for compatibility if this repo is opened in Cursor.
 
-| Path                                   | Purpose                                                                                                                                          |
-| :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.claude/skills/*/`                    | Canonical skills: definition-of-done (includes `format:check`), GitHub Pages, PokeAPI/RxJS, Vitest, doc writer — `.cursor/skills` symlinks here. |
-| `.prettierrc.json` / `.prettierignore` | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.                                                |
+| Path                                   | Purpose                                                                                                                                                                                                                         |
+| :------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.claude/skills/*/`                    | Repo-local canonical skills — `github-pages-deploy`, `pokeapi-rxjs` — `.cursor/skills` symlinks here. `definition-of-done`, Vitest testing, and doc writer come from the installed `foundations` plugin instead of living here. |
+| `.prettierrc.json` / `.prettierignore` | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.                                                                                                                               |
 
 ```
 ██████████████████████████████████████████████████████████████████████████████
