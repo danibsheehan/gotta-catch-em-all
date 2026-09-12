@@ -72,7 +72,7 @@ on these.
   - Acceptance: confirm the README palette table and SVG still match the current `:root`
     token values; if they've drifted, update `README.md` and `docs/readme-ui-palette.svg` to
     match — no token value changes. If nothing has drifted, close the item with no PR.
-- [ ] **Lint hygiene: enable `prefer-const`, `no-var`, and null-safe `eqeqeq`**
+- [x] **Lint hygiene: enable `prefer-const`, `no-var`, and null-safe `eqeqeq`**
   - Target: `eslint.config.js` only, plus any source file the new rules surface a violation in
   - Acceptance: add `'prefer-const': 'error'`, `'no-var': 'error'`, and
     `'eqeqeq': ['error', 'always', { null: 'ignore' }]` to the `**/*.ts` rule block (the

@@ -35,6 +35,9 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      'prefer-const': 'error',
+      'no-var': 'error',
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
     },
   },
   {
