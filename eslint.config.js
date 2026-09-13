@@ -7,6 +7,11 @@ const eslintConfigPrettier = require('eslint-config-prettier');
 
 module.exports = defineConfig([
   {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+  },
+  {
     files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,

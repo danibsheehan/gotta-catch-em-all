@@ -83,7 +83,7 @@ on these.
     `== null`/`!= null` idiom, stop and demote to `sandbox-needs-review` rather than resolving
     it — a real `==`/`!=` mismatch is a judgment call, not mechanical. `format:check`,
     `test:ci`, `build` stay green.
-- [ ] **Lint hygiene: enable `reportUnusedDisableDirectives`**
+- [x] **Lint hygiene: enable `reportUnusedDisableDirectives`**
   - Target: `eslint.config.js`, plus any file with a stale `eslint-disable` comment it flags
   - Acceptance: add `linterOptions: { reportUnusedDisableDirectives: 'error' }` to the config.
     Run `npm run lint`; remove any `eslint-disable` comment it flags as unused. If it flags
