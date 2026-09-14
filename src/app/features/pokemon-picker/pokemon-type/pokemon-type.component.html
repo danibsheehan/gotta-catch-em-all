@@ -23,11 +23,13 @@
     role="region"
     [attr.aria-labelledby]="'type-btn-' + pokemonType.name"
   >
-    @if (isLoadingPokemonNames) {
-      <span class="pokemon-type-loading" role="status" aria-busy="true">✨ loading names…</span>
-    }
-    @if (pokemonLoadError) {
-      <span class="pokemon-type-error" role="alert">{{ pokemonLoadError }}</span>
+    @if (statusMessage; as status) {
+      <span
+        [class]="status.cssClass"
+        [attr.role]="status.role"
+        [attr.aria-busy]="status.ariaBusy"
+        >{{ status.text }}</span
+      >
     }
     @if (pokemonNames.length) {
       <select
@@ -41,9 +43,6 @@
           <option [value]="pokemonName">{{ pokemonName }}</option>
         }
       </select>
-    }
-    @if (!isLoadingPokemonNames && !pokemonLoadError && !pokemonNames.length) {
-      <span class="pokemon-type-loading">👀 no {{ pokemonType.name }} friends here…</span>
     }
   </div>
 }
