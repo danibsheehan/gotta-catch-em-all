@@ -96,7 +96,7 @@ on these.
 
 Criteria for this tier: small refactors in presentation-only feature areas (not battle logic).
 
-- [ ] **Reduce template duplication in `pokemon-picker/`**
+- [x] **Reduce template duplication in `pokemon-picker/`**
   - Target: `src/app/features/pokemon-picker/pokemon-selector/`,
     `src/app/features/pokemon-picker/pokemon-type/`
   - Acceptance: no behavior/visual change; existing tests still pass without modification

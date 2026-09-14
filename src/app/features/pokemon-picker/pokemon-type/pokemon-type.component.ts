@@ -17,6 +17,13 @@ import { AudioService } from 'src/app/core/audio/audio.service';
 import { PokemonBattleService } from 'src/app/features/battle/pokemon-battle.service';
 import { PokemonCatalogService } from '../pokemon-catalog.service';
 
+interface TypeStatusMessage {
+  text: string;
+  cssClass: string;
+  role: 'status' | 'alert' | null;
+  ariaBusy: boolean | null;
+}
+
 const TYPE_GLYPHS: Record<string, string> = {
   bug: '🐛',
   dark: '🌙',
@@ -57,6 +64,35 @@ export class PokemonTypeComponent implements OnChanges, OnInit, OnDestroy {
   get typeGlyph(): string {
     const name = this.pokemonType?.name;
     return name ? (TYPE_GLYPHS[name] ?? '◆') : '◆';
+  }
+
+  /** The single loading/error/empty status line shown below the type button, if any. */
+  get statusMessage(): TypeStatusMessage | null {
+    if (this.isLoadingPokemonNames) {
+      return {
+        text: '✨ loading names…',
+        cssClass: 'pokemon-type-loading',
+        role: 'status',
+        ariaBusy: true,
+      };
+    }
+    if (this.pokemonLoadError) {
+      return {
+        text: this.pokemonLoadError,
+        cssClass: 'pokemon-type-error',
+        role: 'alert',
+        ariaBusy: null,
+      };
+    }
+    if (!this.pokemonNames.length) {
+      return {
+        text: `👀 no ${this.pokemonType.name} friends here…`,
+        cssClass: 'pokemon-type-loading',
+        role: null,
+        ariaBusy: null,
+      };
+    }
+    return null;
   }
 
   @ViewChild('typeButton') typeButton?: ElementRef<HTMLButtonElement>;
