@@ -189,6 +189,45 @@ describe('PokemonTypeComponent', () => {
     });
   });
 
+  describe('statusMessage', () => {
+    it('should return a loading status message while pokemon names are loading', () => {
+      component.isLoadingPokemonNames = true;
+
+      expect(component.statusMessage).toEqual({
+        text: '✨ loading names…',
+        cssClass: 'pokemon-type-loading',
+        role: 'status',
+        ariaBusy: true,
+      });
+    });
+
+    it('should return an error status message when there is a load error', () => {
+      component.pokemonLoadError = "😵 couldn't fetch electric — tap refresh?";
+
+      expect(component.statusMessage).toEqual({
+        text: "😵 couldn't fetch electric — tap refresh?",
+        cssClass: 'pokemon-type-error',
+        role: 'alert',
+        ariaBusy: null,
+      });
+    });
+
+    it('should return a no-pokemon status message when there are no pokemon names', () => {
+      component.pokemonNames = [];
+
+      expect(component.statusMessage).toEqual({
+        text: '👀 no electric friends here…',
+        cssClass: 'pokemon-type-loading',
+        role: null,
+        ariaBusy: null,
+      });
+    });
+
+    it('should return null once pokemon names have loaded with no error', () => {
+      expect(component.statusMessage).toEqual(null);
+    });
+  });
+
   describe('prefetch with no type name', () => {
     it('should skip the catalog call and stop checking when the pokemon type has no name', () => {
       pokemonCatalogSpy.getPokemonByType.mockClear();
