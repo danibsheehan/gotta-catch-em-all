@@ -71,9 +71,17 @@ on these.
      random opponent. This is the sweep's only eligible finding for the normal Tier A flow.
      Unit of work: update `maxPokemonSpeciesId` in `src/environments/environment.ts` (and
      `environment.prod.ts` if it duplicates the value) to the live count reported by the
-     script, and update the constant's comment to note it. No other file changes. This is
-     mechanical (a single integer taken straight from the live API response), so it stays
-     Tier A like the other three recurring audits.
+     script, and update the constant's comment to note it.
+     `pokemon-opponent.service.spec.ts` hardcodes this constant's old value and a
+     random-derived id computed from it (currently `Math.ceil(0.5 * 964)` → `482`, asserted
+     in its `pickRandomOpponentId` and "random opponent ID" tests); if bumping the constant
+     makes those literals stale, update them to match in the same commit — this is a
+     mechanical literal substitution confined to that spec file, not a change to
+     `pokemon-opponent.service.ts` itself, which stays Tier C and is never touched. Beyond
+     `environment.ts`/`environment.prod.ts` and those specific stale literals in
+     `pokemon-opponent.service.spec.ts`, no other file changes. This is mechanical (a single
+     integer taken straight from the live API response, plus updating any spec literals that
+     hardcode it), so it stays Tier A like the other three recurring audits.
    - `CONTRACT-BREAK:` — a field the app actually reads is missing, renamed, or retyped
      upstream (including the request itself failing, or the live species count dropping below
      `maxPokemonSpeciesId`). Never auto-fix this: adapting `PokeApiClient` or the shared models
