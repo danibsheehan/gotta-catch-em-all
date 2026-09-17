@@ -10,8 +10,11 @@ export const environment = {
     /** Front sprite PNGs by national dex id: `{baseUrl}/{id}.png` */
     frontSpriteBaseUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon',
   },
-  /** Upper bound for `GET /pokemon/{id}` when picking a random opponent (PokeAPI dex size). */
-  maxPokemonSpeciesId: 964,
+  /**
+   * Upper bound for `GET /pokemon/{id}` when picking a random opponent (PokeAPI dex size).
+   * Updated 2026-09-17 per the live `/pokemon-species/` count (sandbox/pokeapi-drift-check.mjs).
+   */
+  maxPokemonSpeciesId: 1025,
 };
 
 /*
