@@ -43,18 +43,48 @@ Tier C files are always off-limits, regardless of what a tool reports.
    alphabetically) — add Vitest cases for its uncovered branches only; no source behavior
    change.
 
-For any of the three, if resolving the finding would require a real judgment call rather
+For any of the four, if resolving the finding would require a real judgment call rather
 than a mechanical fix (e.g. a coverage gap only closable by changing what the code does, or
 an `==`/`!=` mismatch that isn't the established `== null` idiom), skip that finding and
 either move to the next eligible finding within the same sweep or the next sweep in order —
 do not force a fix. `format:check`, `lint`, `test:ci`, `build` stay green for whatever was
-touched.
+touched. The one exception is sweep 4's `CONTRACT-BREAK` finding: it's still never this
+sweep's chosen unit of work, but per its own rule above it always gets logged and called out
+rather than silently skipped, because it can mean the live app is currently broken.
 
 **Tooling caveats**: `npx knip` also flags `src/polyfills.ts`/`src/test-setup.ts` as unused
 files and `@angular/forms`/`@angular/router` as unused dependencies — false positives
 (referenced via `angular.json`/`tsconfig.spec.json`, outside knip's import graph) or out of
 scope (dependency removal has a bigger blast radius than a dead-export deletion). Never act
 on these.
+
+4. **PokeAPI contract-drift sweep** — run `node sandbox/pokeapi-drift-check.mjs`. It checks the
+   live PokeAPI against the exact fields/shapes `PokeApiClient`, the `shared/models/pokemon*.ts`
+   types, and `special-attack-battle.ts`'s `special-attack` stat lookup rely on, plus
+   `environment.ts`'s `maxPokemonSpeciesId` against the live `/pokemon-species/` count (see the
+   script's own comments for the full list). It deliberately never reports a field the live API
+   has that this app doesn't model — this app intentionally types only the fields it reads (see
+   `poke-api.client.ts`'s "only the field we read" comment), so an unmodeled field is normal,
+   not drift. It prints findings as one of two prefixes, which need different handling:
+   - `MAXID-DRIFT:` — the live species count has grown past the hardcoded
+     `maxPokemonSpeciesId` in `environment.ts`, so newer species can never be picked as a
+     random opponent. This is the sweep's only eligible finding for the normal Tier A flow.
+     Unit of work: update `maxPokemonSpeciesId` in `src/environments/environment.ts` (and
+     `environment.prod.ts` if it duplicates the value) to the live count reported by the
+     script, and update the constant's comment to note it. No other file changes. This is
+     mechanical (a single integer taken straight from the live API response), so it stays
+     Tier A like the other three recurring audits.
+   - `CONTRACT-BREAK:` — a field the app actually reads is missing, renamed, or retyped
+     upstream (including the request itself failing, or the live species count dropping below
+     `maxPokemonSpeciesId`). Never auto-fix this: adapting `PokeApiClient` or the shared models
+     to a real upstream change is a judgment call, not mechanical, so it is never this sweep's
+     chosen unit of work and never opens a PR on its own. But unlike the ordinary "skip a
+     judgment-call finding and move on" rule below, a `CONTRACT-BREAK` is never silently
+     dropped either — it means the live app may be broken right now. Whenever the script
+     reports one, regardless of what else this run ends up picking as its actual unit of work,
+     append an extra `sandbox-log.md` row for it (tag its Notes cell `🚨 CONTRACT-BREAK`,
+     tier `—`, PR `—`, both merge columns `No`) quoting the exact finding, and call it out
+     explicitly in the run's final summary rather than only in the log.
 
 - [x] **Coverage: `pokemon-type.component.ts`** (currently 86.7%, threshold 67%/82%)
   - Target: `src/app/features/pokemon-picker/pokemon-type/pokemon-type.component.ts` and its
