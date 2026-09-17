@@ -27,7 +27,7 @@ describe('PokemonOpponentService', () => {
     service.getPokemonOpponent().subscribe((data) => {
       response = data;
     });
-    const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/482');
+    const req = httpMock.expectOne('https://pokeapi.co/api/v2/pokemon/513');
     expect(req.request.method).toBe('GET');
     req.flush({
       name: 'azelf',
@@ -59,6 +59,6 @@ describe('PokemonOpponentService', () => {
   it('should map random 0.5 to mid-range id via pickRandomOpponentId', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0.5);
     const id = service.pickRandomOpponentId();
-    expect(id).toBe(Math.ceil(0.5 * 964));
+    expect(id).toBe(Math.ceil(0.5 * 1025));
   });
 });
