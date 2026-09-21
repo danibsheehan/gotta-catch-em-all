@@ -13,8 +13,14 @@
 //   CONTRACT-BREAK: <detail>   — a relied-upon field is missing/renamed/retyped upstream
 //   MAXID-DRIFT: <detail>      — environment.ts's maxPokemonSpeciesId is behind the live count
 
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ENVIRONMENT_TS_PATH = path.join(__dirname, '..', 'src', 'environments', 'environment.ts');
+
 const BASE = 'https://pokeapi.co/api/v2';
-const MAX_POKEMON_SPECIES_ID = 964; // environment.ts's current hardcoded upper bound
 const SPECIAL_ATTACK_STAT_NAME = 'special-attack';
 
 const contractBreaks = [];
@@ -124,8 +130,32 @@ async function checkTypeIndex() {
   }
 }
 
+function readMaxPokemonSpeciesId() {
+  const area = 'maxPokemonSpeciesId (environment.ts)';
+  let source;
+  try {
+    source = readFileSync(ENVIRONMENT_TS_PATH, 'utf8');
+  } catch (err) {
+    contractBreaks.push(`${area}: failed to read ${ENVIRONMENT_TS_PATH}: ${err.message}`);
+    return null;
+  }
+  const match = source.match(/maxPokemonSpeciesId:\s*(\d+)/);
+  if (!match) {
+    contractBreaks.push(
+      `${area}: could not find "maxPokemonSpeciesId: <number>" in ${ENVIRONMENT_TS_PATH}`,
+    );
+    return null;
+  }
+  return Number(match[1]);
+}
+
 async function checkMaxPokemonSpeciesId() {
   const area = 'maxPokemonSpeciesId (environment.ts)';
+  const currentMaxId = readMaxPokemonSpeciesId();
+  if (currentMaxId === null) {
+    return;
+  }
+
   let body;
   try {
     body = await getJson(`/pokemon-species/?limit=1`);
@@ -140,13 +170,13 @@ async function checkMaxPokemonSpeciesId() {
     );
     return;
   }
-  if (liveCount > MAX_POKEMON_SPECIES_ID) {
+  if (liveCount > currentMaxId) {
     maxIdDrift.push(
-      `live species count is ${liveCount}, hardcoded maxPokemonSpeciesId is ${MAX_POKEMON_SPECIES_ID} (${liveCount - MAX_POKEMON_SPECIES_ID} species never selectable as a random opponent)`,
+      `live species count is ${liveCount}, hardcoded maxPokemonSpeciesId is ${currentMaxId} (${liveCount - currentMaxId} species never selectable as a random opponent)`,
     );
-  } else if (liveCount < MAX_POKEMON_SPECIES_ID) {
+  } else if (liveCount < currentMaxId) {
     contractBreaks.push(
-      `${area}: live species count is ${liveCount}, LOWER than hardcoded maxPokemonSpeciesId ${MAX_POKEMON_SPECIES_ID} — random ids above ${liveCount} would 404`,
+      `${area}: live species count is ${liveCount}, LOWER than hardcoded maxPokemonSpeciesId ${currentMaxId} — random ids above ${liveCount} would 404`,
     );
   }
 }
