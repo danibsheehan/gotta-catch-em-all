@@ -15,13 +15,12 @@
       content="camera=(), microphone=(), geolocation=(), payment=()"
     />
     <!--
-    CSP tuned for production output: inlined critical CSS (style-src 'unsafe-inline'), PokeAPI fetches,
-    HTTPS sprites from the API, fonts from gstatic after inlining, and the CLI’s async CSS link onload handler
-    (script-src hash + 'unsafe-hashes' per CSP Level 3).
+    CSP tuned for production output: PokeAPI fetches, HTTPS sprites from the API, fonts from
+    gstatic after inlining.
   -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://pokeapi.co; form-action 'self'; upgrade-insecure-requests"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://pokeapi.co; form-action 'self'; upgrade-insecure-requests"
     />
     <meta
       name="description"
